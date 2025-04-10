@@ -1,5 +1,6 @@
 package techtrek.global.exception;
 
+import org.springframework.http.ResponseEntity;
 import techtrek.global.code.CommonResponse;
 import techtrek.global.code.status.ResponseCode;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,8 +11,11 @@ public class GlobalExceptionHandler {
 
     // 우리가 만든 예외 처리
     @ExceptionHandler(GlobalException.class)
-    public CommonResponse<?> handleGlobalException(GlobalException ex) {
-        return new CommonResponse<>(ex.getResponseCode(), null);
+    public ResponseEntity<CommonResponse<?>> handleGlobalException(GlobalException ex) {
+        return new ResponseEntity<>(
+                new CommonResponse<>(ex.getResponseCode(), null),
+                ex.getResponseCode().getHttpStatus()
+        );
     }
 
     // 그 외 예상하지 못한 에러
