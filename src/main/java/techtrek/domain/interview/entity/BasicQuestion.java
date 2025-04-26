@@ -6,15 +6,16 @@ import lombok.Setter;
 import techtrek.domain.interview.entity.status.QuestionCategory;
 
 @Entity
-@Table(name="Question")
+@Table(name="basic_question")
 @Getter
 @Setter
-public class Question {
+public class BasicQuestion {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(nullable = false)
-    private String content;
+    private String question;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
