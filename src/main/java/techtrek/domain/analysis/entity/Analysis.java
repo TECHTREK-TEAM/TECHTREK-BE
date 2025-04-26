@@ -3,7 +3,7 @@ package techtrek.domain.analysis.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.sessionInfo.entity.SessionInfo;
 
 @Entity
 @Table(name="analysis")
@@ -30,8 +30,8 @@ public class Analysis {
     private String keyword;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "enterprise_id")
-    private Enterprise enterprise;
+    @JoinColumn(name = "session_info_id")
+    private SessionInfo sessionInfo;
 
 
 }
