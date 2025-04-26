@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${DATABASE_TEST_URL}
+    username: ${DATABASE_TEST_USERNAME}
+    password: ${DATABASE_TEST_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
