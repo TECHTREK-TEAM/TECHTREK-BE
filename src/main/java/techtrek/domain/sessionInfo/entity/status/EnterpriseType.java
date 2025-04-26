@@ -1,4 +1,4 @@
-package techtrek.domain.enterprise.entity.status;
+package techtrek.domain.sessionInfo.entity.status;
 
 public enum EnterpriseType {
     빅테크,
