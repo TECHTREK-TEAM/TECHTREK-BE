@@ -1,16 +1,15 @@
-package techtrek.domain.Question.Entity;
+package techtrek.domain.interview.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Category;
 import lombok.Getter;
 import lombok.Setter;
-import techtrek.domain.Question.Entity.status.QuestionCategory;
+import techtrek.domain.interview.entity.status.QuestionCategory;
 
 @Entity
-@Table(name="question")
+@Table(name="Question")
 @Getter
 @Setter
-public class question {
+public class Question {
     @Id
     private String id;
 

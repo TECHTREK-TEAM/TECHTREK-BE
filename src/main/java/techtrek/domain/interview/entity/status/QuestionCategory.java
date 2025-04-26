@@ -1,4 +1,4 @@
-package techtrek.domain.Question.Entity.status;
+package techtrek.domain.interview.entity.status;
 
 public enum QuestionCategory {
     알고리즘,
