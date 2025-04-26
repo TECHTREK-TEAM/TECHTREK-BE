@@ -9,12 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
-      DATABASE_TEST_USERNAME: ${{ secrets.DATABASE_TEST_USERNAME }}
-      DATABASE_TEST_PASSWORD: ${{ secrets.DATABASE_TEST_PASSWORD }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
