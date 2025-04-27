@@ -17,4 +17,13 @@ public class SessionInfoRequest {
         private String enterpriseName;
         private EnterpriseType enterpriseType;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Answer {
+        private String sessionId;
+        private String fieldId;
+        private String answer;
+    }
 }

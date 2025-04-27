@@ -35,7 +35,6 @@ public class SessionInfoService {
                 .orElseThrow(() -> new GlobalException(ResponseCode.USER_NOT_FOUND));
 
         String sessionId = UUID.randomUUID().toString();
-        String fieldId = UUID.randomUUID().toString();
 
         // 1. 데이터베이스에서 랜덤으로 하나의 질문을 가져옴
         BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
@@ -45,6 +44,11 @@ public class SessionInfoService {
 
         // 2. 세션 안에 첫 질문/답변 저장
         String sessionKey = "interview:session:" + sessionId;
+
+        // 여기서 순차적인 fieldId 저장을 위해 간단히 세션에 저장된 데이터 개수를 확인
+        Long questionCount = redisTemplate.opsForHash().size(sessionKey); // 현재 저장된 질문 수 확인
+        String fieldId = "question-" + (questionCount + 1); // 순차적인 fieldId 생성
+
         redisTemplate.opsForHash().put(sessionKey, fieldId + ":question", basicQuestion);
         redisTemplate.opsForHash().put(sessionKey, fieldId + ":answer", "");
 
@@ -66,8 +70,6 @@ public class SessionInfoService {
     //기본 질문 불러오기
     public SessionInfoResponse.BasicQuestion getBasicInterview(String sessionId) {
 
-        String fieldId = UUID.randomUUID().toString();
-
         // 1. 데이터베이스에서 랜덤으로 하나의 질문을 가져옴
         BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
                 .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
@@ -76,10 +78,26 @@ public class SessionInfoService {
 
         // 2. 세션 안에 첫 질문/답변 저장
         String sessionKey = "interview:session:" + sessionId;
+
+        // 여기서 순차적인 fieldId 저장을 위해 간단히 세션에 저장된 데이터 개수를 확인
+        Long questionCount = redisTemplate.opsForHash().size(sessionKey); // 현재 저장된 질문 수 확인
+        String fieldId = "question-" + (questionCount + 1); // 순차적인 fieldId 생성
+
         redisTemplate.opsForHash().put(sessionKey, fieldId + ":question", basicQuestion);
         redisTemplate.opsForHash().put(sessionKey, fieldId + ":answer", "");
 
 
         return new SessionInfoResponse.BasicQuestion(fieldId,basicQuestion);
+    }
+
+    //답변하기
+    public Boolean createAnswer(String sessionId, String fieldId, String basicQuestion) {
+
+        // 2. 세션 안에 첫 질문/답변 저장
+        String sessionKey = "interview:session:" + sessionId;
+        redisTemplate.opsForHash().put(sessionKey, fieldId + ":answer", basicQuestion);
+
+
+        return true;
     }
 }
