@@ -18,8 +18,16 @@ public class SessionInfoController {
 
     // 면접 시작하기
     @PostMapping("/start")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> startInterview(@RequestBody SessionInfoRequest.Start request) {
-        SessionInfoResponse.Start response = sessionInfoService.startInterview(request.getEnterpriseName(), request.getEnterpriseType());
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@RequestBody SessionInfoRequest.Start request) {
+        SessionInfoResponse.Start response = sessionInfoService.createInterview(request.getEnterpriseName(), request.getEnterpriseType());
+
+        return ApiResponse.onSuccess(response);
+    }
+
+    // 기본질문 불러오기
+    @GetMapping("/questions/basic/{sessionId}")
+    public ResponseEntity<CommonResponse<SessionInfoResponse.BasicQuestion>> getBasicInterview(@PathVariable String sessionId) {
+        SessionInfoResponse.BasicQuestion response = sessionInfoService.getBasicInterview(sessionId);
 
         return ApiResponse.onSuccess(response);
     }

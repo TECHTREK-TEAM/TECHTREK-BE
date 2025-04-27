@@ -17,4 +17,12 @@ public class SessionInfoResponse {
         private String fieldId;
         private String question;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class BasicQuestion {
+        private String fieldId;
+        private String question;
+    }
 }
