@@ -23,6 +23,6 @@ public class SessionInfoResponse {
     @AllArgsConstructor
     public static class BasicQuestion {
         private String fieldId;
-        private String basicQuestion;
+        private String question;
     }
 }
