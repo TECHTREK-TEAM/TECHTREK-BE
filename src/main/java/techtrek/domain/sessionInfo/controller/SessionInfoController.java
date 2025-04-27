@@ -31,4 +31,12 @@ public class SessionInfoController {
 
         return ApiResponse.onSuccess(response);
     }
+
+    // 답변하기
+    @PostMapping("/answers")
+    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
+        sessionInfoService.createAnswer(request.getSessionId(),request.getFieldId(),request.getAnswer());
+
+        return ApiResponse.onSuccess(true);
+    }
 }
