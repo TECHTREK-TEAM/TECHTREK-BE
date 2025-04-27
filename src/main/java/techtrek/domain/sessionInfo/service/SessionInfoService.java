@@ -28,7 +28,7 @@ public class SessionInfoService {
     private final BasicQuestionRepository basicQuestionRepository;
 
     //면접 시작하기
-    public SessionInfoResponse.Start startInterview(String enterpriseName, EnterpriseType enterpriseType) {
+    public SessionInfoResponse.Start createInterview(String enterpriseName, EnterpriseType enterpriseType) {
 
         //  User user = userRepository.findById(UserId)
         User user = userRepository.findById("1")
@@ -62,4 +62,24 @@ public class SessionInfoService {
         return new SessionInfoResponse.Start(sessionId,fieldId,basicQuestion);
     }
 
+
+    //기본 질문 불러오기
+    public SessionInfoResponse.BasicQuestion getBasicInterview(String sessionId) {
+
+        String fieldId = UUID.randomUUID().toString();
+
+        // 1. 데이터베이스에서 랜덤으로 하나의 질문을 가져옴
+        BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
+                .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
+
+        String basicQuestion = getQuestion.getQuestion();
+
+        // 2. 세션 안에 첫 질문/답변 저장
+        String sessionKey = "interview:session:" + sessionId;
+        redisTemplate.opsForHash().put(sessionKey, fieldId + ":question", basicQuestion);
+        redisTemplate.opsForHash().put(sessionKey, fieldId + ":answer", "");
+
+
+        return new SessionInfoResponse.BasicQuestion(fieldId,basicQuestion);
+    }
 }
