@@ -1,9 +1,9 @@
-package techtrek.domain.interview.entity;
+package techtrek.domain.basicQuestion.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import techtrek.domain.interview.entity.status.QuestionCategory;
+import techtrek.domain.basicQuestion.entity.status.QuestionCategory;
 
 @Entity
 @Table(name="basic_question")

@@ -1,12 +1,12 @@
-package techtrek.domain.interview.service;
+package techtrek.domain.sessionInfo.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import techtrek.domain.interview.dto.InterviewResponse;
-import techtrek.domain.interview.entity.BasicQuestion;
-import techtrek.domain.interview.repository.BasicQuestionRepository;
+import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
+import techtrek.domain.basicQuestion.entity.BasicQuestion;
+import techtrek.domain.basicQuestion.repository.BasicQuestionRepository;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Builder
 @Service
-public class InterviewService {
+public class SessionInfoService {
 
     private final UserRepository userRepository;
     private final SessionInfoRepository sessionInfoRepository;
@@ -28,7 +28,7 @@ public class InterviewService {
     private final BasicQuestionRepository basicQuestionRepository;
 
     //면접 시작하기
-    public InterviewResponse.Start startInterview(String enterpriseName, EnterpriseType enterpriseType) {
+    public SessionInfoResponse.Start startInterview(String enterpriseName, EnterpriseType enterpriseType) {
 
         //  User user = userRepository.findById(UserId)
         User user = userRepository.findById("1")
@@ -59,7 +59,7 @@ public class InterviewService {
 
         sessionInfoRepository.save(sessionInfo);
 
-        return new InterviewResponse.Start(sessionId,fieldId,basicQuestion);
+        return new SessionInfoResponse.Start(sessionId,fieldId,basicQuestion);
     }
 
 }

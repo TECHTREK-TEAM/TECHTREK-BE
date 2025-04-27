@@ -1,9 +1,9 @@
-package techtrek.domain.interview.repository;
+package techtrek.domain.basicQuestion.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import techtrek.domain.interview.entity.BasicQuestion;
+import techtrek.domain.basicQuestion.entity.BasicQuestion;
 
 import java.util.Optional;
 

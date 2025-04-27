@@ -1,4 +1,4 @@
-package techtrek.domain.interview.dto;
+package techtrek.domain.sessionInfo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 @Getter
 @Setter
 @AllArgsConstructor
-public class InterviewRequest {
+public class SessionInfoRequest {
 
     @Getter
     @Setter
