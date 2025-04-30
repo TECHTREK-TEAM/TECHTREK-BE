@@ -17,13 +17,13 @@ public class OpenAiService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${OPENAI_API_KEY}")
+    @Value("${openai.api-key}")
     private String apiKey;
 
-    @Value("${OPENAI_MODEL}")
+    @Value("${openai.model}")
     private String model;
 
-    @Value("${OPENAI_URL}")
+    @Value("${openai.url}")
     private String apiUrl;
 
     public String askToGpt(String prompt) {
@@ -38,10 +38,10 @@ public class OpenAiService {
         // 요청 생성
         HttpEntity<OpenAiRequest> entity = new HttpEntity<>(request, headers);
         ResponseEntity<OpenAiResponse> response = restTemplate.exchange(
-                apiUrl,
-                HttpMethod.POST,
-                entity,
-                OpenAiResponse.class
+                apiUrl, // 어디로 보낼지
+                HttpMethod.POST, // POST 방식
+                entity,  // 요청 본문 + 헤더
+                OpenAiResponse.class  // 응답이 어떤 형식으로 오는지 (JSON-> JAVA)
         );
 
         return response.getBody().getChoices().get(0).getMessage().getContent();
