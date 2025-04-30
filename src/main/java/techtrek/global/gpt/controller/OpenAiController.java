@@ -13,7 +13,7 @@ public class OpenAiController {
 
     @GetMapping("/test-gpt")
     public String testGpt() {
-        String prompt = "안녕하세요 김윤아님이라고 응답해줘";
+        String prompt = "안녕하세요 김윤아님!이라고 응답해줘";
         return openAiService.askToGpt(prompt);
     }
 }
