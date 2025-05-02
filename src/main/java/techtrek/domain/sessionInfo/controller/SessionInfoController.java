@@ -35,7 +35,7 @@ public class SessionInfoController {
     // 답변하기
     @PostMapping("/answers")
     public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
-        sessionInfoService.createAnswer(request.getSessionId(),request.getFieldId(),request.getAnswer());
+        sessionInfoService.createAnswer(request.getSessionId(),request.getFieldId(),request.getType(),request.getAnswer());
 
         return ApiResponse.onSuccess(true);
     }

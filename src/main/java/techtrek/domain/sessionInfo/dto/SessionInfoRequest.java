@@ -24,6 +24,7 @@ public class SessionInfoRequest {
     public static class Answer {
         private String sessionId;
         private String fieldId;
+        private String type;
         private String answer;
     }
 }
