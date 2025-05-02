@@ -16,13 +16,15 @@ public class SessionInfoResponse {
         private String sessionId;
         private String fieldId;
         private String question;
+        private String questionNumber;
     }
 
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class BasicQuestion {
+    public static class NewQuestion {
         private String fieldId;
         private String question;
+        private String questionNumber;
     }
 }

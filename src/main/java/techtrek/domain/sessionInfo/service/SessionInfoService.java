@@ -93,12 +93,12 @@ public class SessionInfoService {
 
         sessionInfoRepository.save(sessionInfo);
 
-        return new SessionInfoResponse.Start(sessionId,fieldId,basicQuestion);
+        return new SessionInfoResponse.Start(sessionId,fieldId,basicQuestion,questionNumber);
     }
 
 
     //기본 질문 불러오기
-    public SessionInfoResponse.BasicQuestion getNewInterview(String sessionId) {
+    public SessionInfoResponse.NewQuestion getNewInterview(String sessionId) {
 
         // 1. 기본 설정
         String sessionKey = "interview:session:" + sessionId;
@@ -113,7 +113,6 @@ public class SessionInfoService {
         String phase;
         int count = 0;
 
-        // 2. Redis에서 최근 질문 가져오기
         // 2. Redis에서 최근 질문 가져오기
         if (lastJsonString != null) {
             try {
@@ -183,7 +182,7 @@ public class SessionInfoService {
 
 
         // 8. 기본 질문 반환
-        return new SessionInfoResponse.BasicQuestion(fieldId, question);
+        return new SessionInfoResponse.NewQuestion(fieldId, question, questionNumber);
     }
 
 
