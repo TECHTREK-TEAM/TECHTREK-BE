@@ -11,10 +11,11 @@ public class ApiResponse {
         return ResponseEntity.ok(new CommonResponse<>(ResponseCode.SUCCESS, data));
     }
 
-    // 실패 응답을 처리하는 메서드 (필요시 추가)
-//    public static <T> ResponseEntity<CommonResponse<T>> onError(ResponseCode responseCode) {
-//        return ResponseEntity.status(responseCode.getHttpStatus())
-//                .body(new CommonResponse<>(responseCode, null));
-//    }
+    // 실패 응답을 처리하는 메서드
+    public static <T> ResponseEntity<CommonResponse<T>> onError(ResponseCode responseCode) {
+        return ResponseEntity.status(responseCode.getHttpStatus())
+                .body(new CommonResponse<>(responseCode, null));
+    }
 }
+
 
