@@ -24,10 +24,10 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(response);
     }
 
-    // 기본질문 불러오기
-    @GetMapping("/questions/basic/{sessionId}")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.BasicQuestion>> getBasicInterview(@PathVariable String sessionId) {
-        SessionInfoResponse.BasicQuestion response = sessionInfoService.getBasicInterview(sessionId);
+    // 새 질문 불러오기
+    @GetMapping("/questions/new/{sessionId}")
+    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> getNewInterview(@PathVariable String sessionId) {
+        SessionInfoResponse.NewQuestion response = sessionInfoService.getNewInterview(sessionId);
 
         return ApiResponse.onSuccess(response);
     }
@@ -35,7 +35,7 @@ public class SessionInfoController {
     // 답변하기
     @PostMapping("/answers")
     public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
-        sessionInfoService.createAnswer(request.getSessionId(),request.getFieldId(),request.getAnswer());
+        sessionInfoService.createAnswer(request.getSessionId(),request.getFieldId(),request.getType(),request.getAnswer());
 
         return ApiResponse.onSuccess(true);
     }
