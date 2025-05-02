@@ -24,10 +24,10 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(response);
     }
 
-    // 기본질문 불러오기
-    @GetMapping("/questions/basic/{sessionId}")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.BasicQuestion>> getBasicInterview(@PathVariable String sessionId) {
-        SessionInfoResponse.BasicQuestion response = sessionInfoService.getBasicInterview(sessionId);
+    // 새 질문 불러오기
+    @GetMapping("/questions/new/{sessionId}")
+    public ResponseEntity<CommonResponse<SessionInfoResponse.BasicQuestion>> getNewInterview(@PathVariable String sessionId) {
+        SessionInfoResponse.BasicQuestion response = sessionInfoService.getNewInterview(sessionId);
 
         return ApiResponse.onSuccess(response);
     }

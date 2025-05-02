@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -97,27 +98,94 @@ public class SessionInfoService {
 
 
     //기본 질문 불러오기
-    public SessionInfoResponse.BasicQuestion getBasicInterview(String sessionId) {
+    public SessionInfoResponse.BasicQuestion getNewInterview(String sessionId) {
 
-        // 1. 데이터베이스에서 랜덤으로 하나의 질문을 가져옴
-        BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
-                .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
-
-        String basicQuestion = getQuestion.getQuestion();
-
-        // 2. 세션 안에 첫 질문/답변 저장
+        // 1. 기본 설정
         String sessionKey = "interview:session:" + sessionId;
+        String fieldId = UUID.randomUUID().toString();
 
-        // 여기서 순차적인 fieldId 저장을 위해 간단히 세션에 저장된 데이터 개수를 확인
-        Long questionCount = redisTemplate.opsForHash().size(sessionKey); // 현재 저장된 질문 수 확인
-        String fieldId = "question-" + (questionCount + 1); // 순차적인 fieldId 생성
+        // 2. Redis에서 최근 질문 가져오기 (가장 최근 질문을 가져오기 위해 리스트 끝에서 하나를 꺼냄)
+        List<String> jsonStrings = redisTemplate.opsForList().range(sessionKey + ":new", -1, -1);
+        String lastJsonString = jsonStrings.isEmpty() ? null : jsonStrings.get(0);
 
-        redisTemplate.opsForHash().put(sessionKey, fieldId + ":question", basicQuestion);
-        redisTemplate.opsForHash().put(sessionKey, fieldId + ":answer", "");
+        // 초기화
+        String question = "";
+        String phase;
+        int count = 0;
+
+        // 2. Redis에서 최근 질문 가져오기
+        // 2. Redis에서 최근 질문 가져오기
+        if (lastJsonString != null) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, String> lastQaData = objectMapper.readValue(lastJsonString, Map.class);
+
+                // 이전 phase와 count 가져오기
+                phase = lastQaData.get("phase");
+                count = Integer.parseInt(lastQaData.get("count"));
+
+                // count가 5 이상이면 phase 전환
+                if (count >= 5) {
+                    phase = phase.equals("basic") ? "resume" : "basic";
+                    count = 0;
+                }
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("JSON 파싱 실패", e);
+            }
+        } else {
+            // 첫 질문인 경우
+            phase = "basic";
+            count = 0;
+        }
+
+// phase에 따른 질문 설정
+        if (phase.equals("basic")) {
+            BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
+                    .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
+            question = getQuestion.getQuestion();
+        } else {
+            question = "이력서 기반 질문"; // 예시
+        }
+
+        // 3. 기본 + 이력서 질문 번호 계산
+        Long currentQuestionCount = redisTemplate.opsForList().size(sessionKey + ":new");
+        String questionNumber = String.valueOf(currentQuestionCount + 1);
+
+        // 4. 전체 질문 개수 계산 (기본 + 이력서 + 꼬리질문 포함)
+        Long currentTotalCount = redisTemplate.opsForList().size(sessionKey + ":new") + redisTemplate.opsForList().size(sessionKey + ":tail") ;
+        String totalQuestionCount = String.valueOf(currentTotalCount + 1);
+
+        // 5. 묶기
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> qaData = new HashMap<>();
+        qaData.put("fieldId", fieldId);
+        qaData.put("question", question);
+        qaData.put("answer", "");
+        qaData.put("questionNumber", questionNumber);
+        qaData.put("count", String.valueOf(count + 1));
+        qaData.put("phase", phase);
+        qaData.put("totalQuestionCount", totalQuestionCount);
+        qaData.forEach((key, value) -> {
+            System.out.println("Key: " + key + ", Value: " + value);
+        });
+
+        // 6. JSON 문자열로 변환
+        String jsonString;
+        try {
+            jsonString = objectMapper.writeValueAsString(qaData);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("JSON 직렬화 실패", e);
+        }
+
+        // 7. Redis에 저장
+        redisTemplate.opsForList().rightPush(sessionKey + ":new", jsonString);
 
 
-        return new SessionInfoResponse.BasicQuestion(fieldId,basicQuestion);
+        // 8. 기본 질문 반환
+        return new SessionInfoResponse.BasicQuestion(fieldId, question);
     }
+
 
     //답변하기
     public Boolean createAnswer(String sessionId, String fieldId, String basicQuestion) {
