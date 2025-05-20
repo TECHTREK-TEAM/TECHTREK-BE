@@ -1,29 +1,31 @@
 package techtrek.domain.user.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import techtrek.domain.user.dto.UserResponse;
+import org.springframework.web.multipart.MultipartFile;
+import techtrek.domain.user.dto.ResumeResponse;
+import techtrek.domain.user.service.ResumeService;
+import techtrek.global.code.ApiResponse;
 import techtrek.global.code.CommonResponse;
-import techtrek.global.code.status.ResponseCode;
-import techtrek.global.exception.GlobalException;
+
+
+import java.io.IOException;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
-    @GetMapping("/{id}")
-    public ResponseEntity<CommonResponse<UserResponse>> getUser(@PathVariable Long id) {
-        UserResponse user = new UserResponse(id, "yuna");
 
-        if (user.getUserId() != 1) {
-            throw new GlobalException(ResponseCode.USER_NOT_FOUND);
+    private final ResumeService resumeService;
 
-        }
+    // 이력서 업로드
+    @PostMapping("/resume")
+    public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file) throws IOException {
+        ResumeResponse response = resumeService.createResume(file);
 
-        return new ResponseEntity<>(
-                new CommonResponse<>(ResponseCode.SUCCESS, user),
-                ResponseCode.SUCCESS.getHttpStatus()
-        );
+        return ApiResponse.onSuccess(response);
     }}
