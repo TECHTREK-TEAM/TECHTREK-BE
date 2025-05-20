@@ -67,6 +67,7 @@ public class ResumeService {
             ResumeResponse summary = objectMapper.readValue(gptResponse, ResumeResponse.class);
 
             // 5. DB에 저장
+            //  User user = userRepository.findById(UserId)
             User user = userRepository.findById("1")
                     .orElseThrow(() -> new GlobalException(ResponseCode.USER_NOT_FOUND));
             user.setUserGroup(summary.getGroup());
