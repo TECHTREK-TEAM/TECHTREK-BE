@@ -14,7 +14,7 @@ import java.util.List;
 public class ResumeResponse {
         private String group;
         private String seniority;
-        private String text;
+        private String resume;
         private List<StackInfo> stacks;
 
         @Data
