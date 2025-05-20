@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import techtrek.domain.user.dto.ResumeResponse;
 import techtrek.domain.user.service.ResumeService;
+import techtrek.global.code.ApiResponse;
+import techtrek.global.code.CommonResponse;
 
 
 import java.io.IOException;
@@ -21,8 +24,8 @@ public class UserController {
 
     // 이력서 업로드
     @PostMapping("/resume")
-    public ResponseEntity<String> createResume(@RequestPart MultipartFile file) throws IOException {
-        String response = resumeService.createResume(file);
+    public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file) throws IOException {
+        ResumeResponse response = resumeService.createResume(file);
 
-        return ResponseEntity.ok(response);
+        return ApiResponse.onSuccess(response);
     }}
