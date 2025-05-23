@@ -3,6 +3,7 @@ package techtrek.domain.sessionInfo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 
 @Getter
@@ -14,7 +15,7 @@ public class SessionInfoRequest {
     @Setter
     @AllArgsConstructor
     public static class Start {
-        private String enterpriseName;
+        private EnterpriseName enterpriseName;
         private EnterpriseType enterpriseType;
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import jakarta.persistence.Id;
 import techtrek.domain.analysis.entity.Analysis;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.user.entity.User;
 
@@ -23,8 +24,10 @@ public class SessionInfo {
     @Column(length = 255, nullable = false)
     private String sessionId;
 
-    @Column(length = 12, nullable = false)
-    private String enterpriseName;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EnterpriseName enterpriseName;
+
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
