@@ -12,8 +12,11 @@ public enum ResponseCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 오류"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다"),
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "USER409", "중복된 사용자 이름입니다"),
-    BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION404", "기본 질문을 찾을 수 없습니다"),
+    BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다"),
+    ENTERPRISE_KEYWORDS_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "키워드를 찾을 수 없습니다."),
+    CATEGORY_KEYWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "키워드를 찾을 수 없습니다."),
     SESSIONID_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션ID를 찾을 수 없습니다");
+
 
     private final HttpStatus httpStatus;
     private final String code;
