@@ -24,7 +24,7 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(response);
     }
 
-    // 새 질문 불러오기
+    // 새로운 질문 불러오기
     @GetMapping("/questions/new/{sessionId}")
     public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> getNewInterview(@PathVariable String sessionId) {
         SessionInfoResponse.NewQuestion response = sessionInfoService.getNewInterview(sessionId);
