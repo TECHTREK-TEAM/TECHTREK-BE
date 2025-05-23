@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import techtrek.domain.basicQuestion.entity.status.QuestionCategory;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.basicQuestion.entity.BasicQuestion;
 import techtrek.domain.basicQuestion.repository.BasicQuestionRepository;
@@ -20,10 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import techtrek.global.gpt.service.OpenAiService;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Builder
@@ -50,9 +48,29 @@ public class SessionInfoService {
         String sessionKey = "interview:session:" + sessionId;
 
         // 2. 질문 가져오기
-        BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
-                .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
-        String basicQuestion = getQuestion.getQuestion();
+        // 2-1. 기업의 키워드 목록 가져오기
+        List<String> keywords = enterpriseName.getKeywords();
+        if (keywords.isEmpty()) {
+            throw new GlobalException(ResponseCode.ENTERPRISE_KEYWORDS_NOT_FOUND);
+        }
+
+        // 2-2. 랜덤 키워드 선택
+        String selectedKeyword = keywords.get(new Random().nextInt(keywords.size()));
+
+        // 2-3. 키워드를 이용해 questionCategory 찾기
+        QuestionCategory category = QuestionCategory.fromKeyword(selectedKeyword)
+                .orElseThrow(() -> new GlobalException(ResponseCode.CATEGORY_KEYWORD_NOT_FOUND));
+
+        // 2-4. 해당 카테고리 질문 리스트 조회
+        List<BasicQuestion> questions = basicQuestionRepository.findByQuestionCategory(category);
+        if (questions == null || questions.isEmpty()) {
+            throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
+        }
+        // 2-5. 질문 랜덤 선택
+        BasicQuestion randomQuestion = questions.get(new Random().nextInt(questions.size()));
+
+        // 2-6 최종 질문 텍스트
+        String basicQuestion = randomQuestion.getQuestion();
 
         // 3. 기본 + 이력서 질문 번호 계산 (기본질문과 이력서 질문 번호를 따로 관리)
         Long currentQuestionCount = redisTemplate.opsForList().size(sessionKey + ":new");
@@ -145,9 +163,38 @@ public class SessionInfoService {
 
        // phase에 따른 질문 설정
         if (phase.equals("basic")) {
-            BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
-                    .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
-            question = getQuestion.getQuestion();
+            // 2-0. 기업이름 불러오기
+            SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
+                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSIONID_NOT_FOUND));
+
+            EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
+
+            // 2-1. 기업의 키워드 목록 가져오기
+            List<String> keywords = enterpriseName.getKeywords();
+            if (keywords.isEmpty()) {
+                throw new GlobalException(ResponseCode.ENTERPRISE_KEYWORDS_NOT_FOUND);
+            }
+
+            // 2-2. 랜덤 키워드 선택
+            String selectedKeyword = keywords.get(new Random().nextInt(keywords.size()));
+
+            // 2-3. 키워드를 이용해 questionCategory 찾기
+            QuestionCategory category = QuestionCategory.fromKeyword(selectedKeyword)
+                    .orElseThrow(() -> new GlobalException(ResponseCode.CATEGORY_KEYWORD_NOT_FOUND));
+
+            // 2-4. 해당 카테고리 질문 리스트 조회
+            List<BasicQuestion> questions = basicQuestionRepository.findByQuestionCategory(category);
+            if (questions == null || questions.isEmpty()) {
+                throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
+            }
+
+
+            // 2-5. 질문 랜덤 선택
+            BasicQuestion randomQuestion = questions.get(new Random().nextInt(questions.size()));
+
+            // 2-6 최종 질문 텍스트
+            question = randomQuestion.getQuestion();
+
         } else {
             SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
                     .orElseThrow(() -> new GlobalException(ResponseCode.SESSIONID_NOT_FOUND));
@@ -163,7 +210,8 @@ public class SessionInfoService {
                             "- '언어의 장단점'처럼 일반적인 질문은 피하세요.\n" +
                             "- 반드시 CS 기반 주제 (예: 운영체제, 네트워크, DB, 자료구조, 알고리즘, 트랜잭션, 멀티스레딩 등)여야 합니다.\n" +
                             "- 이전에 생성된 질문과 겹치지 않아야 합니다. 또한 질문의 길이는 3-4문장 이내로 작성하세요.\n" +
-                            "- 앞에 번호, 기호 등은 붙이지 말고 **이력서를 보아하니, 이력서를 보니, 확인해본 결과 등의 문장을 섞어,** 질문해주세요." +
+                            "- 앞에 번호, 기호 등은 붙이지 말고 **이력서를 보아하니, 이력서를 보니, 확인해본 결과 등의 문장을 섞어,** 질문해주세요. \n" +
+                            "- 연속으로 **이력서를 보아하니, 이력서를 보니, 확인해본 결과**의 문장은 사용하지 마세요. \n" +
                             "- 너무 포괄적이지 않고 면접관이 깊이 파고들 수 있는 질문 형태로 출력하세요.\n\n",
                     resume,
                     enterpriseDescription
