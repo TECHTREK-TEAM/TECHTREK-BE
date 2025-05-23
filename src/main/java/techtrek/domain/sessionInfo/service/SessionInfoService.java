@@ -9,6 +9,7 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.basicQuestion.entity.BasicQuestion;
 import techtrek.domain.basicQuestion.repository.BasicQuestionRepository;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
 import techtrek.domain.user.entity.User;
@@ -16,6 +17,7 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.code.status.ResponseCode;
 import techtrek.global.exception.GlobalException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import techtrek.global.gpt.service.OpenAiService;
 
 
 import java.util.HashMap;
@@ -32,9 +34,10 @@ public class SessionInfoService {
     private final SessionInfoRepository sessionInfoRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final BasicQuestionRepository basicQuestionRepository;
+    private final OpenAiService openAiService;
 
     //면접 시작하기
-    public SessionInfoResponse.Start createInterview(String enterpriseName, EnterpriseType enterpriseType) {
+    public SessionInfoResponse.Start createInterview(EnterpriseName enterpriseName, EnterpriseType enterpriseType) {
 
         // 사용자 예외처리
         //  User user = userRepository.findById(UserId)
@@ -97,9 +100,11 @@ public class SessionInfoService {
     }
 
 
-    //기본 질문 불러오기
+    //새로운 질문 불러오기
     public SessionInfoResponse.NewQuestion getNewInterview(String sessionId) {
-
+        // User user = userRepository.findById(userId)
+        User user = userRepository.findById("1")
+                .orElseThrow(() ->  new GlobalException(ResponseCode.USER_NOT_FOUND));
         // 1. 기본 설정
         String sessionKey = "interview:session:" + sessionId;
         String fieldId = UUID.randomUUID().toString();
@@ -138,13 +143,34 @@ public class SessionInfoService {
             count = 0;
         }
 
-// phase에 따른 질문 설정
+       // phase에 따른 질문 설정
         if (phase.equals("basic")) {
             BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
                     .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
             question = getQuestion.getQuestion();
         } else {
-            question = "이력서 기반 질문"; // 예시
+            SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
+                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSIONID_NOT_FOUND));
+
+            String resume = user.getResume(); // 사용자 이력서
+            String enterpriseDescription = sessionInfo.getEnterpriseName().getDescription(); // 기업 설명
+
+            String prompt = String.format(
+                    "다음은 지원자의 이력서입니다:\n%s\n\n" +
+                            "해당 지원자는 \"%s\" 성향의 기업 면접을 준비 중입니다.\n" +
+                            "이력서를 기반으로 한 **정확하고 구체적인 CS(Computer Science) 기반 기술 면접 질문 1개만** 생성해 주세요.\n\n" +
+                            "조건:\n" +
+                            "- '언어의 장단점'처럼 일반적인 질문은 피하세요.\n" +
+                            "- 반드시 CS 기반 주제 (예: 운영체제, 네트워크, DB, 자료구조, 알고리즘, 트랜잭션, 멀티스레딩 등)여야 합니다.\n" +
+                            "- 이전에 생성된 질문과 겹치지 않아야 합니다. 또한 질문의 길이는 3-4문장 이내로 작성하세요.\n" +
+                            "- 앞에 번호, 기호 등은 붙이지 말고 **이력서를 보아하니, 이력서를 보니, 확인해본 결과 등의 문장을 섞어,** 질문해주세요." +
+                            "- 너무 포괄적이지 않고 면접관이 깊이 파고들 수 있는 질문 형태로 출력하세요.\n\n",
+                    resume,
+                    enterpriseDescription
+            );
+
+            // GPT에게 질문 생성 요청하는 코드에서 사용
+            question = openAiService.askToGpt(prompt);
         }
 
         // 3. 기본 + 이력서 질문 번호 계산
