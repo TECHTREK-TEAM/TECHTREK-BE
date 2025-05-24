@@ -36,6 +36,7 @@ dependencies {
 	implementation 'com.h2database:h2'  // H2 DB 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis
 	implementation 'org.apache.pdfbox:pdfbox:2.0.29' // 자바 기반 PDF 파일 텍스트 추출
+	implementation 'org.json:json:20230227' //JSONException 라이브러리
 }
 
 

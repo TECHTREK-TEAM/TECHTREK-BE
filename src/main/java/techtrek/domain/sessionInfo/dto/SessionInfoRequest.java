@@ -28,4 +28,13 @@ public class SessionInfoRequest {
         private String type;
         private String answer;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class TailQuestion {
+        private String sessionId;
+        private String parentId;
+    }
+
 }
