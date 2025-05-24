@@ -301,6 +301,7 @@ public class SessionInfoService {
         // 1. 세션 확인
         sessionInfoRepository.findBySessionId(sessionId)
                 .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
+        String fieldId = UUID.randomUUID().toString();
 
         // 2. Redis에서 세션 질문 리스트 조회
         String newSessionKey = "interview:session:" + sessionId + ":new";
@@ -332,11 +333,30 @@ public class SessionInfoService {
         tailCount++; // 새 꼬리질문 번호 증가
         redisTemplate.opsForValue().set(tailCountKey, String.valueOf(tailCount));
 
-        // 꼬리질문 번호는 부모번호-꼬리질문번호 (예: 1-1, 1-2, 2-1 ...)
         String newTailQuestionNumber = parentQuestionNumber + "-" + tailCount;
 
-        // 6. 꼬리질문 생성 (랜덤으로 가져오거나 기본값)
-        String question ="꼬리질문 입니다";
+        // 6. 꼬리질문 생성
+        String parentQuestion = parentQuestionObj.optString("question");
+        String parentAnswer = parentQuestionObj.optString("answer");
+
+        String prompt = String.format(
+                "다음은 지원자가 이전에 면접에서 질문을 받고 답변을 한 내용입니다:\n" +
+                        "질문: %s\n" +
+                        "답변: %s\n\n" +
+                        "이 내용을 바탕으로, 해당 지원자에게 적합한 **CS(Computer Science) 기반 기술 꼬리질문 1개만** 만들어 주세요.\n\n" +
+                        "조건:\n" +
+                        "- 반드시 CS 관련 주제여야 합니다 (예: 운영체제, 네트워크, 데이터베이스, 자료구조, 알고리즘, 트랜잭션, 멀티스레딩 등).\n" +
+                        "- 일반적인 언어나 개념 질문은 피하고, 깊이 있는 구체적 질문이어야 합니다.\n" +
+                        "- 질문은 3~4문장 이내로 간결하게 작성하세요.\n" +
+                        "- 앞에 번호, 기호 등은 붙이지 마세요.\n" +
+                        "- 이전에 나온 질문과 중복되지 않도록 해주세요.\n",
+                parentQuestion,
+                parentAnswer
+        );
+
+        // GPT에게 질문 생성 요청하는 코드에서 사용
+        String question = openAiService.askToGpt(prompt);
+
 
         // 7. Redis에 꼬리질문 저장 (JSON으로 변환 후 저장)
         try {
@@ -352,7 +372,6 @@ public class SessionInfoService {
             Long totalCount = (newCount == null ? 0 : newCount) + tailCountCurrent + 1;
 
             // 꼬리질문 저장용 Map 생성
-            String fieldId = UUID.randomUUID().toString();
             Map<String, String> qaData = new HashMap<>();
             qaData.put("fieldId", fieldId);
             qaData.put("question", question);
@@ -372,7 +391,7 @@ public class SessionInfoService {
         }
 
         // 9. NewQuestion 타입 응답으로 반환 (필요에 따라 변환 혹은 새 응답 클래스 생성)
-        return new SessionInfoResponse.NewQuestion(parentFieldId, question, newTailQuestionNumber);
+        return new SessionInfoResponse.NewQuestion(fieldId, question, newTailQuestionNumber);
     }
 
 }
