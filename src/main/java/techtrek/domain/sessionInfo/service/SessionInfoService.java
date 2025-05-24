@@ -322,11 +322,10 @@ public class SessionInfoService {
             throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
         }
 
-        // 4. 부모 질문의 questionNumber 가져오기 (예: "1", "2" 등)
+        // 4. 부모 질문의 questionNumber 가져오기
         String parentQuestionNumber = parentQuestionObj.optString("questionNumber");
 
         // 5. 꼬리질문 번호 생성
-        // Redis에서 해당 부모 질문의 꼬리질문 개수 조회 + 1
         String tailCountKey = "interview:session:" + sessionId + ":tailCount:" + parentFieldId;
         String tailCountStr = redisTemplate.opsForValue().get(tailCountKey);
         int tailCount = tailCountStr == null ? 0 : Integer.parseInt(tailCountStr);
@@ -338,6 +337,39 @@ public class SessionInfoService {
 
         // 6. 꼬리질문 생성 (랜덤으로 가져오거나 기본값)
         String question ="꼬리질문 입니다";
+
+        // 7. Redis에 꼬리질문 저장 (JSON으로 변환 후 저장)
+        try {
+            // 꼬리질문 리스트 키
+            String tailSessionKey = "interview:session:" + sessionId + ":tail";
+
+            // 꼬리질문 개수 조회 (꼬리질문 리스트 크기)
+            Long newCount = redisTemplate.opsForList().size(newSessionKey);
+            Long tailCountCurrent = redisTemplate.opsForList().size(tailSessionKey);
+            tailCountCurrent = (tailCountCurrent == null) ? 0 : tailCountCurrent;
+
+            // 전체 질문 개수 (기본 질문 + 꼬리질문)
+            Long totalCount = (newCount == null ? 0 : newCount) + tailCountCurrent + 1;
+
+            // 꼬리질문 저장용 Map 생성
+            String fieldId = UUID.randomUUID().toString();
+            Map<String, String> qaData = new HashMap<>();
+            qaData.put("fieldId", fieldId);
+            qaData.put("question", question);
+            qaData.put("answer", "");
+            qaData.put("questionNumber", newTailQuestionNumber);
+            qaData.put("totalQuestionCount", String.valueOf(totalCount));
+
+            // JSON 문자열 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = objectMapper.writeValueAsString(qaData);
+
+            // Redis 꼬리질문 리스트에 저장
+            redisTemplate.opsForList().rightPush(tailSessionKey, jsonString);
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("JSON 직렬화 실패", e);
+        }
 
         // 9. NewQuestion 타입 응답으로 반환 (필요에 따라 변환 혹은 새 응답 클래스 생성)
         return new SessionInfoResponse.NewQuestion(parentFieldId, question, newTailQuestionNumber);
