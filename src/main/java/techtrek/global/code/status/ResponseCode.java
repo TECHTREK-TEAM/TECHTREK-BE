@@ -15,7 +15,7 @@ public enum ResponseCode {
     BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다"),
     ENTERPRISE_KEYWORDS_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "키워드를 찾을 수 없습니다."),
     CATEGORY_KEYWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "키워드를 찾을 수 없습니다."),
-    SESSIONID_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션ID를 찾을 수 없습니다");
+    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다");
 
 
     private final HttpStatus httpStatus;

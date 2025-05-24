@@ -3,6 +3,8 @@ package techtrek.domain.sessionInfo.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import techtrek.domain.basicQuestion.entity.status.QuestionCategory;
@@ -165,7 +167,7 @@ public class SessionInfoService {
         if (phase.equals("basic")) {
             // 2-0. 기업이름 불러오기
             SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
-                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSIONID_NOT_FOUND));
+                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
 
             EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
 
@@ -197,7 +199,7 @@ public class SessionInfoService {
 
         } else {
             SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
-                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSIONID_NOT_FOUND));
+                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
 
             String resume = user.getResume(); // 사용자 이력서
             String enterpriseDescription = sessionInfo.getEnterpriseName().getDescription(); // 기업 설명
@@ -294,66 +296,53 @@ public class SessionInfoService {
         return false;
     }
 
+    // 꼬리질문
+    public SessionInfoResponse.NewQuestion createTailInterview(String sessionId, String parentFieldId) throws JSONException {
+        // 1. 세션 확인
+        sessionInfoRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
+
+        // 2. Redis에서 세션 질문 리스트 조회
+        String newSessionKey = "interview:session:" + sessionId + ":new";
+        List<String> sessionData = redisTemplate.opsForList().range(newSessionKey, 0, -1);
+        if (sessionData == null || sessionData.isEmpty()) {
+            throw new GlobalException(ResponseCode.SESSION_NOT_FOUND);
+        }
+
+        // 3. parentFieldId에 해당하는 질문 객체 찾기
+        JSONObject parentQuestionObj = null;
+        for (String data : sessionData) {
+            JSONObject obj = new JSONObject(data);
+            if (parentFieldId.equals(obj.getString("fieldId"))) {
+                parentQuestionObj = obj;
+                break;
+            }
+        }
+        if (parentQuestionObj == null) {
+            throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
+        }
+
+        // 4. 부모 질문의 questionNumber 가져오기 (예: "1", "2" 등)
+        String parentQuestionNumber = parentQuestionObj.optString("questionNumber");
+
+        // 5. 꼬리질문 번호 생성
+        // Redis에서 해당 부모 질문의 꼬리질문 개수 조회 + 1
+        String tailCountKey = "interview:session:" + sessionId + ":tailCount:" + parentFieldId;
+        String tailCountStr = redisTemplate.opsForValue().get(tailCountKey);
+        int tailCount = tailCountStr == null ? 0 : Integer.parseInt(tailCountStr);
+        tailCount++; // 새 꼬리질문 번호 증가
+        redisTemplate.opsForValue().set(tailCountKey, String.valueOf(tailCount));
+
+        // 꼬리질문 번호는 부모번호-꼬리질문번호 (예: 1-1, 1-2, 2-1 ...)
+        String newTailQuestionNumber = parentQuestionNumber + "-" + tailCount;
+
+        // 6. 꼬리질문 생성 (랜덤으로 가져오거나 기본값)
+        String question ="꼬리질문 입니다";
+
+        // 9. NewQuestion 타입 응답으로 반환 (필요에 따라 변환 혹은 새 응답 클래스 생성)
+        return new SessionInfoResponse.NewQuestion(parentFieldId, question, newTailQuestionNumber);
+    }
+
 }
 
 
-// 꼬리질문 참고
-//public SessionInfoResponse.Start createInterview(String enterpriseName, EnterpriseType enterpriseType) {
-//
-//    // 사용자 예외처리
-//    User user = userRepository.findById("1")
-//            .orElseThrow(() -> new GlobalException(ResponseCode.USER_NOT_FOUND));
-//
-//    // 1. 기본 설정
-//    String sessionId = UUID.randomUUID().toString();
-//    String fieldId = UUID.randomUUID().toString();
-//    String sessionKey = "interview:session:" + sessionId;
-//
-//    // 2. 질문 가져오기
-//    BasicQuestion getQuestion = basicQuestionRepository.findRandomQuestion()
-//            .orElseThrow(() -> new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND));
-//    String basicQuestion = getQuestion.getQuestion();
-//
-//    // 3. 기본 + 이력서 질문 번호 계산 (기본질문과 이력서 질문 번호를 따로 관리)
-//    Long currentBasicQuestionCount = redisTemplate.opsForHash().size(sessionKey + ":basic") / 6; // 기본 + 이력서 질문은 6개 항목 기준
-//    String basicQuestionNumber = String.valueOf(currentBasicQuestionCount + 1);
-//
-//    // 4. 꼬리질문 번호 계산
-//    String parentId = basicQuestionNumber; // 부모 질문 번호가 기본 질문 번호
-//    String tailKey = "interview:session:" + sessionId + ":tail:" + parentId;
-//    Long currentTailCount = redisTemplate.opsForValue().get(tailKey) != null
-//            ? Long.valueOf(redisTemplate.opsForValue().get(tailKey))
-//            : 0L;
-//
-//    // 꼬리질문 번호 (부모-꼬리질문 형식, 예: 1-1, 1-2, 2-1, ...)
-//    String tailQuestionNumber = parentId + "-" + (currentTailCount + 1);
-//
-//    // 5. 전체 질문 개수 계산 (기본 + 이력서 + 꼬리질문 포함)
-//    Long currentTotalCount = redisTemplate.opsForHash().size(sessionKey) / 6; // 전체 질문 개수 (기본 + 이력서 + 꼬리질문 포함)
-//    String totalQuestionCount = String.valueOf(currentTotalCount + 1);
-//
-//    // 6. Redis에 질문 및 관련 정보 저장
-//    redisTemplate.opsForHash().put(sessionKey + ":basic", fieldId + ":question", basicQuestion);
-//    redisTemplate.opsForHash().put(sessionKey + ":basic", fieldId + ":questionNumber", basicQuestionNumber);
-//    redisTemplate.opsForHash().put(sessionKey + ":basic", fieldId + ":totalQuestionCount", totalQuestionCount);
-//
-//    // 꼬리질문 번호 저장
-//    redisTemplate.opsForHash().put(sessionKey + ":tail", fieldId + ":questionNumber", tailQuestionNumber);
-//
-//    // 꼬리질문 카운트 증가
-//    redisTemplate.opsForValue().set(tailKey, String.valueOf(currentTailCount + 1));
-//
-//    // 7. 세션정보 테이블에 세션 정보 저장
-//    SessionInfo sessionInfo = SessionInfo.builder()
-//            .id(UUID.randomUUID().toString())
-//            .sessionId(sessionId)
-//            .enterpriseName(enterpriseName)
-//            .enterpriseType(enterpriseType)
-//            .user(user)
-//            .build();
-//
-//    sessionInfoRepository.save(sessionInfo);
-//
-//    // 8. 응답 반환
-//    return new SessionInfoResponse.Start(sessionId, fieldId, basicQuestion);
-//}
