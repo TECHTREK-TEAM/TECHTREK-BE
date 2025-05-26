@@ -8,6 +8,8 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.ResumeResponse;
+import techtrek.domain.user.entity.User;
+import techtrek.domain.user.service.bean.small.GetUserDAOBean;
 import techtrek.domain.user.service.bean.small.SaveResumeDAOBean;
 import techtrek.domain.user.service.bean.small.SaveStackDAOBean;
 import techtrek.global.common.code.ErrorCode;
@@ -25,6 +27,7 @@ public class CreateResumeBean {
     private final OpenAiService openAiService;
     private final SaveResumeDAOBean saveResumeDAOBean;
     private final SaveStackDAOBean saveStackDAOBean;
+    private final GetUserDAOBean getUserDAOBean;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // 인증코드 검증
@@ -61,9 +64,12 @@ public class CreateResumeBean {
             throw new CustomException(ErrorCode.PROMPT_PARSING_FAILED);
         }
 
+        // userId로 객체 찾기
+        User user = getUserDAOBean.exec("1");
+
         // DAO 값 저장
-        saveResumeDAOBean.exec("1", summary.getGroup(), summary.getSeniority(), summary.getResume());
-        saveStackDAOBean.exec("1", summary.getStacks());
+        saveResumeDAOBean.exec(user, summary.getGroup(), summary.getSeniority(), summary.getResume());
+        saveStackDAOBean.exec(user, summary.getStacks());
 
 
         return summary;
