@@ -12,8 +12,8 @@ import techtrek.domain.stack.repository.StackRepository;
 import techtrek.domain.user.dto.ResumeResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
-import techtrek.global.code.status.ResponseCode;
-import techtrek.global.exception.GlobalException;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.gpt.service.OpenAiService;
 
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class ResumeService {
             // 5. DB에 저장
             //  User user = userRepository.findById(UserId)
             User user = userRepository.findById("1")
-                    .orElseThrow(() -> new GlobalException(ResponseCode.USER_NOT_FOUND));
+                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
             user.setUserGroup(summary.getGroup());
             user.setSeniority(summary.getSeniority());
             user.setResume(summary.getResume());

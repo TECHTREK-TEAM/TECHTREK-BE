@@ -17,8 +17,8 @@ import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
-import techtrek.global.code.status.ResponseCode;
-import techtrek.global.exception.GlobalException;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import techtrek.global.gpt.service.OpenAiService;
 
@@ -42,7 +42,7 @@ public class SessionInfoService {
         // 사용자 예외처리
         //  User user = userRepository.findById(UserId)
         User user = userRepository.findById("1")
-                .orElseThrow(() -> new GlobalException(ResponseCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 1. 기본 설정
         String sessionId = UUID.randomUUID().toString();
@@ -53,7 +53,7 @@ public class SessionInfoService {
         // 2-1. 기업의 키워드 목록 가져오기
         List<String> keywords = enterpriseName.getKeywords();
         if (keywords.isEmpty()) {
-            throw new GlobalException(ResponseCode.ENTERPRISE_KEYWORDS_NOT_FOUND);
+            throw new CustomException(ErrorCode.ENTERPRISE_KEYWORDS_NOT_FOUND);
         }
 
         // 2-2. 랜덤 키워드 선택
@@ -61,12 +61,12 @@ public class SessionInfoService {
 
         // 2-3. 키워드를 이용해 questionCategory 찾기
         QuestionCategory category = QuestionCategory.fromKeyword(selectedKeyword)
-                .orElseThrow(() -> new GlobalException(ResponseCode.CATEGORY_KEYWORD_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_KEYWORD_NOT_FOUND));
 
         // 2-4. 해당 카테고리 질문 리스트 조회
         List<BasicQuestion> questions = basicQuestionRepository.findByQuestionCategory(category);
         if (questions == null || questions.isEmpty()) {
-            throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
+            throw new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND);
         }
         // 2-5. 질문 랜덤 선택
         BasicQuestion randomQuestion = questions.get(new Random().nextInt(questions.size()));
@@ -124,7 +124,7 @@ public class SessionInfoService {
     public SessionInfoResponse.NewQuestion getNewInterview(String sessionId) {
         // User user = userRepository.findById(userId)
         User user = userRepository.findById("1")
-                .orElseThrow(() ->  new GlobalException(ResponseCode.USER_NOT_FOUND));
+                .orElseThrow(() ->  new CustomException(ErrorCode.USER_NOT_FOUND));
         // 1. 기본 설정
         String sessionKey = "interview:session:" + sessionId;
         String fieldId = UUID.randomUUID().toString();
@@ -167,14 +167,14 @@ public class SessionInfoService {
         if (phase.equals("basic")) {
             // 2-0. 기업이름 불러오기
             SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
-                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
+                    .orElseThrow(() -> new CustomException(ErrorCode.SESSION_NOT_FOUND));
 
             EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
 
             // 2-1. 기업의 키워드 목록 가져오기
             List<String> keywords = enterpriseName.getKeywords();
             if (keywords.isEmpty()) {
-                throw new GlobalException(ResponseCode.ENTERPRISE_KEYWORDS_NOT_FOUND);
+                throw new CustomException(ErrorCode.ENTERPRISE_KEYWORDS_NOT_FOUND);
             }
 
             // 2-2. 랜덤 키워드 선택
@@ -182,12 +182,12 @@ public class SessionInfoService {
 
             // 2-3. 키워드를 이용해 questionCategory 찾기
             QuestionCategory category = QuestionCategory.fromKeyword(selectedKeyword)
-                    .orElseThrow(() -> new GlobalException(ResponseCode.CATEGORY_KEYWORD_NOT_FOUND));
+                    .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_KEYWORD_NOT_FOUND));
 
             // 2-4. 해당 카테고리 질문 리스트 조회
             List<BasicQuestion> questions = basicQuestionRepository.findByQuestionCategory(category);
             if (questions == null || questions.isEmpty()) {
-                throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
+                throw new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND);
             }
 
 
@@ -199,7 +199,7 @@ public class SessionInfoService {
 
         } else {
             SessionInfo sessionInfo = sessionInfoRepository.findBySessionId(sessionId)
-                    .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
+                    .orElseThrow(() -> new CustomException(ErrorCode.SESSION_NOT_FOUND));
 
             String resume = user.getResume(); // 사용자 이력서
             String enterpriseDescription = sessionInfo.getEnterpriseName().getDescription(); // 기업 설명
@@ -300,14 +300,14 @@ public class SessionInfoService {
     public SessionInfoResponse.NewQuestion createTailInterview(String sessionId, String parentFieldId) throws JSONException {
         // 1. 세션 확인
         sessionInfoRepository.findBySessionId(sessionId)
-                .orElseThrow(() -> new GlobalException(ResponseCode.SESSION_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.SESSION_NOT_FOUND));
         String fieldId = UUID.randomUUID().toString();
 
         // 2. Redis에서 세션 질문 리스트 조회
         String newSessionKey = "interview:session:" + sessionId + ":new";
         List<String> sessionData = redisTemplate.opsForList().range(newSessionKey, 0, -1);
         if (sessionData == null || sessionData.isEmpty()) {
-            throw new GlobalException(ResponseCode.SESSION_NOT_FOUND);
+            throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
         }
 
         // 3. parentFieldId에 해당하는 질문 객체 찾기
@@ -320,7 +320,7 @@ public class SessionInfoService {
             }
         }
         if (parentQuestionObj == null) {
-            throw new GlobalException(ResponseCode.BASIC_QUESTION_NOT_FOUND);
+            throw new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND);
         }
 
         // 4. 부모 질문의 questionNumber 가져오기

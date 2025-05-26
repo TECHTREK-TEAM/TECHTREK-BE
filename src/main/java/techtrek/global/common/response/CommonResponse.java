@@ -1,10 +1,10 @@
-package techtrek.global.code;
+package techtrek.global.common.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
-import techtrek.global.code.status.ResponseCode;
+import techtrek.global.common.code.ResponseCode;
 
 @JsonPropertyOrder({ "isSuccess", "code", "message", "data" })
 @Getter
@@ -22,11 +22,15 @@ public class CommonResponse<T> {
         return isSuccess;
     }
 
-    public CommonResponse(ResponseCode code, T data) {
-        this.isSuccess = code.isSuccess();
-        this.code = code.getCode();
-        this.message = code.getMessage();
+    public CommonResponse(ResponseCode responseCode, T data) {
+        this.isSuccess = responseCode.isSuccess();
+        this.code = responseCode.getCode();
+        this.message = responseCode.getMessage();
         this.data = data;
+    }
+
+    public static <T> CommonResponse<T> from(ResponseCode code) {
+        return new CommonResponse<>(code, null);
     }
 
 }
