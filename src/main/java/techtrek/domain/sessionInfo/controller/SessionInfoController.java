@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import techtrek.domain.sessionInfo.dto.SessionInfoRequest;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.service.SessionInfoService;
-import techtrek.global.code.ApiResponse;
-import techtrek.global.code.CommonResponse;
+import techtrek.global.common.response.ApiResponse;
+import techtrek.global.common.response.CommonResponse;
 
 @RestController
 @RequiredArgsConstructor
