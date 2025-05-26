@@ -22,10 +22,9 @@ public class UserController {
 
     private final ResumeService resumeService;
 
-    // 이력서 업로드
+    // 이력서 추출
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file) throws IOException {
         ResumeResponse response = resumeService.createResume(file);
-
         return ApiResponse.onSuccess(response);
     }}
