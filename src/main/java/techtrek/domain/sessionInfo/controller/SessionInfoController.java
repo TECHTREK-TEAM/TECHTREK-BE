@@ -24,10 +24,10 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(response);
     }
 
-    // 새로운 질문 불러오기
-    @GetMapping("/questions/new/{sessionId}")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> getNewInterview(@PathVariable String sessionId) {
-        SessionInfoResponse.NewQuestion response = sessionInfoService.getNewInterview(sessionId);
+    // 새로운 질문 생성하기
+    @PostMapping("/questions/new")
+    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@RequestBody SessionInfoRequest.NewQuestion request) {
+        SessionInfoResponse.NewQuestion response = sessionInfoService.createNewInterview(request.getSessionId());
 
         return ApiResponse.onSuccess(response);
     }

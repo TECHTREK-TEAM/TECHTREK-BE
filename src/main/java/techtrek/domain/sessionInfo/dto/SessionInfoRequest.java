@@ -6,9 +6,6 @@ import lombok.Setter;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 
-@Getter
-@Setter
-@AllArgsConstructor
 public class SessionInfoRequest {
 
     @Getter
@@ -18,6 +15,14 @@ public class SessionInfoRequest {
         private EnterpriseName enterpriseName;
         private EnterpriseType enterpriseType;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class NewQuestion {
+        private String sessionId;
+    }
+
 
     @Getter
     @Setter

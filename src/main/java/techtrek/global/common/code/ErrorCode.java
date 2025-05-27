@@ -12,12 +12,17 @@ public enum ErrorCode implements ResponseCode {
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "USER409", "중복된 사용자 이름입니다"),
 
     BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다"),
-    ENTERPRISE_KEYWORDS_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "키워드를 찾을 수 없습니다."),
-    CATEGORY_KEYWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "키워드를 찾을 수 없습니다."),
     SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다"),
 
     // 사용자
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다"),
+
+    // redis
+    REDIS_JSON_FAILD(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "JSON 직렬화를 실패하였습니다."),
+
+    // 질문 - ENUM
+    ENUM_ENTERPRISE_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM 기업 키워드를 찾을 수 없습니다."),
+    ENUM_CS_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM CS 키워드를 찾을 수 없습니다."),
 
     // 이력서
     RESUME_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "파일이 존재하지 않습니다"),
