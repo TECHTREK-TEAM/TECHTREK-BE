@@ -12,7 +12,7 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.sessionInfo.service.bean.small.CreateJsonDAOBean;
-import techtrek.domain.sessionInfo.service.bean.small.CreateNewDataDAOBean;
+import techtrek.domain.sessionInfo.service.bean.small.CreateNewQuestionMapDAOBean;
 import techtrek.domain.sessionInfo.service.bean.small.SaveSessionInfoDAOBean;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
@@ -27,7 +27,7 @@ public class CreateStartInterviewBean {
     private final GetBasicQuestionListDAOBean getBasicQuestionListDAOBean;
     private final GetBasicQuestionDAOBean getBasicQuestionDAOBean;
     private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
-    private final CreateNewDataDAOBean createNewDataDAOBean;
+    private final CreateNewQuestionMapDAOBean createNewQuestionMapDAOBean;
     private final CreateJsonDAOBean createJsonDAOBean;
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -36,7 +36,7 @@ public class CreateStartInterviewBean {
         // 시용자 불러오기
         User user = getUserDAOBean.exec("1");
 
-        // 세션, 필드 ID 생성
+        // 세션ID, 필드 ID, 세션키 생성
         String sessionId = UUID.randomUUID().toString();
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = "interview:session:" + sessionId;
@@ -62,7 +62,7 @@ public class CreateStartInterviewBean {
         String totalQuestionCount = String.valueOf(currentTotalCount + 1);
 
         // 새로운 질문 Map 생성
-        Map<String, String> newData = createNewDataDAOBean.exec(fieldId, basicQuestion, questionNumber, "1","basic", totalQuestionCount);
+        Map<String, String> newData = createNewQuestionMapDAOBean.exec(fieldId, basicQuestion, questionNumber, "1","basic", totalQuestionCount);
 
         // JSON 문자열로 변환
         String jsonString = createJsonDAOBean.exec(newData);

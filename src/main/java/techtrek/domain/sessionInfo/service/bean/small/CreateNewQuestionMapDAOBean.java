@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class CreateNewDataDAOBean {
+public class CreateNewQuestionMapDAOBean {
 
     // 새로운 질문 Map 생성
     public  Map<String, String> exec(String fieldId, String basicQuestion, String questionNumber, String count, String phase, String totalQuestionCount){
