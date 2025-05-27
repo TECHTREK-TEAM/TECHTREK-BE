@@ -64,10 +64,10 @@ public class CreateResumeBean {
             throw new CustomException(ErrorCode.PROMPT_PARSING_FAILED);
         }
 
-        // userId로 객체 찾기
+        // 사용자 불러오기
         User user = getUserDAOBean.exec("1");
 
-        // DAO 값 저장
+        // 이력서, 스택 등 값 저장
         saveResumeDAOBean.exec(user, summary.getGroup(), summary.getSeniority(), summary.getResume());
         saveStackDAOBean.exec(user, summary.getStacks());
 
