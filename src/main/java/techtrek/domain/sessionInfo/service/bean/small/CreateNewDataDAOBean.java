@@ -11,14 +11,14 @@ import java.util.Map;
 public class CreateNewDataDAOBean {
 
     // 새로운 질문 Map 생성
-    public  Map<String, String> exec(String fieldId, String basicQuestion, String questionNumber, String totalQuestionCount){
+    public  Map<String, String> exec(String fieldId, String basicQuestion, String questionNumber, String count, String phase, String totalQuestionCount){
         Map<String, String> newData = new HashMap<>();
         newData.put("fieldId", fieldId);
         newData.put("question", basicQuestion);
         newData.put("answer", "");
         newData.put("questionNumber", questionNumber);
-        newData.put("count", "1");
-        newData.put("phase", "basic");
+        newData.put("count", count);
+        newData.put("phase", phase);
         newData.put("totalQuestionCount", totalQuestionCount);
 
         return newData;

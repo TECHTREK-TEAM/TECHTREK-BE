@@ -62,7 +62,7 @@ public class CreateStartInterviewBean {
         String totalQuestionCount = String.valueOf(currentTotalCount + 1);
 
         // 새로운 질문 Map 생성
-        Map<String, String> newData = createNewDataDAOBean.exec(fieldId, basicQuestion, questionNumber, totalQuestionCount);
+        Map<String, String> newData = createNewDataDAOBean.exec(fieldId, basicQuestion, questionNumber, "1","basic", totalQuestionCount);
 
         // JSON 문자열로 변환
         String jsonString = createJsonDAOBean.exec(newData);
