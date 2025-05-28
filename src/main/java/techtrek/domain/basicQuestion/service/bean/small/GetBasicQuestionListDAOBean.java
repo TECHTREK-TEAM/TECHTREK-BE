@@ -16,7 +16,7 @@ public class GetBasicQuestionListDAOBean {
 
     private final BasicQuestionRepository basicQuestionRepository;
 
-    // cs키워드로 질문 리스트 불러오기
+    // cs 키워드로 질문 리스트 불러오기
     public List<BasicQuestion> exec(CSCategory cs){
         List<BasicQuestion> questions = basicQuestionRepository.findByCSCategory(cs);
         if (questions == null || questions.isEmpty()) {

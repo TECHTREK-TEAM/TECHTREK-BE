@@ -1,22 +1,21 @@
-package techtrek.domain.sessionInfo.service.bean.small;
+package techtrek.domain.sessionInfo.service.bean.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import techtrek.domain.sessionInfo.dto.RedisRequest;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
-import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
-public class CreateJsonDAOBean {
+public class CreateJsonHelper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Json 변환 (직렬화)
-    public String exec(Map<String, String> map) {
+    public String exec(RedisRequest.NewQuestion map) {
         try {
             return objectMapper.writeValueAsString(map);
         } catch (JsonProcessingException e) {

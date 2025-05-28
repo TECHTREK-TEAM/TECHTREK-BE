@@ -3,7 +3,12 @@ package techtrek.domain.sessionInfo.service.bean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import techtrek.domain.sessionInfo.dto.RedisRequest;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
+import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
+import techtrek.domain.sessionInfo.service.bean.helper.CreateBasicHelper;
+import techtrek.domain.sessionInfo.service.bean.helper.CreateJsonHelper;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
@@ -14,10 +19,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CreateNewInterviewBean {
     private final GetUserDAOBean getUserDAOBean;
-    private final CreateNewQuestionMapDAOBean createNewQuestionMapDAOBean;
-    private final CreateJsonDAOBean createJsonDAOBean;
+    private final CreateRedisNewDTOBean createNewQuestionMapDAOBean;
+    private final GetSessionInfoDAOBean getSessionInfoDAOBean;
+    private final CreateJsonHelper createJsonDAOBean;
     private final GetPreviousQuestionDAOBean getPreviousQuestionDAOBean;
-    private final CreateBasicQuestionDAOBean createNewQuestionDAOBean;
+    private final CreateBasicHelper createNewQuestionDAOBean;
     private final CreateResumeQuestionDAOBean createResumeQuestionDAOBean;
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -41,7 +47,14 @@ public class CreateNewInterviewBean {
         int count = PhaseCountDTO.getCount();
 
         // basic일 경우 기본질문, 아닐경우 이력서 기반 질문
-        if (phase.equals("basic")) question = createNewQuestionDAOBean.exec(sessionId);
+        if (phase.equals("basic")) {
+            // 세션 정보 불러오기
+            SessionInfo sessionInfo = getSessionInfoDAOBean.exec(sessionId);
+
+            // 세션 정보에서 enterpriseName 불러오기
+            EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
+
+            question = createNewQuestionDAOBean.exec(enterpriseName); }
         else question = createResumeQuestionDAOBean.exec(user, sessionId);
 
         // 새로운 질문 번호 계산 (기본질문 + 이력서 질문)
@@ -54,7 +67,7 @@ public class CreateNewInterviewBean {
 
         // 새로운 질문 Map 생성
         String resultCount = String.valueOf(count + 1);
-        Map<String, String> newData = createNewQuestionMapDAOBean.exec(fieldId, question, questionNumber, resultCount, phase, totalQuestionCount);
+        RedisRequest.NewQuestion newData = createNewQuestionMapDAOBean.exec(fieldId, question, questionNumber, resultCount, phase, totalQuestionCount);
 
         // JSON 문자열로 변환
         String jsonString = createJsonDAOBean.exec(newData);
