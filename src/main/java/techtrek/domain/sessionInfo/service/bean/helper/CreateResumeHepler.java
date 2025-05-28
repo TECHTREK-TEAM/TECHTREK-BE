@@ -7,7 +7,7 @@ import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
 import techtrek.domain.user.entity.User;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.gpt.service.OpenAiService;
+import techtrek.global.gpt.service.bean.CreateGPTBean;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class CreateResumeHepler {
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
-    private final OpenAiService openAiService;
+    private final CreateGPTBean createGPTBean;
 
     // 이력서 질문 생성
     public String exec(User user, String sessionId){
@@ -39,7 +39,7 @@ public class CreateResumeHepler {
 
         // gpt 호출
         String prompt = String.format(promptTemplate, resume, enterpriseDescription);
-        return openAiService.askToGpt(prompt);
+        return createGPTBean.exec(prompt);
 
     }
 }

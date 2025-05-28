@@ -2,12 +2,12 @@ package techtrek.domain.sessionInfo.service.bean.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.global.gpt.service.OpenAiService;
+import techtrek.global.gpt.service.bean.CreateGPTBean;
 
 @Component
 @RequiredArgsConstructor
 public class CreateTailHelper {
-    private final OpenAiService openAiService;
+    private final CreateGPTBean createGPTBean;
 
     public String exec(String parentQuestion, String parentAnswer){
         String prompt = String.format(
@@ -26,7 +26,7 @@ public class CreateTailHelper {
         );
 
         // GPT에게 질문 생성 요청하는 코드에서 사용
-        String question = openAiService.askToGpt(prompt);
+        String question = createGPTBean.exec(prompt);
 
         return question;
     }
