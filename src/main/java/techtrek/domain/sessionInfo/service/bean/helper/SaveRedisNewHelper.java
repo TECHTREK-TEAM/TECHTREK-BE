@@ -21,20 +21,21 @@ public class SaveRedisNewHelper {
     // redis에 새로운 질문 저장
     public String exec(String sessionKey, String fieldId, String basicQuestion, String count, String phase) {
         // 새로운 질문 번호 계산 (기본질문 + 이력서 질문)
-        Long currentQuestionCount = redisTemplate.opsForList().size(sessionKey + ":new");
-        String questionNumber = String.valueOf(currentQuestionCount + 1);
+        Long newCount = redisTemplate.opsForList().size(sessionKey + ":new");
+        String questionNumber = String.valueOf(newCount + 1);
 
         // 전체 질문 개수 계산 (새로운 질문 + 꼬리질문)
-        Long currentTotalCount = redisTemplate.opsForHash().size(sessionKey);
+        Long tailCount = redisTemplate.opsForList().size(sessionKey + ":tail");
+        Long currentTotalCount = newCount + tailCount;
         String totalQuestionCount = String.valueOf(currentTotalCount + 1);
 
-        // 새로운 질문 DTO 생성
-        RedisRequest.NewQuestion newData = createRedisNewDTOBean.exec(fieldId, basicQuestion, questionNumber, count,phase, totalQuestionCount);
+        // 새로운 질문 저장용 DTO 생성
+        RedisRequest.NewQuestion dto = createRedisNewDTOBean.exec(fieldId, basicQuestion, questionNumber, count,phase, totalQuestionCount);
 
         // JSON 문자열로 변환
         String jsonString;
         try {
-            jsonString = objectMapper.writeValueAsString(newData);
+            jsonString = objectMapper.writeValueAsString(dto);
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.REDIS_JSON_SERIALIZE_FAILED);
         }

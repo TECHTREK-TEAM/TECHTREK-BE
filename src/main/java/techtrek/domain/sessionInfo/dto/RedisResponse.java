@@ -15,4 +15,15 @@ public class RedisResponse {
         private String phase;
         private int count;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ParentQuestion {
+        private String parentQuestionNumber;
+        private String parentQuestion;
+        private String parentAnswer;
+
+    }
 }

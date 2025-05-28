@@ -1,4 +1,4 @@
-INSERT INTO basic_question (question, question_category) VALUES
+INSERT INTO basic_question (question, cs_category) VALUES
 ('데이터베이스의 인덱스에 대해서 설명해주세요.', '데이터베이스'),
 ('인덱스 테이블을 해시 테이블과 B+트리로 구성할때 각각이 어떤 차이점이 있을까요?', '데이터베이스'),
 ('클러스터형 인덱스에 대해서 설명해주세요.', '데이터베이스'),

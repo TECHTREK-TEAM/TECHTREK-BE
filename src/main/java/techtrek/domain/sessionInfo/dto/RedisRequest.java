@@ -21,5 +21,17 @@ public class RedisRequest {
         private String totalQuestionCount;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TailQuestion {
+        private String fieldId;
+        private String question;
+        private String answer = ""; // default
+        private String questionNumber;;
+        private String totalQuestionCount;
+    }
+
 
 }

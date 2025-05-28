@@ -3,7 +3,7 @@ package techtrek.domain.basicQuestion.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import techtrek.domain.basicQuestion.entity.status.CSCategory;
+import techtrek.domain.basicQuestion.entity.status.CsCategory;
 
 @Entity
 @Table(name="basic_question")
@@ -19,5 +19,5 @@ public class BasicQuestion {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private CSCategory CSCategory;
+    private CsCategory csCategory;
 }

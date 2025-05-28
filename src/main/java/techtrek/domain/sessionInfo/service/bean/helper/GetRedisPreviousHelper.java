@@ -2,10 +2,7 @@ package techtrek.domain.sessionInfo.service.bean.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.RedisRequest;
@@ -14,7 +11,6 @@ import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -25,11 +21,11 @@ public class GetRedisPreviousHelper {
     // 이전 질문의 phase, count값 불러오기
     public RedisResponse.PhaseCount exec(String sessionKey){
         // 이전 질문 불러오기
-        List<String> jsonStrings = redisTemplate.opsForList().range(sessionKey + ":new", -1, -1);
-        String previousJsonString = jsonStrings.isEmpty() ? null : jsonStrings.get(0);
+        List<String> previousList = redisTemplate.opsForList().range(sessionKey + ":new", -1, -1);
+        String previousJsonString = previousList.isEmpty() ? null : previousList.get(0);
 
         // 이전 질문이 없을경우 예외처리
-        if (previousJsonString != null) throw new CustomException(ErrorCode.PREVIOUS_QUESTION_NOT_FOUND);
+        if (previousJsonString == null) throw new CustomException(ErrorCode.PREVIOUS_QUESTION_NOT_FOUND);
 
         // 이전 질문의 phase, count값 불러오기
         String phase;

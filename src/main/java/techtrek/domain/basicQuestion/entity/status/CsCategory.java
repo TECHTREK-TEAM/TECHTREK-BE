@@ -2,7 +2,7 @@ package techtrek.domain.basicQuestion.entity.status;
 
 import java.util.Optional;
 
-public enum CSCategory {
+public enum CsCategory {
     알고리즘(new String[]{"정렬", "탐색", "재귀", "백트래킹", "dp", "그리디", "이진탐색", "dfs", "bfs", "트리", "해시", "스택", "큐", "우선큐"}),
     자료구조(new String[]{"배열", "리스트", "스택", "큐", "힙", "맵", "그래프", "bst", "avl", "트라이"}),
     데이터베이스(new String[]{"인덱스", "트랜잭션", "정규화", "조인", "쿼리", "뷰", "프로시저", "격리수준", "mvcc", "교착상태", "nosql", "샤딩", "캐시전략", "메시지큐"}),
@@ -12,7 +12,7 @@ public enum CSCategory {
 
     private final String[] keywords;
 
-    CSCategory(String[] keywords) {
+    CsCategory(String[] keywords) {
         this.keywords = keywords;
     }
 
@@ -20,8 +20,8 @@ public enum CSCategory {
         return keywords;
     }
 
-    public static Optional<CSCategory> fromKeyword(String keyword) {
-        for (CSCategory category : CSCategory.values()) {
+    public static Optional<CsCategory> fromKeyword(String keyword) {
+        for (CsCategory category : CsCategory.values()) {
             for (String k : category.getKeywords()) {
                 if (k.equalsIgnoreCase(keyword)) {
                     return Optional.of(category);
