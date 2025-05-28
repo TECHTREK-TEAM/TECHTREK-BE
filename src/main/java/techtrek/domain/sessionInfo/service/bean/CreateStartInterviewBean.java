@@ -10,6 +10,8 @@ import techtrek.domain.sessionInfo.service.bean.helper.SaveRedisNewHelper;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 
 import java.util.*;
 
@@ -24,6 +26,10 @@ public class CreateStartInterviewBean {
 
     // 면접 시작하기
     public SessionInfoResponse.Start exec(EnterpriseName enterpriseName, EnterpriseType enterpriseType){
+        // 예외처리
+        if (enterpriseName == null) throw new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND);
+        if (enterpriseType == null) throw new CustomException(ErrorCode.ENTERPRISE_TYPE_NOT_FOUND);
+
         // 사용자 정보 가져오기
         User user = getUserDAOBean.exec("1");
 
@@ -42,5 +48,5 @@ public class CreateStartInterviewBean {
         saveSessionInfoDAOBean.exec(sessionId, enterpriseName, enterpriseType, user);
 
         return new SessionInfoResponse.Start(sessionId,fieldId,basicQuestion,questionNumber);
-    };
+    }
 }

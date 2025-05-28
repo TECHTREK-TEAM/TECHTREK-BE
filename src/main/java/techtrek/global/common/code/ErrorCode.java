@@ -11,6 +11,7 @@ public enum ErrorCode implements ResponseCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 오류"),
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "USER409", "중복된 사용자 이름입니다"),
 
+    // 세션
     SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다"),
 
     // 사용자
@@ -25,7 +26,9 @@ public enum ErrorCode implements ResponseCode {
     PREVIOUS_QUESTION_PARSING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "이전 질문 데이터를 JSON에서 객체로 변환하는데 실패하였습니다."),
     BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다"),
 
-    // 질문 - ENUM
+    // 기업
+    ENTERPRISE_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업이름을 찾을 수 없습니다"),
+    ENTERPRISE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업유형을 찾을 수 없습니다"),
     ENUM_ENTERPRISE_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM 기업 키워드를 찾을 수 없습니다."),
     ENUM_CS_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM CS 키워드를 찾을 수 없습니다."),
 

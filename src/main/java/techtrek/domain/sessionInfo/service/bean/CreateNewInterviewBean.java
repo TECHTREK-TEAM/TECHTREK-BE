@@ -10,6 +10,8 @@ import techtrek.domain.sessionInfo.service.bean.helper.*;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 
 import java.util.*;
 
@@ -26,6 +28,9 @@ public class CreateNewInterviewBean {
 
     // 새로운 질문 생성하기 ( 기본질문 or 이력서기반)
     public SessionInfoResponse.NewQuestion exec(String sessionId){
+        // 예외처리
+        if (sessionId == null || sessionId.isEmpty()) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+
         // 사용자 불러오기
         User user = getUserDAOBean.exec("1");
 
