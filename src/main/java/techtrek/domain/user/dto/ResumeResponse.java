@@ -1,27 +1,26 @@
 package techtrek.domain.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ResumeResponse {
         private String group;
         private String seniority;
         private String resume;
-        private List<StackInfo> stacks;
+        private List<Stack> stacks;
 
-        @Data
+        @Getter
+        @Setter
         @NoArgsConstructor
         @AllArgsConstructor
         @Builder
-        public static class StackInfo {
+        public static class Stack {
                 private String stackName;
         }
 }

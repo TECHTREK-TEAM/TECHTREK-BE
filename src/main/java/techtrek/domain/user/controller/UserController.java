@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.ResumeResponse;
 import techtrek.domain.user.service.ResumeService;
-import techtrek.global.code.ApiResponse;
-import techtrek.global.code.CommonResponse;
+import techtrek.global.common.response.ApiResponse;
+import techtrek.global.common.response.CommonResponse;
 
 
 import java.io.IOException;
@@ -22,10 +22,9 @@ public class UserController {
 
     private final ResumeService resumeService;
 
-    // 이력서 업로드
+    // 이력서 추출
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file) throws IOException {
         ResumeResponse response = resumeService.createResume(file);
-
         return ApiResponse.onSuccess(response);
     }}

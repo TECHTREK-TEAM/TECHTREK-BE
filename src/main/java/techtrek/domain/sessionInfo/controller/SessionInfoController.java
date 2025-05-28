@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import techtrek.domain.sessionInfo.dto.SessionInfoRequest;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.service.SessionInfoService;
-import techtrek.global.code.ApiResponse;
-import techtrek.global.code.CommonResponse;
+import techtrek.global.common.response.ApiResponse;
+import techtrek.global.common.response.CommonResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,10 +24,10 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(response);
     }
 
-    // 새로운 질문 불러오기
-    @GetMapping("/questions/new/{sessionId}")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> getNewInterview(@PathVariable String sessionId) {
-        SessionInfoResponse.NewQuestion response = sessionInfoService.getNewInterview(sessionId);
+    // 새로운 질문 생성하기
+    @PostMapping("/questions/new")
+    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@RequestBody SessionInfoRequest.NewQuestion request) {
+        SessionInfoResponse.NewQuestion response = sessionInfoService.createNewInterview(request.getSessionId());
 
         return ApiResponse.onSuccess(response);
     }
