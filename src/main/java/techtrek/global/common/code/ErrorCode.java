@@ -17,7 +17,8 @@ public enum ErrorCode implements ResponseCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다"),
 
     // redis
-    REDIS_JSON_FAILD(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "JSON 직렬화를 실패하였습니다."),
+    REDIS_JSON_SERIALIZE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "JSON 직렬화를 실패하였습니다."),
+    REDIS_JSON_DESERIALIZE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "JSON 역직렬화를 실패하였습니다."),
 
     // 질문
     PREVIOUS_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "이전 질문을 찾을 수 없습니다"),

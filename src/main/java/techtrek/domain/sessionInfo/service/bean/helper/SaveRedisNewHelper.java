@@ -1,16 +1,21 @@
 package techtrek.domain.sessionInfo.service.bean.helper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.RedisRequest;
 import techtrek.domain.sessionInfo.service.bean.small.CreateRedisNewDTOBean;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 
 @Component
 @RequiredArgsConstructor
 public class SaveRedisNewHelper {
     private final RedisTemplate<String, String> redisTemplate;
-    private final CreateJsonHelper createJsonHelper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     private final CreateRedisNewDTOBean createRedisNewDTOBean;
 
     // redis에 새로운 질문 저장
@@ -27,7 +32,12 @@ public class SaveRedisNewHelper {
         RedisRequest.NewQuestion newData = createRedisNewDTOBean.exec(fieldId, basicQuestion, questionNumber, count,phase, totalQuestionCount);
 
         // JSON 문자열로 변환
-        String jsonString = createJsonHelper.exec(newData);
+        String jsonString;
+        try {
+            jsonString = objectMapper.writeValueAsString(newData);
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ErrorCode.REDIS_JSON_SERIALIZE_FAILED);
+        }
 
         // Redis에 저장
         redisTemplate.opsForList().rightPush(sessionKey + ":new", jsonString);

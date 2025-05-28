@@ -1,8 +1,9 @@
-package techtrek.domain.sessionInfo.service.bean.small;
+package techtrek.domain.sessionInfo.service.bean.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
 import techtrek.domain.user.entity.User;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
@@ -14,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
-public class CreateResumeQuestionDAOBean {
+public class CreateResumeHepler {
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
     private final OpenAiService openAiService;
 
