@@ -19,6 +19,9 @@ public class SaveStackDAOBean {
 
     // 스택 저장
     public void exec(User user, List<ResumeResponse.Stack> stacks) {
+        // 기존 스택 삭제
+        stackRepository.deleteByUserId(user.getId());
+
         List<Stack> newStacks = new ArrayList<>();
         for (ResumeResponse.Stack dto : stacks) {
             Stack stack = new Stack();
