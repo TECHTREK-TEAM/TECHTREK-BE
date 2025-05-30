@@ -37,6 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis
 	implementation 'org.apache.pdfbox:pdfbox:2.0.29' // 자바 기반 PDF 파일 텍스트 추출
 	implementation 'org.json:json:20230227' //JSONException 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // Bean Validation (javax.validation)
 }
 
 

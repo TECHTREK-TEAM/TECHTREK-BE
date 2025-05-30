@@ -7,7 +7,7 @@ import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
 import techtrek.domain.user.entity.User;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.gpt.service.bean.CreateGPTBean;
+import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class CreateResumeHepler {
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
-    private final CreateGPTBean createGPTBean;
+    private final CreatePromptManager createGPTBean;
 
     // 이력서 질문 생성
     public String exec(User user, String sessionId){
@@ -34,7 +34,7 @@ public class CreateResumeHepler {
             if (is == null) throw new CustomException(ErrorCode.PROMPT_NOT_FOUND);
             promptTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.PROMPT_READ_FAILED);
+            throw new CustomException(ErrorCode.JSON_READ_FAILED);
         }
 
         // gpt 호출

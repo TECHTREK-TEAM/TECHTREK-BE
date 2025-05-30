@@ -40,8 +40,8 @@ public enum ErrorCode implements ResponseCode {
 
     // 프롬프트
     PROMPT_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "프롬프트 txt 파일을 찾을 수 없습니다."),
-    PROMPT_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "프롬프트 txt 파일을 읽을 수 없습니다."),
-    PROMPT_PARSING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "프롬프트 JSON에서 객체로 변환하는데 실패하였습니다.");
+    JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "객체에서 JSON으로 변환하는데 실패하였습니다."),
+    JSON_PARSING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
