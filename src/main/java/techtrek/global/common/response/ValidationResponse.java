@@ -1,14 +1,15 @@
 package techtrek.global.common.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Map;
-
 @Getter
 @Builder
+@JsonPropertyOrder({ "success", "code", "message" })
 public class ValidationResponse {
-    private int status;
+    private boolean success;
+    private int code;
     private String message;
-    private Map<String, String> errors; // 필드별 에러 메시지
+
 }

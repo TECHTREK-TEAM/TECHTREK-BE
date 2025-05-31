@@ -13,7 +13,7 @@ public class GetUserDAOBean {
 
     private final UserRepository userRepository;
 
-    // userId로 찾아서 반환
+    // 사용자 조회
     public User exec(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));

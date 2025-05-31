@@ -26,6 +26,7 @@ public class CreateStartInterviewBean {
     private final SaveRedisDTOBean saveRedisDTOBean;
     private final GetUserDAOBean getUserDAOBean;
     private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
+    private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
 
     // 면접 시작하기
     public SessionInfoResponse.Start exec(String enterpriseNameStr, String enterpriseTypeStr){
@@ -34,7 +35,7 @@ public class CreateStartInterviewBean {
         EnterpriseName enterpriseName = EnterpriseName.fromString(enterpriseNameStr);
         EnterpriseType enterpriseType = EnterpriseType.fromString(enterpriseTypeStr);
 
-        // 사용자 정보 가져오기
+        // 사용자 조회
         User user = getUserDAOBean.exec("1");
 
         // 세션 생성
@@ -57,6 +58,6 @@ public class CreateStartInterviewBean {
         // 세션정보 테이블에 값 저장
         saveSessionInfoDAOBean.exec(sessionId, enterpriseName, enterpriseType, user);
 
-        return new SessionInfoResponse.Start(sessionId,fieldId,basicQuestion,dto.getQuestionNumber());
+        return saveSessionInfoDTOBean.exec(sessionId, dto);
     }
 }

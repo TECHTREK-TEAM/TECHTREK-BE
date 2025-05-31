@@ -48,6 +48,6 @@ public class CreateTailInterviewBean {
         // redis에 저장
         saveRedisTailHelper.exec(tailSessionKey, sessionKey,fieldId,question,newTailCount);
 
-        return new SessionInfoResponse.NewQuestion(fieldId, question, newTailCount);
+        return new SessionInfoResponse.NewQuestion(fieldId, question, newTailCount, "totalquestionNumber넣어야됨");
     }
 }

@@ -47,7 +47,7 @@ public enum ErrorCode implements ResponseCode {
     private final String code;
     private final String message;
 
-    public boolean isSuccess() {
+    public boolean success() {
         return false;
     }
 

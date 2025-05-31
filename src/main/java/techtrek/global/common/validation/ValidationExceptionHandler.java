@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import techtrek.global.common.response.ValidationResponse;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Order(1)
 @RestControllerAdvice
 public class ValidationExceptionHandler {
@@ -20,18 +17,28 @@ public class ValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationResponse> handleValidationException(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
-        Map<String, String> errorMessages = new HashMap<>();
 
+        // 모든 필드 에러 메시지를 연결
+        StringBuilder errorMessages = new StringBuilder();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            errorMessages.put(fieldError.getField(), fieldError.getDefaultMessage());
+            errorMessages.append(fieldError.getField())
+                    .append(": ")
+                    .append(fieldError.getDefaultMessage())
+                    .append("; ");
+        }
+
+        // 마지막 세미콜론과 공백 제거
+        if (errorMessages.length() > 0) {
+            errorMessages.setLength(errorMessages.length() - 2);
         }
 
         ValidationResponse validationResponse = ValidationResponse.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
-                .message("Validation Failed")
-                .errors(errorMessages)
+                .success(false)
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message(errorMessages.toString())
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
     }
+
 }

@@ -1,7 +1,6 @@
 package techtrek.global.common.exception;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import techtrek.global.common.code.ErrorCode;
 

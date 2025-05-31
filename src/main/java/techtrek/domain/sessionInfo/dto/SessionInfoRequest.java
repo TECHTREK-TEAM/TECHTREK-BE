@@ -15,7 +15,7 @@ public class SessionInfoRequest {
         @NotBlank(message = "기업 이름은 필수입니다.")
         private String enterpriseName;
 
-        @NotBlank(message = "기업 이름은 필수입니다.")
+        @NotBlank(message = "기업 유형은 필수입니다.")
         private String enterpriseType;
     }
 
@@ -23,6 +23,8 @@ public class SessionInfoRequest {
     @Setter
     @AllArgsConstructor
     public static class NewQuestion {
+
+        @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
     }
 

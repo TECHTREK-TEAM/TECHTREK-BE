@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.bean.helper;
+package techtrek.domain.sessionInfo.service.bean.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
-public class CreateResumeHepler {
+public class CreateResumeManager {
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
     private final CreatePromptManager createGPTBean;
 

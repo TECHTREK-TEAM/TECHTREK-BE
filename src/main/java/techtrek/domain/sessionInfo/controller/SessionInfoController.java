@@ -19,7 +19,7 @@ public class SessionInfoController {
 
     // 면접 시작하기
     @PostMapping("/start")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@Valid  @RequestBody SessionInfoRequest.Start request) {
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@Valid @RequestBody SessionInfoRequest.Start request) {
         SessionInfoResponse.Start response = sessionInfoService.createInterview(request.getEnterpriseName(), request.getEnterpriseType());
 
         return ApiResponse.onSuccess(response);
@@ -27,7 +27,7 @@ public class SessionInfoController {
 
     // 새로운 질문 생성하기
     @PostMapping("/questions/new")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@RequestBody SessionInfoRequest.NewQuestion request) {
+    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@Valid @RequestBody SessionInfoRequest.NewQuestion request) {
         SessionInfoResponse.NewQuestion response = sessionInfoService.createNewInterview(request.getSessionId());
 
         return ApiResponse.onSuccess(response);

@@ -35,7 +35,7 @@ public class CreateResumeBean {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
-        // 사용자 불러오기
+        // 사용자 조회
         User user = getUserDAOBean.exec("1");
 
         // 이력서 추출
