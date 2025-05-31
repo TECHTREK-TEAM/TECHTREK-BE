@@ -3,34 +3,35 @@ package techtrek.global.common.validation;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import techtrek.global.common.response.CommonResponse;
+import techtrek.global.common.response.ValidationResponse;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 @Order(1)
 @RestControllerAdvice
 public class ValidationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CommonResponse> handleValidationException(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
+    public ResponseEntity<ValidationResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        Map<String, String> errorMessages = new HashMap<>();
 
-        CommonResponse commonResponse = CommonResponse. builder()
-                .isSuccess(false)
-                .code("400")
-                .message(String.join(", ", errors))
-                .data(null)
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            errorMessages.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+
+        ValidationResponse validationResponse = ValidationResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Validation Failed")
+                .errors(errorMessages)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(commonResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
     }
 }

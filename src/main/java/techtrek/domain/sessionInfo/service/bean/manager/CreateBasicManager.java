@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.bean.helper;
+package techtrek.domain.sessionInfo.service.bean.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
-public class CreateBasicHelper {
+public class CreateBasicManager {
     private final GetCSCategoryDAOBean getCSCategoryDAOBean;
     private final GetBasicQuestionDAOBean getBasicQuestionDAOBean;
 

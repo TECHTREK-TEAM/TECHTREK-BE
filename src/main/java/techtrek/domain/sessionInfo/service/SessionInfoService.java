@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.sessionInfo.service.bean.CreateAnswerBean;
 import techtrek.domain.sessionInfo.service.bean.CreateStartInterviewBean;
 import techtrek.domain.sessionInfo.service.bean.CreateNewInterviewBean;
@@ -22,7 +20,7 @@ public class SessionInfoService {
     private final CreateAnswerBean createAnswerBean;
 
     //면접 시작하기
-    public SessionInfoResponse.Start createInterview(EnterpriseName enterpriseName, EnterpriseType enterpriseType) {
+    public SessionInfoResponse.Start createInterview(String enterpriseName, String enterpriseType) {
         return createStartInterviewBean.exec(enterpriseName, enterpriseType);
     }
 

@@ -9,16 +9,16 @@ import techtrek.global.common.exception.CustomException;
 
 @Component
 @RequiredArgsConstructor
-public class CreateJsonParserManager {
+public class CreateJsonReadManager {
 
     private final ObjectMapper objectMapper;
 
     // JSON → 객체(역직렬화, 파싱)
-    public <T> T exec(String json, Class<T> clazz) {
+    public <T> T exec(String dto, Class<T> clazz) {
         try {
-            return objectMapper.readValue(json, clazz);
+            return objectMapper.readValue(dto, clazz);
         } catch (JsonProcessingException e) {
-            throw new CustomException(ErrorCode.JSON_PARSING_FAILED);
+            throw new CustomException(ErrorCode.JSON_READ_FAILED);
         }
     }
 }

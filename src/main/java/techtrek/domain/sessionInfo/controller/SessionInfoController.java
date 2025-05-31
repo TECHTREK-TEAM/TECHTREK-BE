@@ -1,5 +1,6 @@
 package techtrek.domain.sessionInfo.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class SessionInfoController {
 
     // 면접 시작하기
     @PostMapping("/start")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@RequestBody SessionInfoRequest.Start request) {
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@Valid  @RequestBody SessionInfoRequest.Start request) {
         SessionInfoResponse.Start response = sessionInfoService.createInterview(request.getEnterpriseName(), request.getEnterpriseType());
 
         return ApiResponse.onSuccess(response);

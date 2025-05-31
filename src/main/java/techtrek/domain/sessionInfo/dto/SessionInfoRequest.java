@@ -3,8 +3,7 @@ package techtrek.domain.sessionInfo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
+import jakarta.validation.constraints.NotBlank;
 
 public class SessionInfoRequest {
 
@@ -12,8 +11,12 @@ public class SessionInfoRequest {
     @Setter
     @AllArgsConstructor
     public static class Start {
-        private EnterpriseName enterpriseName;
-        private EnterpriseType enterpriseType;
+
+        @NotBlank(message = "기업 이름은 필수입니다.")
+        private String enterpriseName;
+
+        @NotBlank(message = "기업 이름은 필수입니다.")
+        private String enterpriseType;
     }
 
     @Getter

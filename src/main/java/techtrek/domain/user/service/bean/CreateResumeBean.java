@@ -10,7 +10,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
 import techtrek.domain.user.service.bean.small.SaveResumeDAOBean;
 import techtrek.domain.user.service.bean.small.SaveStackDAOBean;
-import techtrek.global.bean.manager.CreateJsonParserManager;
+import techtrek.global.bean.manager.CreateJsonReadManager;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
@@ -24,7 +24,7 @@ public class CreateResumeBean {
 
     private final CreatePromptTemplateManager createPromptTemplateHelper;
     private final CreatePromptManager createPromptHelper;
-    private final CreateJsonParserManager createJsonParserManager;
+    private final CreateJsonReadManager createJsonReadManager;
 
     private final SaveResumeDAOBean saveResumeDAOBean;
     private final SaveStackDAOBean saveStackDAOBean;
@@ -54,7 +54,7 @@ public class CreateResumeBean {
         String gptResponse = createPromptHelper.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
-        ResumeResponse object = createJsonParserManager.exec(gptResponse, ResumeResponse.class);
+        ResumeResponse object = createJsonReadManager.exec(gptResponse, ResumeResponse.class);
 
         // 이력서, 스택 등 값 저장
         saveResumeDAOBean.exec(user, object.getGroup(), object.getSeniority(), object.getResume());

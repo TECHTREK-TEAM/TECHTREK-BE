@@ -29,8 +29,8 @@ public enum ErrorCode implements ResponseCode {
     BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다"),
 
     // 기업
-    ENTERPRISE_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업이름을 찾을 수 없습니다"),
-    ENTERPRISE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업유형을 찾을 수 없습니다"),
+    ENTERPRISE_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업 이름을 찾을 수 없습니다"),
+    ENTERPRISE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업 유형을 찾을 수 없습니다"),
     ENUM_ENTERPRISE_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM 기업 키워드를 찾을 수 없습니다."),
     ENUM_CS_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM CS 키워드를 찾을 수 없습니다."),
 
@@ -40,8 +40,8 @@ public enum ErrorCode implements ResponseCode {
 
     // 프롬프트
     PROMPT_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "프롬프트 txt 파일을 찾을 수 없습니다."),
-    JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "객체에서 JSON으로 변환하는데 실패하였습니다."),
-    JSON_PARSING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다.");
+    JSON_WRITE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "객체에서 JSON으로 변환하는데 실패하였습니다."),
+    JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -7,6 +7,7 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.service.bean.helper.*;
+import techtrek.domain.sessionInfo.service.bean.manager.CreateBasicManager;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
@@ -19,7 +20,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CreateNewInterviewBean {
     private final GetRedisPreviousHelper getRedisPreviousHelper;
-    private final CreateBasicHelper createBasicHelper;
+    private final CreateBasicManager createBasicHelper;
     private final CreateResumeHepler createResumeHepler;
     private final SaveRedisNewHelper saveRedisNewHelper;
 

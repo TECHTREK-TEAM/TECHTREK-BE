@@ -1,6 +1,9 @@
 package techtrek.domain.sessionInfo.entity.status;
 
 
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +47,15 @@ public enum EnterpriseName {
 
     public List<String> getKeywords() {
         return Arrays.asList(keywords);
+    }
+
+    // String응 enum 객체로 변환
+    public static EnterpriseName fromString(String value) {
+        try {
+            return EnterpriseName.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND);
+        }
     }
 }
 
