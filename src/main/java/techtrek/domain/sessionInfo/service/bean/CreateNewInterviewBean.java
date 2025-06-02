@@ -30,8 +30,8 @@ public class CreateNewInterviewBean {
     private final CreateJsonWriteManager createJsonWriteManager;
 
     private final GetUserDAOBean getUserDAOBean;
-    private final SaveRedisDTOBean saveRedisDTOBean;
-    private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
+    private final CreateRedisDTOBean saveRedisDTOBean;
+    private final CreateSessionInfoDTOBean saveSessionInfoDTOBean;
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
     private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
 

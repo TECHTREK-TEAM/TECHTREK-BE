@@ -7,7 +7,7 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 
 @Component
 @RequiredArgsConstructor
-public class SaveSessionInfoDTOBean {
+public class CreateSessionInfoDTOBean {
 
     // 면접 시작 Response DTO
     public SessionInfoResponse.Start exec(String sessionId, RedisRequest.NewQuestion dto) {

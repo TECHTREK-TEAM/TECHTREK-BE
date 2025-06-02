@@ -22,8 +22,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CreateResumeBean {
 
-    private final CreatePromptTemplateManager createPromptTemplateHelper;
-    private final CreatePromptManager createPromptHelper;
+    private final CreatePromptTemplateManager createPromptTemplateManager;
+    private final CreatePromptManager createPromptManager;
     private final CreateJsonReadManager createJsonReadManager;
 
     private final SaveResumeDAOBean saveResumeDAOBean;
@@ -48,10 +48,10 @@ public class CreateResumeBean {
         }
 
         // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = createPromptTemplateHelper.exec("prompts/resume_summary_prompt.txt");
+        String promptTemplate = createPromptTemplateManager.exec("prompts/resume_summary_prompt.txt");
 
         String prompt = String.format(promptTemplate, extractedText);
-        String gptResponse = createPromptHelper.exec(prompt);
+        String gptResponse = createPromptManager.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
         ResumeResponse object = createJsonReadManager.exec(gptResponse, ResumeResponse.class);

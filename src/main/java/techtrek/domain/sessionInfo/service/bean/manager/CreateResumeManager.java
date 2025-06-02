@@ -5,19 +5,16 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
 import techtrek.domain.user.entity.User;
-import techtrek.global.common.code.ErrorCode;
-import techtrek.global.common.exception.CustomException;
 import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import techtrek.global.gpt.service.bean.manager.CreatePromptTemplateManager;
 
 @Component
 @RequiredArgsConstructor
 public class CreateResumeManager {
+    private final CreatePromptTemplateManager createPromptTemplateManager;
+    private final CreatePromptManager createPromptManager;
+
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
-    private final CreatePromptManager createGPTBean;
 
     // 이력서 질문 생성
     public String exec(User user, String sessionId){
@@ -28,18 +25,11 @@ public class CreateResumeManager {
         String resume = user.getResume();
         String enterpriseDescription = sessionInfo.getEnterpriseName().getDescription();
 
-        // 프롬프트 생성
-        String promptTemplate;
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("prompts/resume_question_prompt.txt")) {
-            if (is == null) throw new CustomException(ErrorCode.PROMPT_NOT_FOUND);
-            promptTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new CustomException(ErrorCode.JSON_READ_FAILED);
-        }
-
-        // gpt 호출
+        // 프롬프트 생성, gpt로 질문 생성
+        String promptTemplate = createPromptTemplateManager.exec("prompts/resume_question_prompt.txt");
         String prompt = String.format(promptTemplate, resume, enterpriseDescription);
-        return createGPTBean.exec(prompt);
+
+        return createPromptManager.exec(prompt);
 
     }
 }

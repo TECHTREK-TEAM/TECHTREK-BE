@@ -7,7 +7,7 @@ import techtrek.domain.sessionInfo.dto.RedisRequest;
 
 @Component
 @RequiredArgsConstructor
-public class SaveRedisDTOBean {
+public class CreateRedisDTOBean {
     private final RedisTemplate<String, String> redisTemplate;
 
     // 새로운 질문 RedisDTO
@@ -32,5 +32,15 @@ public class SaveRedisDTOBean {
 
         return dto;
 
+    }
+
+    // 꼬리질문 Map 생성
+    public RedisRequest.TailQuestion exec(String fieldId, String question, String questionNumber, String totalQuestionCount) {
+        RedisRequest.TailQuestion dto = new RedisRequest.TailQuestion();
+        dto.setFieldId(fieldId);
+        dto.setQuestion(question);
+        dto.setQuestionNumber(questionNumber);
+        dto.setTotalQuestionCount(totalQuestionCount);
+        return dto;
     }
 }

@@ -11,7 +11,6 @@ public class SessionInfoRequest {
     @Setter
     @AllArgsConstructor
     public static class Start {
-
         @NotBlank(message = "기업 이름은 필수입니다.")
         private String enterpriseName;
 
@@ -23,9 +22,19 @@ public class SessionInfoRequest {
     @Setter
     @AllArgsConstructor
     public static class NewQuestion {
-
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class TailQuestion {
+        @NotBlank(message = "세션Id는 필수입니다.")
+        private String sessionId;
+
+        @NotBlank(message = "부모Id는 필수입니다.")
+        private String parentId;
     }
 
 
@@ -37,14 +46,6 @@ public class SessionInfoRequest {
         private String fieldId;
         private String type;
         private String answer;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class TailQuestion {
-        private String sessionId;
-        private String parentId;
     }
 
 }

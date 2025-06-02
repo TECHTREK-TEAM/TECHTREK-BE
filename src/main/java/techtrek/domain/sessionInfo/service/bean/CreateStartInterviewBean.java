@@ -23,10 +23,10 @@ public class CreateStartInterviewBean {
     private final CreateBasicManager createBasicManager;
     private final CreateJsonWriteManager createJsonWriteManager;
 
-    private final SaveRedisDTOBean saveRedisDTOBean;
+    private final CreateRedisDTOBean saveRedisDTOBean;
     private final GetUserDAOBean getUserDAOBean;
     private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
-    private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
+    private final CreateSessionInfoDTOBean saveSessionInfoDTOBean;
 
     // 면접 시작하기
     public SessionInfoResponse.Start exec(String enterpriseNameStr, String enterpriseTypeStr){
