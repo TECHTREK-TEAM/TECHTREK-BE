@@ -25,8 +25,8 @@ public class SessionInfoService {
     }
 
     //새로운 질문 생성하기
-    public SessionInfoResponse.NewQuestion createNewInterview(String sessionId) {
-        return createNewInterviewBean.exec(sessionId);
+    public SessionInfoResponse.NewQuestion createNewInterview(String sessionId, String previousFieldId) {
+        return createNewInterviewBean.exec(sessionId, previousFieldId);
     }
 
     // 꼬리 질문 생성하기

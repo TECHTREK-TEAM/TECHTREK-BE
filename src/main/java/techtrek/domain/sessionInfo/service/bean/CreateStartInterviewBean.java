@@ -9,7 +9,6 @@ import techtrek.domain.sessionInfo.service.bean.manager.CreateBasicManager;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.global.redis.service.bean.small.GetRedisDataDAOBean;
 import techtrek.global.redis.service.bean.small.SaveNewQuestionDAOBean;
 
 import java.util.*;
@@ -21,7 +20,6 @@ public class CreateStartInterviewBean {
 
     private final GetUserDAOBean getUserDAOBean;
     private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
-    private final GetRedisDataDAOBean getRedisDataDAOBean;
     private final SaveNewQuestionDAOBean saveNewQuestionDAOBean;
 
     private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
@@ -39,21 +37,22 @@ public class CreateStartInterviewBean {
         String sessionId = UUID.randomUUID().toString();
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = "interview:session:" + sessionId;
-        String newKey = sessionKey + ":new:"+ fieldId;
+        String newkey = sessionKey +":new";
+        String fieldKey = newkey+":" +fieldId;
 
         // 기본 질문 생성
         String question = createBasicManager.exec(enterpriseName);
 
         // 총 질문 번호, 질문 번호
-        String totalQuestionNumber = getRedisDataDAOBean.exec(sessionKey);
-        String questionNumber= getRedisDataDAOBean.exec(newKey, fieldId);
+        String resultQuestionNumber= "1";
+        String resultTotalQuestionNumber ="1";
 
         // redis 저장
-        saveNewQuestionDAOBean.exec(newKey, "basic", "1", question,  questionNumber, totalQuestionNumber);
+        saveNewQuestionDAOBean.exec(fieldKey, "basic", "1", question,  resultQuestionNumber, resultTotalQuestionNumber);
 
         // 세션정보 테이블에 값 저장
         saveSessionInfoDAOBean.exec(sessionId, enterpriseName, enterpriseType, user);
 
-        return saveSessionInfoDTOBean.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber);
+        return saveSessionInfoDTOBean.exec(sessionId, fieldId, question, resultQuestionNumber,resultTotalQuestionNumber);
     }
 }

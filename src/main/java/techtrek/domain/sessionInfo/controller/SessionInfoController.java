@@ -28,7 +28,7 @@ public class SessionInfoController {
     // 새로운 질문 생성하기
     @PostMapping("/questions/new")
     public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@Valid @RequestBody SessionInfoRequest.NewQuestion request) {
-        SessionInfoResponse.NewQuestion response = sessionInfoService.createNewInterview(request.getSessionId());
+        SessionInfoResponse.NewQuestion response = sessionInfoService.createNewInterview(request.getSessionId(), request.getPreviousFieldId());
 
         return ApiResponse.onSuccess(response);
     }
