@@ -7,17 +7,17 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 
 @Component
 @RequiredArgsConstructor
-public class CreateSessionInfoDTOBean {
+public class SaveSessionInfoDTOBean {
 
     // 면접 시작 Response DTO
-    public SessionInfoResponse.Start exec(String sessionId, RedisRequest.NewQuestion dto) {
+    public SessionInfoResponse.Start exec(String sessionId, String fieldId, String question, String questionNumber, String totalQuestionNumber) {
 
         SessionInfoResponse.Start response = new SessionInfoResponse.Start();
         response.setSessionId(sessionId);
-        response.setFieldId(dto.getFieldId());
-        response.setQuestion(dto.getQuestion());
-        response.setQuestionNumber(dto.getQuestionNumber());
-        response.setTotalQuestionNumber(dto.getTotalQuestionCount());
+        response.setFieldId(fieldId);
+        response.setQuestion(question);
+        response.setQuestionNumber(questionNumber);
+        response.setTotalQuestionNumber(totalQuestionNumber);
 
         return response;
 

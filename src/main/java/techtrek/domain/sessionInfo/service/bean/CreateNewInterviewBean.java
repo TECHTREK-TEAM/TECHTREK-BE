@@ -31,7 +31,7 @@ public class CreateNewInterviewBean {
 
     private final GetUserDAOBean getUserDAOBean;
     private final CreateRedisDTOBean saveRedisDTOBean;
-    private final CreateSessionInfoDTOBean saveSessionInfoDTOBean;
+    private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
     private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
 
@@ -80,7 +80,7 @@ public class CreateNewInterviewBean {
 
         // 질문 번호, 개수 계산 후, redis 저장용 DTO 생성
         String resultCount = String.valueOf(count + 1);
-        RedisRequest.NewQuestion dto= saveRedisDTOBean.exec(sessionKey, fieldId, question, resultCount, phase);
+        RedisRequest.NewQuestion dto= saveRedisDTOBean.exec(sessionKey, question, resultCount, phase,"1","1");
 
         // JSON 직렬화 (객체 -> JSON)
         String json = createJsonWriteManager.exec(dto);

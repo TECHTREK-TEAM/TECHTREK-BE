@@ -11,26 +11,24 @@ public class CreateRedisDTOBean {
     private final RedisTemplate<String, String> redisTemplate;
 
     // 새로운 질문 RedisDTO
-    public RedisRequest.NewQuestion exec(String sessionKey, String fieldId, String basicQuestion, String count, String phase) {
-        // 새로운 질문 번호 계산 (기본질문 + 이력서 질문)
-        Long newCount = redisTemplate.opsForList().size(sessionKey + ":new");
-        String questionNumber = String.valueOf(newCount + 1);
+    public RedisRequest.NewQuestion exec(String newKey, String phase, String count, String basicQuestion, String questionNumber,String totalQuestionNumber ) {
 
-        // 전체 질문 개수 계산 (새로운 질문 + 꼬리질문)
-        Long tailCount = redisTemplate.opsForList().size(sessionKey + ":tail");
-        Long currentTotalCount = newCount + tailCount;
-        String totalQuestionCount = String.valueOf(currentTotalCount + 1);
+        redisTemplate.opsForHash().put(newKey, "phase", phase);
+        redisTemplate.opsForHash().put(newKey, "count", count);
+        redisTemplate.opsForHash().put(newKey, "question", basicQuestion);
+        redisTemplate.opsForHash().put(newKey, "questionNumber", questionNumber);
+        redisTemplate.opsForHash().put(newKey, "totalQuestionNumber", totalQuestionNumber);
 
-        // 직접 DTO 생성 후 값 세팅
+        // DTO 생성 및 반환
         RedisRequest.NewQuestion dto = new RedisRequest.NewQuestion();
-        dto.setFieldId(fieldId);
+        dto.setFieldId("1");
         dto.setQuestion(basicQuestion);
         dto.setQuestionNumber(questionNumber);
         dto.setCount(count);
         dto.setPhase(phase);
-        dto.setTotalQuestionCount(totalQuestionCount);
+        dto.setTotalQuestionCount(totalQuestionNumber); // 현재 총 질문 개수 + 1
+        return  dto;
 
-        return dto;
 
     }
 
