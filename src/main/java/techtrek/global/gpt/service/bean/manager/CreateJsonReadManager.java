@@ -1,4 +1,4 @@
-package techtrek.global.bean.manager;
+package techtrek.global.gpt.service.bean.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

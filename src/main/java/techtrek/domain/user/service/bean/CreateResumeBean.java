@@ -10,7 +10,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
 import techtrek.domain.user.service.bean.small.SaveResumeDAOBean;
 import techtrek.domain.user.service.bean.small.SaveStackDAOBean;
-import techtrek.global.bean.manager.CreateJsonReadManager;
+import techtrek.global.gpt.service.bean.manager.CreateJsonReadManager;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.gpt.service.bean.manager.CreatePromptManager;

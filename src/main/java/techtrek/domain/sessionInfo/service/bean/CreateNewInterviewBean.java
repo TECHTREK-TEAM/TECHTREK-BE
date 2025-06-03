@@ -11,7 +11,8 @@ import techtrek.domain.sessionInfo.service.bean.manager.CreateResumeManager;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.global.redis.service.bean.small.GetRedisPreviousDAOBean;
+import techtrek.global.redis.service.bean.small.GetRedisDAOBean;
+import techtrek.global.redis.service.bean.small.GetRedisTotalNumberDAOBean;
 import techtrek.global.redis.service.bean.small.SaveNewQuestionDAOBean;
 
 import java.util.*;
@@ -25,8 +26,9 @@ public class CreateNewInterviewBean {
     private final GetUserDAOBean getUserDAOBean;
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
     private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
-    private final GetRedisPreviousDAOBean getRedisPreviousDAOBean;
+    private final GetRedisDAOBean getRedisDAOBean;
     private final SaveNewQuestionDAOBean saveNewQuestionDAOBean;
+    private final GetRedisTotalNumberDAOBean getRedisTotalNumberDAOBean;
 
     private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
 
@@ -44,16 +46,14 @@ public class CreateNewInterviewBean {
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = "interview:session:" + sessionId;
         String previousKey = sessionKey + ":new:" + previousFieldId;
-        String newkey = sessionKey +":new";
-        String fieldKey = newkey+":" +fieldId;
+        String fieldKey = sessionKey + ":new:" +fieldId;
         String question = "";
 
         // 이전 질문 조회
-        RedisResponse.PreviousData lastQuestion = getRedisPreviousDAOBean.exec(previousKey);
-        String phase = lastQuestion.getPhase();
-        int questionNumber = Integer.parseInt(lastQuestion.getQuestionNumber());
-        int totalQuestionNumber = Integer.parseInt(lastQuestion.getTotalQuestionNumber());
-        int count = Integer.parseInt(lastQuestion.getCount());
+        RedisResponse.FieldData previousData = getRedisDAOBean.exec(previousKey);
+        String phase = previousData.getPhase();
+        int questionNumber = Integer.parseInt(previousData.getQuestionNumber());
+        int count = Integer.parseInt(previousData.getCount());
 
         // 만약 count가 5이상이라면, 기본질문 <-> 이력서 기반 질문 변경
         if (count >= 5) {
@@ -66,10 +66,13 @@ public class CreateNewInterviewBean {
         // phase가 resume일 경우
         else question = createResumeManager.exec(user, sessionId);
 
-        // 총 질문 번호, 질문 번호
-        String resultQuestionNumber= String.valueOf(questionNumber + 1);
-        String resultTotalQuestionNumber = String.valueOf(totalQuestionNumber + 1);
+        // 카운트, 질문 번호, 총 질문 번호
         String resultCount = String.valueOf(count + 1);
+        String resultQuestionNumber= String.valueOf(questionNumber + 1);
+        int newCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":new");
+        int tailCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":tail");
+        int totalQuestionNumber = newCount + tailCount;
+        String resultTotalQuestionNumber= String.valueOf(totalQuestionNumber);
 
         // redis 저장
         saveNewQuestionDAOBean.exec(fieldKey, phase, resultCount, question,  resultQuestionNumber, resultTotalQuestionNumber);

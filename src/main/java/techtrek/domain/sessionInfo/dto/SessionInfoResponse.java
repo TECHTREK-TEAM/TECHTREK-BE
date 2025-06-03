@@ -29,4 +29,16 @@ public class SessionInfoResponse {
         private String questionNumber;
         private String totalQuestionNumber;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TailQuestion {
+        private String fieldId;
+        private String question;
+        private String parentQuestionNumber;
+        private String tailQuestionNumber;
+        private String resultTotalQuestionNumber;
+    }
 }

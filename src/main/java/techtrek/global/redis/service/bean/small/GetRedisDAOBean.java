@@ -7,11 +7,11 @@ import techtrek.domain.sessionInfo.dto.RedisResponse;
 
 @Component
 @RequiredArgsConstructor
-public class GetRedisPreviousDAOBean {
+public class GetRedisDAOBean {
     private final RedisTemplate<String, String> redisTemplate;
 
     // 이전 질문 데이터 조회
-    public RedisResponse.PreviousData exec(String previousKey) {
+    public RedisResponse.FieldData exec(String previousKey) {
         Object phaseObject = redisTemplate.opsForHash().get(previousKey, "phase");
         String phase = phaseObject != null ? phaseObject.toString() : "basic";
         System.out.println("phase = " + phase);
@@ -36,6 +36,6 @@ public class GetRedisPreviousDAOBean {
         String totalQuestionNumber = totalQuestionNumberObject != null ? totalQuestionNumberObject.toString() : null;
         System.out.println("totalQuestionNumber = " + totalQuestionNumber);
 
-        return new RedisResponse.PreviousData(phase, count, question, answer, questionNumber, totalQuestionNumber);
+        return new RedisResponse.FieldData(phase, count, question, answer, questionNumber, totalQuestionNumber);
     }
 }

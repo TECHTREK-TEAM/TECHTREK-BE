@@ -38,6 +38,7 @@ public class SessionInfoRequest {
 
         @NotBlank(message = "부모Id는 필수입니다.")
         private String parentId;
+        private String previousId;
     }
 
 

@@ -30,8 +30,8 @@ public class SessionInfoService {
     }
 
     // 꼬리 질문 생성하기
-    public SessionInfoResponse.NewQuestion createTailInterview(String sessionId, String parentId) {
-       return createTailInterviewBean.exec(sessionId,parentId);
+    public SessionInfoResponse.TailQuestion createTailInterview(String sessionId, String parentId, String previousFieldId) {
+       return createTailInterviewBean.exec(sessionId,parentId,previousFieldId);
     }
 
     //답변하기

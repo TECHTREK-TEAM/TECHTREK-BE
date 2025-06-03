@@ -11,7 +11,7 @@ public class RedisResponse {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class PreviousData {
+    public static class FieldData {
         private String phase;
         private String count;
         private String question;

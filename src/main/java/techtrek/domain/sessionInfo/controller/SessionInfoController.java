@@ -35,8 +35,8 @@ public class SessionInfoController {
 
     // 꼬리질문 불러오기
     @PostMapping("/questions/tail")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createTailInterview(@Valid @RequestBody SessionInfoRequest.TailQuestion request) {
-        SessionInfoResponse.NewQuestion response = sessionInfoService.createTailInterview(request.getSessionId(), request.getParentId());
+    public ResponseEntity<CommonResponse<SessionInfoResponse.TailQuestion>> createTailInterview(@Valid @RequestBody SessionInfoRequest.TailQuestion request) {
+        SessionInfoResponse.TailQuestion response = sessionInfoService.createTailInterview(request.getSessionId(), request.getParentId(), request.getPreviousId());
 
         return ApiResponse.onSuccess(response);
     }
