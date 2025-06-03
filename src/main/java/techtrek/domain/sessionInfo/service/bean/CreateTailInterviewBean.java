@@ -1,7 +1,6 @@
 package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
@@ -10,6 +9,7 @@ import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
 import techtrek.global.gpt.service.bean.manager.CreatePromptTemplateManager;
 import techtrek.global.redis.service.bean.small.GetRedisDAOBean;
 import techtrek.global.redis.service.bean.small.GetRedisTotalNumberDAOBean;
+import techtrek.global.redis.service.bean.small.GetTailNumberDAOBean;
 import techtrek.global.redis.service.bean.small.SaveTailQuestionDAOBean;
 
 import java.util.UUID;
@@ -17,14 +17,13 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class CreateTailInterviewBean {
-    private final RedisTemplate<String, String> redisTemplate;
-
     private final CreatePromptTemplateManager createPromptTemplateManager;
     private final CreatePromptManager createPromptManager;
 
     private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
     private final GetRedisTotalNumberDAOBean getRedisTotalNumberDAOBean;
     private final SaveTailQuestionDAOBean saveTailQuestionDAOBean;
+    private final GetTailNumberDAOBean getTailNumberDAOBean;
     private final GetRedisDAOBean getRedisDAOBean;
 
     // 꼬리질문 생성
@@ -66,9 +65,7 @@ public class CreateTailInterviewBean {
         String question = createPromptManager.exec(prompt);
 
         // 꼬리질문 개수
-        String tailCountKey = "interview:session:" + sessionId + ":tailCount:" + parentQuestionNumber;
-        Long tailQuestionNumber = redisTemplate.opsForValue().increment(tailCountKey);
-        String resultTailQuestionNumber= String.valueOf(tailQuestionNumber);
+       String resultTailQuestionNumber = getTailNumberDAOBean.exec(sessionKey, parentQuestionNumber);
 
         // redis에 저장
         saveTailQuestionDAOBean.exec(fieldKey, question, parentQuestionNumber,resultTailQuestionNumber,resultTotalQuestionNumber);
