@@ -6,6 +6,6 @@ public interface ResponseCode {
     HttpStatus getHttpStatus();
     String getCode();
     String getMessage();
-    boolean isSuccess();
+    boolean success();
 }
 

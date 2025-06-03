@@ -12,9 +12,6 @@ import techtrek.domain.user.service.ResumeService;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
 
-
-import java.io.IOException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -22,9 +19,8 @@ public class UserController {
 
     private final ResumeService resumeService;
 
-    // 이력서 추출
+    // 이력서 셍성
     @PostMapping("/resume")
-    public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file) throws IOException {
-        ResumeResponse response = resumeService.createResume(file);
-        return ApiResponse.onSuccess(response);
+    public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file){
+        return ApiResponse.onSuccess(resumeService.createResume(file));
     }}

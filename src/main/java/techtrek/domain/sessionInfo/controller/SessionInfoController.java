@@ -1,5 +1,6 @@
 package techtrek.domain.sessionInfo.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,33 +19,25 @@ public class SessionInfoController {
 
     // 면접 시작하기
     @PostMapping("/start")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@RequestBody SessionInfoRequest.Start request) {
-        SessionInfoResponse.Start response = sessionInfoService.createInterview(request.getEnterpriseName(), request.getEnterpriseType());
-
-        return ApiResponse.onSuccess(response);
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@Valid @RequestBody SessionInfoRequest.Start request) {
+        return ApiResponse.onSuccess(sessionInfoService.createInterview(request));
     }
 
     // 새로운 질문 생성하기
     @PostMapping("/questions/new")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@RequestBody SessionInfoRequest.NewQuestion request) {
-        SessionInfoResponse.NewQuestion response = sessionInfoService.createNewInterview(request.getSessionId());
-
-        return ApiResponse.onSuccess(response);
+    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createNewInterview(@Valid @RequestBody SessionInfoRequest.NewQuestion request) {
+        return ApiResponse.onSuccess(sessionInfoService.createNewInterview(request));
     }
 
     // 꼬리질문 불러오기
     @PostMapping("/questions/tail")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.NewQuestion>> createTailInterview(@RequestBody SessionInfoRequest.TailQuestion request) {
-        SessionInfoResponse.NewQuestion response = sessionInfoService.createTailInterview(request.getSessionId(), request.getParentId());
-
-        return ApiResponse.onSuccess(response);
+    public ResponseEntity<CommonResponse<SessionInfoResponse.TailQuestion>> createTailInterview(@Valid @RequestBody SessionInfoRequest.TailQuestion request) {
+        return ApiResponse.onSuccess(sessionInfoService.createTailInterview(request));
     }
 
     // 답변하기
     @PostMapping("/answers")
     public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
-        sessionInfoService.createAnswer(request.getSessionId(),request.getFieldId(),request.getType(),request.getAnswer());
-
-        return ApiResponse.onSuccess(true);
+        return ApiResponse.onSuccess(sessionInfoService.createAnswer(request));
     }
 }

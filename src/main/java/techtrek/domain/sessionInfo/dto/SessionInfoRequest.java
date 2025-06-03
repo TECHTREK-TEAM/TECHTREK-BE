@@ -3,8 +3,7 @@ package techtrek.domain.sessionInfo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
+import jakarta.validation.constraints.NotBlank;
 
 public class SessionInfoRequest {
 
@@ -12,15 +11,34 @@ public class SessionInfoRequest {
     @Setter
     @AllArgsConstructor
     public static class Start {
-        private EnterpriseName enterpriseName;
-        private EnterpriseType enterpriseType;
+        @NotBlank(message = "기업 이름은 필수입니다.")
+        private String enterpriseName;
+
+        @NotBlank(message = "기업 유형은 필수입니다.")
+        private String enterpriseType;
     }
 
     @Getter
     @Setter
     @AllArgsConstructor
     public static class NewQuestion {
+        @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
+
+        @NotBlank(message = "이전 필드Id는 필수입니다.")
+        private String previousId;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class TailQuestion {
+        @NotBlank(message = "세션Id는 필수입니다.")
+        private String sessionId;
+
+        @NotBlank(message = "부모Id는 필수입니다.")
+        private String parentId;
+        private String previousId;
     }
 
 
@@ -32,14 +50,6 @@ public class SessionInfoRequest {
         private String fieldId;
         private String type;
         private String answer;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class TailQuestion {
-        private String sessionId;
-        private String parentId;
     }
 
 }

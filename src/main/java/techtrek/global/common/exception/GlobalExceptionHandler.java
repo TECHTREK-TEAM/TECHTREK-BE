@@ -1,11 +1,13 @@
 package techtrek.global.common.exception;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.response.CommonResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Order(2)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

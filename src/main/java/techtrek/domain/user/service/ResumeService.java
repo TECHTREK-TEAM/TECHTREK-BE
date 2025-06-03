@@ -12,7 +12,7 @@ public class ResumeService {
 
     private final CreateResumeBean createResumeBean;
 
-    // 이력서 추출
+    // 이력서 생성
     public ResumeResponse createResume(MultipartFile file){
         return createResumeBean.exec(file);
 
