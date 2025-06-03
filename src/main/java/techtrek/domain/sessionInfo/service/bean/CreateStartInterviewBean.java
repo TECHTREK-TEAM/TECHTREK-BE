@@ -22,7 +22,7 @@ public class CreateStartInterviewBean {
     private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
     private final SaveNewQuestionDAOBean saveNewQuestionDAOBean;
 
-    private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
+    private final CreateStartDTOBean saveSessionInfoDTOBean;
 
     // 면접 시작하기
     public SessionInfoResponse.Start exec(String enterpriseNameStr, String enterpriseTypeStr){
@@ -44,15 +44,15 @@ public class CreateStartInterviewBean {
         String question = createBasicManager.exec(enterpriseName);
 
         // 총 질문 번호, 질문 번호
-        String resultQuestionNumber= "1";
-        String resultTotalQuestionNumber ="1";
+        String questionNumber= "1";
+        String totalQuestionNumber ="1";
 
         // redis 저장
-        saveNewQuestionDAOBean.exec(fieldKey, "basic", "1", question,  resultQuestionNumber, resultTotalQuestionNumber);
+        saveNewQuestionDAOBean.exec(fieldKey, "basic", "1", question,  questionNumber, totalQuestionNumber);
 
         // 세션정보 테이블에 값 저장
         saveSessionInfoDAOBean.exec(sessionId, enterpriseName, enterpriseType, user);
 
-        return saveSessionInfoDTOBean.exec(sessionId, fieldId, question, resultQuestionNumber,resultTotalQuestionNumber);
+        return saveSessionInfoDTOBean.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber);
     }
 }

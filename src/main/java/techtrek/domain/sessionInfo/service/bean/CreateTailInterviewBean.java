@@ -2,7 +2,7 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.sessionInfo.dto.RedisResponse;
+import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.service.bean.small.CheckSessionInfoDAOBean;
 import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
@@ -56,8 +56,8 @@ public class CreateTailInterviewBean {
         // 총 질문 개수 조회
         int newCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":new");
         int tailCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":tail");
-        int totalQuestionNumber = newCount + tailCount;
-        String resultTotalQuestionNumber= String.valueOf(totalQuestionNumber);
+        int totalData = newCount + tailCount + 1;
+        String totalQuestionNumber= String.valueOf(totalData);
 
         // 프롬프트 생성 후, 꼬리질문 생성
         String promptTemplate = createPromptTemplateManager.exec("prompts/tail_question_prompt.txt");
@@ -65,12 +65,12 @@ public class CreateTailInterviewBean {
         String question = createPromptManager.exec(prompt);
 
         // 꼬리질문 개수
-       String resultTailQuestionNumber = getTailNumberDAOBean.exec(sessionKey, parentQuestionNumber);
+       String tailQuestionNumber = getTailNumberDAOBean.exec(sessionKey, parentQuestionNumber);
 
         // redis에 저장
-        saveTailQuestionDAOBean.exec(fieldKey, question, parentQuestionNumber,resultTailQuestionNumber,resultTotalQuestionNumber);
+        saveTailQuestionDAOBean.exec(fieldKey, question, parentQuestionNumber,tailQuestionNumber,totalQuestionNumber);
 
 
-        return new SessionInfoResponse.TailQuestion(fieldId, question, parentQuestionNumber, resultTailQuestionNumber, resultTotalQuestionNumber);
+        return new SessionInfoResponse.TailQuestion(fieldId, question, parentQuestionNumber, tailQuestionNumber, totalQuestionNumber);
     }
 }

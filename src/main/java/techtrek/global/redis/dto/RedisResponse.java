@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.dto;
+package techtrek.global.redis.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,26 +18,6 @@ public class RedisResponse {
         private String answer;
         private String questionNumber;
         private String totalQuestionNumber;
-
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class PhaseCount {
-        private String phase;
-        private int count;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ParentQuestion {
-        private String parentQuestionNumber;
-        private String parentQuestion;
-        private String parentAnswer;
 
     }
 }

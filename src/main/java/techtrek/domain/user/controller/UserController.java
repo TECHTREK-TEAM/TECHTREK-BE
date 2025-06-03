@@ -22,6 +22,5 @@ public class UserController {
     // 이력서 셍성
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file){
-        ResumeResponse response = resumeService.createResume(file);
-        return ApiResponse.onSuccess(response);
+        return ApiResponse.onSuccess(resumeService.createResume(file));
     }}

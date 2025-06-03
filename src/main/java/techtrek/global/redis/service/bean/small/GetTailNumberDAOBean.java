@@ -11,7 +11,7 @@ public class GetTailNumberDAOBean {
 
     // 꼬리질문 번호
     public String exec(String sessionKey, String parentQuestionNumber){
-        String tailCountKey = sessionKey + ":tailCount:" + parentQuestionNumber;
+        String tailCountKey = sessionKey + ":count:" + parentQuestionNumber;
         Long tailQuestionNumber = redisTemplate.opsForValue().increment(tailCountKey);
         String resultTailQuestionNumber= String.valueOf(tailQuestionNumber);
 

@@ -2,7 +2,7 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.sessionInfo.dto.RedisResponse;
+import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
@@ -30,7 +30,7 @@ public class CreateNewInterviewBean {
     private final SaveNewQuestionDAOBean saveNewQuestionDAOBean;
     private final GetRedisTotalNumberDAOBean getRedisTotalNumberDAOBean;
 
-    private final SaveSessionInfoDTOBean saveSessionInfoDTOBean;
+    private final CreateNewDTOBean createNewDTOBean;
 
     // 새로운 질문 생성하기 ( 기본질문 or 이력서기반)
     public SessionInfoResponse.NewQuestion exec(String sessionId, String previousFieldId){
@@ -52,13 +52,13 @@ public class CreateNewInterviewBean {
         // 이전 질문 조회
         RedisResponse.FieldData previousData = getRedisDAOBean.exec(previousKey);
         String phase = previousData.getPhase();
-        int questionNumber = Integer.parseInt(previousData.getQuestionNumber());
-        int count = Integer.parseInt(previousData.getCount());
+        int questionNumberData = Integer.parseInt(previousData.getQuestionNumber());
+        int countData = Integer.parseInt(previousData.getCount());
 
         // 만약 count가 5이상이라면, 기본질문 <-> 이력서 기반 질문 변경
-        if (count >= 5) {
+        if (countData >= 5) {
             phase = phase.equals("basic") ? "resume" : "basic";
-            count = 0;
+            countData = 0;
         }
 
         // phase가 basic일 경우
@@ -67,17 +67,17 @@ public class CreateNewInterviewBean {
         else question = createResumeManager.exec(user, sessionId);
 
         // 카운트, 질문 번호, 총 질문 번호
-        String resultCount = String.valueOf(count + 1);
-        String resultQuestionNumber= String.valueOf(questionNumber + 1);
+        String count = String.valueOf(countData + 1);
+        String questionNumber= String.valueOf(questionNumberData + 1);
         int newCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":new");
         int tailCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":tail");
-        int totalQuestionNumber = newCount + tailCount;
-        String resultTotalQuestionNumber= String.valueOf(totalQuestionNumber);
+        int totalData = newCount + tailCount + 1;
+        String totalQuestionNumber= String.valueOf(totalData);
 
         // redis 저장
-        saveNewQuestionDAOBean.exec(fieldKey, phase, resultCount, question,  resultQuestionNumber, resultTotalQuestionNumber);
+        saveNewQuestionDAOBean.exec(fieldKey, phase, count, question,  questionNumber, totalQuestionNumber);
 
-        return saveSessionInfoDTOBean.exec(fieldId, question, resultQuestionNumber, resultTotalQuestionNumber);
+        return createNewDTOBean.exec(fieldId, question, questionNumber, totalQuestionNumber);
 
     }
 }

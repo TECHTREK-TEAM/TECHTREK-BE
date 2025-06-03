@@ -17,6 +17,7 @@ public class GetRedisTotalNumberDAOBean {
         if (keys == null) return 0;
 
         System.out.println("Matched keys: " + keys); // 디버깅용
+        System.out.println("Matched keys: " + keys.size()); // 디버깅용
         return keys.size();
     }
 }
