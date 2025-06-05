@@ -41,4 +41,20 @@ public class SessionInfoResponse {
         private String tailQuestionNumber;
         private String resultTotalQuestionNumber;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Analysis {
+        private String AnalysisId;
+        private Boolean expectation;
+        private Double matchRate;
+        private int followUpHanding;
+        private String result;
+        private int duration;
+        private String keyword;
+    }
+
+
 }

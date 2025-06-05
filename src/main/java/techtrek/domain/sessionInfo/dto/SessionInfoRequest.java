@@ -52,4 +52,12 @@ public class SessionInfoRequest {
         private String answer;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Analysis {
+        private String sessionId;
+        private int duration;
+    }
+
 }

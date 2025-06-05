@@ -11,13 +11,11 @@ import java.util.Set;
 public class GetRedisTotalNumberDAOBean {
     private final RedisTemplate<String, String> redisTemplate;
 
-    // 총 질문 개수 조회
+    // 총 질문 개수(키 개수) 조회
     public int exec(String keyPrefix){
         Set<String> keys = redisTemplate.keys(keyPrefix + "*");
         if (keys == null) return 0;
 
-        System.out.println("Matched keys: " + keys); // 디버깅용
-        System.out.println("Matched keys: " + keys.size()); // 디버깅용
         return keys.size();
     }
 }
