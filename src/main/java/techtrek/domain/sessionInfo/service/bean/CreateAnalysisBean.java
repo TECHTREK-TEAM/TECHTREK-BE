@@ -28,8 +28,8 @@ public class CreateAnalysisBean {
     private final CreatePromptManager createPromptManager;
     private final CreateJsonReadManager createJsonReadManager;
 
-    private final GetRedisDataByKeysDAOBean getRedisDataByKeysDAOBean;
     private final GetUserDAOBean getUserDAOBean;
+    private final GetRedisDataByKeysDAOBean getRedisDataByKeysDAOBean;
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
     private final SaveAnalysisDAOBean saveAnalysisDAOBean;
 
