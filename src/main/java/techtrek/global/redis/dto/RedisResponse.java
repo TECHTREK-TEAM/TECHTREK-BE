@@ -1,9 +1,6 @@
 package techtrek.global.redis.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 public class RedisResponse {
 
@@ -18,6 +15,17 @@ public class RedisResponse {
         private String answer;
         private String questionNumber;
         private String totalQuestionNumber;
+    }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    public static class ListData {
+        private String question;
+        private String answer;
+        private int totalQuestionNumber;
+        private String tailQuestionMessage;
     }
 }

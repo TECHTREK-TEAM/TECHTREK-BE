@@ -40,4 +40,10 @@ public class SessionInfoController {
     public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
         return ApiResponse.onSuccess(sessionInfoService.createAnswer(request));
     }
+
+    // 분석하기
+    @PostMapping("/analysis")
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Analysis>> createAnalysis(@RequestBody SessionInfoRequest.Analysis request) {
+        return ApiResponse.onSuccess(sessionInfoService.createAnalysis(request));
+    }
 }
