@@ -1,4 +1,4 @@
-package techtrek.global.redis.service.bean.manager;
+package techtrek.global.redis.service.bean.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class GetHashDataManager {
+public class GetHashDataUtil {
     private final RedisTemplate<String, String> redisTemplate;
 
     // key를 이용하여 해당하는 해시 데이터 조회

@@ -10,12 +10,12 @@ import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
 import techtrek.domain.sessionInfo.service.bean.small.SaveAnalysisDAOBean;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.global.gpt.service.bean.manager.CreateJsonReadManager;
-import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
-import techtrek.global.gpt.service.bean.manager.CreatePromptTemplateManager;
+import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
+import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
+import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
 import techtrek.global.redis.dto.RedisResponse;
 import techtrek.global.redis.service.bean.small.GetRedisDataByKeysDAOBean;
-import techtrek.global.redis.service.bean.manager.GetHashDataManager;
+import techtrek.global.redis.service.bean.util.GetHashDataUtil;
 
 import java.util.*;
 
@@ -23,10 +23,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CreateAnalysisBean {
 
-    private final GetHashDataManager getHashDataManager;
-    private final CreatePromptTemplateManager createPromptTemplateManager;
-    private final CreatePromptManager createPromptManager;
-    private final CreateJsonReadManager createJsonReadManager;
+    private final GetHashDataUtil getHashDataUtil;
+    private final CreatePromptTemplateUtil createPromptTemplateUtil;
+    private final CreatePromptUtil createPromptUtil;
+    private final CreateJsonReadUtil createJsonReadUtil;
 
     private final GetUserDAOBean getUserDAOBean;
     private final GetRedisDataByKeysDAOBean getRedisDataByKeysDAOBean;
@@ -51,8 +51,8 @@ public class CreateAnalysisBean {
 
         // 모든 키 데이터 조회
         Set<String> allKeys = new HashSet<>();
-        allKeys.addAll(getHashDataManager.exec(newKey + "*"));
-        allKeys.addAll(getHashDataManager.exec(tailKey + "*"));
+        allKeys.addAll(getHashDataUtil.exec(newKey + "*"));
+        allKeys.addAll(getHashDataUtil.exec(tailKey + "*"));
 
         // 필요한 필드만 바로 추출해서 저장할 리스트
         List<RedisResponse.ListData> listData = getRedisDataByKeysDAOBean.exec(allKeys);
@@ -68,12 +68,12 @@ public class CreateAnalysisBean {
         }
 
         // 프롬프트 생성 후, 분석결과 받기
-        String promptTemplate = createPromptTemplateManager.exec("prompts/analysis_prompt.txt");
+        String promptTemplate = createPromptTemplateUtil.exec("prompts/analysis_prompt.txt");
         String prompt = String.format(promptTemplate, enterpriseName, enterpriseDescription, userGroup, seniority, qaBuilder.toString());
-        String gptResponse = createPromptManager.exec(prompt);
+        String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
-        AnalysisParserResponse object = createJsonReadManager.exec(gptResponse, AnalysisParserResponse.class);
+        AnalysisParserResponse object = createJsonReadUtil.exec(gptResponse, AnalysisParserResponse.class);
         System.out.println(gptResponse);
 
         // 합격 계산

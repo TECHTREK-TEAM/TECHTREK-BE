@@ -1,4 +1,4 @@
-package techtrek.global.gpt.service.bean.manager;
+package techtrek.global.gpt.service.bean.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -11,7 +11,7 @@ import techtrek.global.gpt.dto.OpenAiResponse;
 import java.util.List;
 
 @Component
-public class CreatePromptManager {
+public class CreatePromptUtil {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${openai.api-key}")

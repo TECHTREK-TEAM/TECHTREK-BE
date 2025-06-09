@@ -1,4 +1,4 @@
-package techtrek.global.gpt.service.bean.manager;
+package techtrek.global.gpt.service.bean.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,7 @@ import techtrek.global.common.exception.CustomException;
 
 @Component
 @RequiredArgsConstructor
-public class CreateJsonReadManager {
+public class CreateJsonReadUtil {
 
     private final ObjectMapper objectMapper;
 

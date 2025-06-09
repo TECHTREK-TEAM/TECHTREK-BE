@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.service.bean.small.CheckSessionInfoDAOBean;
-import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
-import techtrek.global.gpt.service.bean.manager.CreatePromptTemplateManager;
+import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
+import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
 import techtrek.global.redis.service.bean.small.GetRedisDAOBean;
 import techtrek.global.redis.service.bean.small.GetRedisTotalNumberDAOBean;
 import techtrek.global.redis.service.bean.small.GetTailNumberDAOBean;
@@ -17,8 +17,8 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class CreateTailInterviewBean {
-    private final CreatePromptTemplateManager createPromptTemplateManager;
-    private final CreatePromptManager createPromptManager;
+    private final CreatePromptTemplateUtil createPromptTemplateUtil;
+    private final CreatePromptUtil createPromptUtil;
 
     private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
     private final GetRedisTotalNumberDAOBean getRedisTotalNumberDAOBean;
@@ -60,9 +60,9 @@ public class CreateTailInterviewBean {
         String totalQuestionNumber= String.valueOf(totalData);
 
         // 프롬프트 생성 후, 꼬리질문 생성
-        String promptTemplate = createPromptTemplateManager.exec("prompts/tail_question_prompt.txt");
+        String promptTemplate = createPromptTemplateUtil.exec("prompts/tail_question_prompt.txt");
         String prompt = String.format(promptTemplate, previousQuestion, previousAnswer);
-        String question = createPromptManager.exec(prompt);
+        String question = createPromptUtil.exec(prompt);
 
         // 꼬리질문 개수
        String tailQuestionNumber = getTailNumberDAOBean.exec(sessionKey, parentQuestionNumber);

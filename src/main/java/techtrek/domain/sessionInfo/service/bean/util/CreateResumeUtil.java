@@ -1,18 +1,18 @@
-package techtrek.domain.sessionInfo.service.bean.manager;
+package techtrek.domain.sessionInfo.service.bean.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
 import techtrek.domain.user.entity.User;
-import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
-import techtrek.global.gpt.service.bean.manager.CreatePromptTemplateManager;
+import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
+import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
 
 @Component
 @RequiredArgsConstructor
-public class CreateResumeManager {
-    private final CreatePromptTemplateManager createPromptTemplateManager;
-    private final CreatePromptManager createPromptManager;
+public class CreateResumeUtil {
+    private final CreatePromptTemplateUtil createPromptTemplateUtil;
+    private final CreatePromptUtil createPromptUtil;
 
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
 
@@ -26,10 +26,10 @@ public class CreateResumeManager {
         String enterpriseDescription = sessionInfo.getEnterpriseName().getDescription();
 
         // 프롬프트 생성, gpt로 질문 생성
-        String promptTemplate = createPromptTemplateManager.exec("prompts/resume_question_prompt.txt");
+        String promptTemplate = createPromptTemplateUtil.exec("prompts/resume_question_prompt.txt");
         String prompt = String.format(promptTemplate, resume, enterpriseDescription);
 
-        return createPromptManager.exec(prompt);
+        return createPromptUtil.exec(prompt);
 
     }
 }

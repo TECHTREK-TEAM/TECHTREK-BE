@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.bean.manager.CreateBasicManager;
+import techtrek.domain.sessionInfo.service.bean.util.CreateBasicUtil;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
@@ -15,7 +15,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class CreateStartInterviewBean {
-    private final CreateBasicManager createBasicManager;
+    private final CreateBasicUtil createBasicUtil;
 
     private final GetUserDAOBean getUserDAOBean;
     private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
@@ -39,7 +39,7 @@ public class CreateStartInterviewBean {
         String fieldKey = newkey+":" +fieldId;
 
         // 기본 질문 생성
-        String question = createBasicManager.exec(enterpriseName);
+        String question = createBasicUtil.exec(enterpriseName);
 
         // 총 질문 번호, 질문 번호
         String questionNumber= "1";
