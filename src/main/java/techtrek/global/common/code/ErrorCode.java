@@ -30,7 +30,6 @@ public enum ErrorCode implements ResponseCode {
 
     // 기업
     ENTERPRISE_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업 이름을 찾을 수 없습니다"),
-    ENTERPRISE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "ENTERPRISE404", "기업 유형을 찾을 수 없습니다"),
     ENUM_ENTERPRISE_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM 기업 키워드를 찾을 수 없습니다."),
     ENUM_CS_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM CS 키워드를 찾을 수 없습니다."),
 

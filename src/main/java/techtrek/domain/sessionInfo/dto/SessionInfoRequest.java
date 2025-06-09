@@ -13,9 +13,6 @@ public class SessionInfoRequest {
     public static class Start {
         @NotBlank(message = "기업 이름은 필수입니다.")
         private String enterpriseName;
-
-        @NotBlank(message = "기업 유형은 필수입니다.")
-        private String enterpriseType;
     }
 
     @Getter

@@ -5,7 +5,6 @@ import lombok.*;
 import jakarta.persistence.Id;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.user.entity.User;
 
 import java.util.List;
@@ -27,11 +26,6 @@ public class SessionInfo {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EnterpriseName enterpriseName;
-
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EnterpriseType enterpriseType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
