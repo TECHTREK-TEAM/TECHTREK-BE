@@ -30,6 +30,9 @@ public class Analysis {
     @Column(length = 12, nullable = false)
     private String keyword;
 
+    @Column(length = 36, nullable = false)
+    private String analysisGroup;
+
     private int duration;
 
     @ManyToOne(fetch = FetchType.LAZY)

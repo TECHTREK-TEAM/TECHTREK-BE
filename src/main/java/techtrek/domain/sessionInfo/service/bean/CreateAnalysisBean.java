@@ -82,7 +82,7 @@ public class CreateAnalysisBean {
         else status = Boolean.FALSE;
 
         // 분석 테이블에 저장
-        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(), duration);
+        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(),userGroup, duration);
 
         return new SessionInfoResponse.Analysis(AnalysisId, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), duration, object.getKeyKeywords().getKeyword());
     }

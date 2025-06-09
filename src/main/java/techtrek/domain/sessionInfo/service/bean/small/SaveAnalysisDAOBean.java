@@ -16,7 +16,7 @@ public class SaveAnalysisDAOBean {
     private final AnalysisRepository analysisRepository;
 
     // 분석 테이블 저장
-    public String exec(SessionInfo sessionInfo, Boolean status, Double resultScore, double followScore, String result, String keyword, int duration){
+    public String exec(SessionInfo sessionInfo, Boolean status, Double resultScore, double followScore, String result, String keyword, String userGroup, int duration){
         Analysis analysis = Analysis.builder()
                 .id(UUID.randomUUID().toString())
                 .status(status)
@@ -24,6 +24,7 @@ public class SaveAnalysisDAOBean {
                 .followScore(followScore)
                 .result(result)
                 .keyword(keyword)
+                .analysisGroup(userGroup)
                 .duration(duration)
                 .sessionInfo(sessionInfo)
                 .build();
