@@ -48,9 +48,9 @@ public class SessionInfoResponse {
     @NoArgsConstructor
     public static class Analysis {
         private String AnalysisId;
-        private Boolean expectation;
-        private Double matchRate;
-        private int followUpHanding;
+        private Boolean status;
+        private Double resultScore;
+        private Double followScore;
         private String result;
         private int duration;
         private String keyword;

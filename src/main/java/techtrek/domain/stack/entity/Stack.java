@@ -13,6 +13,7 @@ import techtrek.domain.user.entity.User;
 @Setter
 public class Stack {
     @Id
+    @Column(length = 36, nullable = false)
     private String id;
 
     @Column(length = 12)

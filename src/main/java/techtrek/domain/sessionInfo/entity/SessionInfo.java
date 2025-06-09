@@ -5,7 +5,6 @@ import lombok.*;
 import jakarta.persistence.Id;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseType;
 import techtrek.domain.user.entity.User;
 
 import java.util.List;
@@ -19,19 +18,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SessionInfo {
     @Id
+    @Column(length = 36, nullable = false)
     private String id;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 36, nullable = false)
     private String sessionId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EnterpriseName enterpriseName;
-
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EnterpriseType enterpriseType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

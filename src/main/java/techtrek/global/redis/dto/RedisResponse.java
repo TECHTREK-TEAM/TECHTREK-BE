@@ -25,7 +25,7 @@ public class RedisResponse {
     public static class ListData {
         private String question;
         private String answer;
-        private int totalQuestionNumber;
+        private String totalQuestionNumber;
         private String tailQuestionMessage;
     }
 }

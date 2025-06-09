@@ -14,7 +14,7 @@
 4. 논리 전개 구조 (logic, 10점): 답변이 일관되고 논리적인 흐름을 갖는가?
 
 추가로,
-5. 연계질문 대응력 (followUpHandling): 후속 질문에 적절히 대응했는가?
+5. 연계질문 대응력 (followScore): 후속 질문에 적절히 대응했는가?
 6. 핵심 키워드 (keyKeywords): 답변에 포함된 가장 중요한 키워드 하나와 그 키워드가 포함된 질문 번호(totalQuestionNumber)를 알려줘.
 7. 피드백 혹은 칭찬의 말 (result) : 부족했던 답변을 피드백해줘. 패드백할때는 너가 면접관의 입장에서 cs지식과 관련해서 자세히 피드백을 해줘. 만약에 모든 답변이 완벽할 경우엔 억지로 피드백을 하지 말고 칭찬을 해줘.
 
@@ -32,30 +32,30 @@
 {
   "evaluation": {
     "accuracy": {
-      "score": "정답 정확도로 만점은 40점, int형식",
+      "score": "정답 정확도로 만점은 40점, double형식",
       "reason": "왜 해당 점수를 주었는지 **구체적인** 이유 1-3줄 이내로 적어줘. 분명한 이유를 적어야해."
     },
     "keyConcept": {
-      "score": "핵심 개념 및 키워드 포함 여부로 만점은 25점, int형식",
+      "score": "핵심 개념 및 키워드 포함 여부로 만점은 25점, double형식",
       "reason": "왜 해당 점수를 주었는지 **구체적인** 이유 1-3줄 이내로 적어줘. 분명한 이유를 적어야해."
     },
     "companyFit": {
-      "score": "기업 맞춤 경향성 부합도로 만점은 25점, int형식",
+      "score": "기업 맞춤 경향성 부합도로 만점은 25점, double형식",
       "reason": "왜 해당 점수를 주었는지 **구체적인** 이유 1-3줄 이내로 적어줘. 분명한 이유를 적어야해."
     },
     "logic": {
-      "score": "논리 전개 구조로 만점은 10점, int형식",
+      "score": "논리 전개 구조로 만점은 10점, double형식",
       "reason": "왜 해당 점수를 주었는지 **구체적인** 이유 1-3줄 이내로 적어줘. 분명한 이유를 적어야해."
     },
-    "followUpHandling": {
-      "score": "연계질문 대응력으로 만점은 100점, int형식",
+    "followScore": {
+      "score": "연계질문 대응력으로 만점은 100점, double형식",
       "reason": "왜 해당 점수를 주었는지 **구체적인** 이유 1-3줄 이내로 적어줘. 분명한 이유를 적어야해."
     }
   },
   "keyKeywords": {
     "keyword": "해당 면접에서의 중요했던 키워드 혹은 제대로 대답하지 못했던 키워드",
-    "totalQuestionNumber": 0
+    "totalQuestionNumber": "0"
   },
-  "totalScore": "accuracy+ keyConcept+companyFit+logic 총 score의 합산 (followUpHandling 제외), Double형식",
+  "totalScore": "accuracy+ keyConcept+companyFit+logic 총 score의 합산 (followScore 제외), Double형식",
   "result": "해당 CS 면접 답변에 대해, 해당 기업의 기술적 경향성을 자연스럽게 반영해 면접관 입장에서 구체적인 지적과 함께 CS 지식 기반의 보완점, 그리고 이상적인 예시 답변을 포함해 4~5줄 이내로 요약 피드백을 제공해줘. 만약에 모든 답변이 완벽할 경우엔 억지로 피드백을 하지 말고 칭찬을 해줘."
 }

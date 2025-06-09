@@ -11,6 +11,7 @@ import techtrek.domain.basicQuestion.entity.status.CsCategory;
 @Setter
 public class BasicQuestion {
     @Id
+    @Column(length = 36, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

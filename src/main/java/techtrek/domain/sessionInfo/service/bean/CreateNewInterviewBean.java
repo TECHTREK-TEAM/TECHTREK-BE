@@ -6,8 +6,8 @@ import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.bean.manager.CreateBasicManager;
-import techtrek.domain.sessionInfo.service.bean.manager.CreateResumeManager;
+import techtrek.domain.sessionInfo.service.bean.util.CreateBasicUtil;
+import techtrek.domain.sessionInfo.service.bean.util.CreateResumeUtil;
 import techtrek.domain.sessionInfo.service.bean.small.*;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
@@ -20,8 +20,8 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class CreateNewInterviewBean {
-    private final CreateBasicManager createBasicManager;
-    private final CreateResumeManager createResumeManager;
+    private final CreateBasicUtil createBasicUtil;
+    private final CreateResumeUtil createResumeUtil;
 
     private final GetUserDAOBean getUserDAOBean;
     private final GetSessionInfoDAOBean getSessionInfoDAOBean;
@@ -62,9 +62,9 @@ public class CreateNewInterviewBean {
         }
 
         // phase가 basic일 경우
-        if (phase.equals("basic")) question = createBasicManager.exec(enterpriseName);
+        if (phase.equals("basic")) question = createBasicUtil.exec(enterpriseName);
         // phase가 resume일 경우
-        else question = createResumeManager.exec(user, sessionId);
+        else question = createResumeUtil.exec(user, sessionId);
 
         // 카운트, 질문 번호, 총 질문 번호
         String count = String.valueOf(countData + 1);

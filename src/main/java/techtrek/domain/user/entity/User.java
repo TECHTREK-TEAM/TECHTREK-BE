@@ -14,13 +14,19 @@ import java.util.List;
 @Setter
 public class User {
     @Id
+    @Column(length = 36, nullable = false)
     private String id;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
     private String name;
+
+    @Column(length = 36, nullable = false)
     private String userGroup;
+
+    @Column(length = 36, nullable = false)
     private String seniority;
 
+    @Column(length = 255)
     private String resume;
 
     @OneToMany(mappedBy = "user")

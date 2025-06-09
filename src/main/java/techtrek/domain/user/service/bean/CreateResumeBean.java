@@ -10,11 +10,11 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.bean.small.GetUserDAOBean;
 import techtrek.domain.user.service.bean.small.SaveResumeDAOBean;
 import techtrek.domain.user.service.bean.small.SaveStackDAOBean;
-import techtrek.global.gpt.service.bean.manager.CreateJsonReadManager;
+import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.gpt.service.bean.manager.CreatePromptManager;
-import techtrek.global.gpt.service.bean.manager.CreatePromptTemplateManager;
+import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
+import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
 
 import java.io.IOException;
 
@@ -22,9 +22,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CreateResumeBean {
 
-    private final CreatePromptTemplateManager createPromptTemplateManager;
-    private final CreatePromptManager createPromptManager;
-    private final CreateJsonReadManager createJsonReadManager;
+    private final CreatePromptTemplateUtil createPromptTemplateUtil;
+    private final CreatePromptUtil createPromptUtil;
+    private final CreateJsonReadUtil createJsonReadUtil;
 
     private final SaveResumeDAOBean saveResumeDAOBean;
     private final SaveStackDAOBean saveStackDAOBean;
@@ -48,13 +48,13 @@ public class CreateResumeBean {
         }
 
         // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = createPromptTemplateManager.exec("prompts/resume_summary_prompt.txt");
+        String promptTemplate = createPromptTemplateUtil.exec("prompts/resume_summary_prompt.txt");
 
         String prompt = String.format(promptTemplate, extractedText);
-        String gptResponse = createPromptManager.exec(prompt);
+        String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
-        ResumeResponse object = createJsonReadManager.exec(gptResponse, ResumeResponse.class);
+        ResumeResponse object = createJsonReadUtil.exec(gptResponse, ResumeResponse.class);
 
         // 이력서, 스택 등 값 저장
         saveResumeDAOBean.exec(user, object.getGroup(), object.getSeniority(), object.getResume());

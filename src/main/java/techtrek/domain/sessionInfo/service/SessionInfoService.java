@@ -20,7 +20,7 @@ public class SessionInfoService {
 
     //면접 시작하기
     public SessionInfoResponse.Start createInterview(SessionInfoRequest.Start request) {
-        return createStartInterviewBean.exec(request.getEnterpriseName(), request.getEnterpriseType());
+        return createStartInterviewBean.exec(request.getEnterpriseName());
     }
 
     //새로운 질문 생성하기
