@@ -18,9 +18,10 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SessionInfo {
     @Id
+    @Column(length = 36, nullable = false)
     private String id;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 36, nullable = false)
     private String sessionId;
 
     @Column(nullable = false)

@@ -13,6 +13,7 @@ import techtrek.domain.sessionInfo.entity.SessionInfo;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Analysis {
     @Id
+    @Column(length = 36, nullable = false)
     private String id;
 
     @Column(nullable = false)
