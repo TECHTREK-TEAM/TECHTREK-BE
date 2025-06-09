@@ -24,7 +24,7 @@ public class AnalysisParserResponse {
         private ScoreDetail keyConcept;
         private ScoreDetail companyFit;
         private ScoreDetail logic;
-        private ScoreDetail followUpHandling;
+        private ScoreDetail followScore;
     }
 
     @Getter
@@ -33,7 +33,7 @@ public class AnalysisParserResponse {
     @AllArgsConstructor
     @Builder
     public static class ScoreDetail {
-        private int score;
+        private double score;
         private String reason;
     }
 
@@ -44,7 +44,7 @@ public class AnalysisParserResponse {
     @Builder
     public static class KeyKeywords {
         private String keyword;
-        private int totalQuestionNumber;
+        private String totalQuestionNumber;
     }
 }
 

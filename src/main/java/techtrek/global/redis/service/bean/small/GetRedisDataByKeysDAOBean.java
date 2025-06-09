@@ -26,7 +26,7 @@ public class GetRedisDataByKeysDAOBean {
 
             String question = String.valueOf(data.get("question"));
             String answer = data.containsKey("answer") ? String.valueOf(data.get("answer")) : null;
-            int totalQuestionNumber = Integer.parseInt(String.valueOf(data.get("totalQuestionNumber")));
+            String totalQuestionNumber = data.get("totalQuestionNumber").toString();
             String tailQuestionMessage = null;
             if(data.containsKey("tailQuestionNumber")) {
                 tailQuestionMessage = "연계 질문입니다.";

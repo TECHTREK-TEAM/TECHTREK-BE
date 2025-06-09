@@ -58,7 +58,7 @@ public class CreateAnalysisBean {
         List<RedisResponse.ListData> listData = getRedisDataByKeysDAOBean.exec(allKeys);
 
         // totalQuestionNumber 기준 오름차순 정렬
-        listData.sort(Comparator.comparingInt(RedisResponse.ListData::getTotalQuestionNumber));
+        listData.sort(Comparator.comparingInt(data -> Integer.parseInt(data.getTotalQuestionNumber())));
 
         // 질문/답변 문자열 누적
         StringBuilder qaBuilder = new StringBuilder();
@@ -77,14 +77,14 @@ public class CreateAnalysisBean {
         System.out.println(gptResponse);
 
         // 합격 계산
-        Boolean expectation;
-        if(object.getTotalScore() >= 70) expectation = Boolean.TRUE;
-        else expectation = Boolean.FALSE;
+        Boolean status;
+        if(object.getTotalScore() >= 70) status = Boolean.TRUE;
+        else status = Boolean.FALSE;
 
         // 분석 테이블에 저장
-        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, expectation, object.getTotalScore(), object.getEvaluation().getFollowUpHandling().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(), duration);
+        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(), duration);
 
-        return new SessionInfoResponse.Analysis(AnalysisId, expectation, object.getTotalScore(), object.getEvaluation().getFollowUpHandling().getScore(), object.getResult(), duration, object.getKeyKeywords().getKeyword());
+        return new SessionInfoResponse.Analysis(AnalysisId, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), duration, object.getKeyKeywords().getKeyword());
     }
 
 }

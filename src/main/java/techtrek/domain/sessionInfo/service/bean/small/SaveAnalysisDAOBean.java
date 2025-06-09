@@ -16,12 +16,12 @@ public class SaveAnalysisDAOBean {
     private final AnalysisRepository analysisRepository;
 
     // 분석 테이블 저장
-    public String exec(SessionInfo sessionInfo, Boolean expectation, Double matchRate, int followUpHandling, String result, String keyword, int duration){
+    public String exec(SessionInfo sessionInfo, Boolean status, Double resultScore, double followScore, String result, String keyword, int duration){
         Analysis analysis = Analysis.builder()
                 .id(UUID.randomUUID().toString())
-                .expectation(expectation)
-                .matchRate(matchRate)
-                .followUpHandling(followUpHandling)
+                .status(status)
+                .resultScore(resultScore)
+                .followScore(followScore)
                 .result(result)
                 .keyword(keyword)
                 .duration(duration)

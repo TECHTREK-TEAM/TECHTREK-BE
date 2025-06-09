@@ -16,13 +16,13 @@ public class Analysis {
     private String id;
 
     @Column(nullable = false)
-    private boolean expectation;
+    private boolean status;
 
     @Column(nullable = false)
-    private double matchRate;
+    private double resultScore;
 
     @Column(nullable = false)
-    private int followUpHandling;
+    private double followScore;
 
     @Column(length = 255, nullable = false)
     private String result;
