@@ -26,13 +26,14 @@ public class GetRedisDataByKeysDAOBean {
 
             String question = String.valueOf(data.get("question"));
             String answer = data.containsKey("answer") ? String.valueOf(data.get("answer")) : null;
+            String questionNumber = String.valueOf(data.get("questionNumber"));
             String totalQuestionNumber = data.get("totalQuestionNumber").toString();
             String tailQuestionMessage = null;
             if(data.containsKey("tailQuestionNumber")) {
                 tailQuestionMessage = "연계 질문입니다.";
             }
 
-            response.add(new RedisResponse.ListData(question, answer, totalQuestionNumber, tailQuestionMessage));
+            response.add(new RedisResponse.ListData(question, answer, questionNumber, totalQuestionNumber, tailQuestionMessage));
         }
 
         return response;

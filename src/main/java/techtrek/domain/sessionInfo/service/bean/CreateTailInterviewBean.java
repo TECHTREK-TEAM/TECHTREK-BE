@@ -64,11 +64,12 @@ public class CreateTailInterviewBean {
         String prompt = String.format(promptTemplate, previousQuestion, previousAnswer);
         String question = createPromptUtil.exec(prompt);
 
-        // 꼬리질문 개수
+        // 꼬리질문 개수, 질문 번호
        String tailQuestionNumber = getTailNumberDAOBean.exec(sessionKey, parentQuestionNumber);
+       String questionNumber = parentQuestionNumber + "-" + tailQuestionNumber;
 
         // redis에 저장
-        saveTailQuestionDAOBean.exec(fieldKey, question, parentQuestionNumber,tailQuestionNumber,totalQuestionNumber);
+        saveTailQuestionDAOBean.exec(fieldKey, question, parentQuestionNumber,tailQuestionNumber,questionNumber, totalQuestionNumber);
 
 
         return new SessionInfoResponse.TailQuestion(fieldId, question, parentQuestionNumber, tailQuestionNumber, totalQuestionNumber);
