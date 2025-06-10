@@ -1,7 +1,6 @@
 package techtrek.domain.user.dto;
 
 import lombok.*;
-
 import java.util.List;
 
 public class UserResponse {
@@ -26,4 +25,25 @@ public class UserResponse {
     public static class Stack {
         private String stackName;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class CompanyList {
+        private List<Company> companies;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Company {
+        private String companyName;
+        private double companyPercent;
+    }
+
+
 }

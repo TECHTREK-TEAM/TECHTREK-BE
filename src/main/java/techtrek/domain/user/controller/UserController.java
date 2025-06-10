@@ -32,6 +32,12 @@ public class UserController {
         return ApiResponse.onSuccess(userService.updateUser(request));
     }
 
+    // 관심기업 조회
+    @GetMapping("/companies")
+    public ResponseEntity<CommonResponse<UserResponse.CompanyList>> getCompany(){
+        return ApiResponse.onSuccess(userService.getCompany());
+    }
+
     // 이력서 셍성
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file){
