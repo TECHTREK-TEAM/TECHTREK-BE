@@ -32,6 +32,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<SessionInfo> sessionInfoList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stack> stackList;
 }

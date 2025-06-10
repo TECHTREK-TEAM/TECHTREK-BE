@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CreateUserInfoDTOBean {
+public class GetUserDTOBean {
 
-    // 사용자 정보 dto 생성
+    // 사용자 정보 조회 dto
     public UserResponse.Info exec(User user) {
 
         // 스택을 list형태로 불러오기
