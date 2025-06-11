@@ -44,6 +44,12 @@ public class UserController {
         return ApiResponse.onSuccess(userService.getPass());
     }
 
+    // 일치율 조회
+    @GetMapping("/score")
+    public ResponseEntity<CommonResponse<UserResponse.Score>> getScore(){
+        return ApiResponse.onSuccess(userService.getScore());
+    }
+
     // 이력서 셍성
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file){

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class UserResponse {
 
+    // 사용자 정보
     @Getter
     @Setter
     @NoArgsConstructor
@@ -27,6 +28,7 @@ public class UserResponse {
         private String stackName;
     }
 
+    // 관심 기업
     @Getter
     @Setter
     @NoArgsConstructor
@@ -46,6 +48,7 @@ public class UserResponse {
         private Double companyPercent;
     }
 
+    // 합격률
     @Getter
     @Setter
     @NoArgsConstructor
@@ -58,5 +61,15 @@ public class UserResponse {
         private Double interviewPercent;
     }
 
+    // 일치율
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Score {
+        private Double averageResultScore;
+        private Double enhancedPercent;
+    }
 
 }
