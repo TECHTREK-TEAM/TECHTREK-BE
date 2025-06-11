@@ -8,6 +8,7 @@ import techtrek.domain.analysis.entity.Analysis;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnalysisRepository extends JpaRepository<Analysis, String> {
@@ -26,5 +27,11 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );
+
+    // 점수 가장 높은 면접
+    Optional<Analysis> findTopBySessionInfoIdInOrderByResultScoreDesc(List<String> sessionIds);
+
+    // 가장 최근 면접
+    Optional<Analysis> findTopBySessionInfoIdInOrderByCreatedAtDesc(List<String> sessionIds);
 
 }

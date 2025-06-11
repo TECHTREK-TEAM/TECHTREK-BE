@@ -2,6 +2,8 @@ package techtrek.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
+
 import java.util.List;
 
 public class UserResponse {
@@ -70,6 +72,33 @@ public class UserResponse {
     public static class Score {
         private Double averageResultScore;
         private Double enhancedPercent;
+    }
+
+    // 면접
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class Interview {
+        private InterviewData highestScore;
+        private InterviewData mostRecentInterview;
+        private Resume resume;
+
+        @Getter
+        @Builder
+        @AllArgsConstructor
+        public static class InterviewData {
+            private boolean status;
+            private EnterpriseName enterpriseName;
+            private Double resultScore;
+            private String analysisGroup;
+        }
+
+        @Getter
+        @Builder
+        @AllArgsConstructor
+        public static class Resume {
+            private boolean status;
+        }
     }
 
 }

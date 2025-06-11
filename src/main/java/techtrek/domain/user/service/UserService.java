@@ -14,6 +14,7 @@ public class UserService {
     private final GetCompanyBean getCompanyBean;
     private final GetPassBean getPassBean;
     private final GetScoreBean getScoreBean;
+    private final GetInterviewBean getInterviewBean;
 
     // 사용자 정보 조회
     public UserResponse.Info getUser(){
@@ -38,5 +39,10 @@ public class UserService {
     // 일치율 조회
     public UserResponse.Score getScore(){
         return getScoreBean.exec();
+    }
+
+    // 면접 정보 조회
+    public UserResponse.Interview getInterview(){
+        return getInterviewBean.exec();
     }
 }

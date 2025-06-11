@@ -50,6 +50,12 @@ public class UserController {
         return ApiResponse.onSuccess(userService.getScore());
     }
 
+    // 면접 정보 조회
+    @GetMapping("/interview")
+    public ResponseEntity<CommonResponse<UserResponse.Interview>> getInterview(){
+        return ApiResponse.onSuccess(userService.getInterview());
+    }
+
     // 이력서 셍성
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file){
