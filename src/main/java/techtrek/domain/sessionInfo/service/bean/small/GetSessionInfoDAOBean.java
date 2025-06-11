@@ -19,4 +19,10 @@ public class GetSessionInfoDAOBean {
         return sessionInfo;
     }
 
+    // userId를 이용하여 전체 면접 수 조회
+    public int execCount(String userId) {
+        int InterviewTotal = sessionInfoRepository.countAllSessions(userId);
+        return InterviewTotal;
+    }
+
 }

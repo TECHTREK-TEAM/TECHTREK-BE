@@ -1,5 +1,6 @@
 package techtrek.domain.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 import java.util.List;
 
@@ -42,7 +43,19 @@ public class UserResponse {
     @Builder
     public static class Company {
         private String companyName;
-        private double companyPercent;
+        private Double companyPercent;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @JsonPropertyOrder({"interviewTotal", "interviewPass", "interviewPercent"})
+    public static class Pass {
+        private int InterviewTotal;
+        private int interviewPass;
+        private Double interviewPercent;
     }
 
 

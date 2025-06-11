@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.service.bean.GetCompanyBean;
+import techtrek.domain.user.service.bean.GetPassBean;
 import techtrek.domain.user.service.bean.GetUserBean;
 import techtrek.domain.user.service.bean.UpdateUserBean;
 
@@ -14,6 +15,7 @@ public class UserService {
     private final GetUserBean getUserBean;
     private final UpdateUserBean updateUserBean;
     private final GetCompanyBean getCompanyBean;
+    private final GetPassBean getPassBean;
 
     // 사용자 정보 조회
     public UserResponse.Info getUser(){
@@ -28,5 +30,10 @@ public class UserService {
     // 관심 기업 조회
     public UserResponse.CompanyList getCompany(){
         return getCompanyBean.exec();
+    }
+
+    // 관심 기업 조회
+    public UserResponse.Pass getPass(){
+        return getPassBean.exec();
     }
 }

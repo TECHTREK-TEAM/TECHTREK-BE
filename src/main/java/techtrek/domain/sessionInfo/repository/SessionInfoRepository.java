@@ -15,6 +15,10 @@ public interface SessionInfoRepository extends JpaRepository<SessionInfo, String
     // sessionId로 sessionInfo 찾기
     Optional<SessionInfo> findBySessionId(String sessionId);
 
+    // 전체 면접 수
+    @Query("SELECT COUNT(s) FROM SessionInfo s WHERE s.user.id = :userid")
+    int countAllSessions(@Param("userid") String userid);
+
     // user로 enterpriseName 개수 계산
     @Query("SELECT s.enterpriseName AS enterpriseName, COUNT(s) AS cnt " +
             "FROM SessionInfo s WHERE s.user = :user GROUP BY s.enterpriseName")

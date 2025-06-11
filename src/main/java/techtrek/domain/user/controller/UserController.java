@@ -38,6 +38,12 @@ public class UserController {
         return ApiResponse.onSuccess(userService.getCompany());
     }
 
+    // 합격률 조회
+    @GetMapping("/pass")
+    public ResponseEntity<CommonResponse<UserResponse.Pass>> getPass(){
+        return ApiResponse.onSuccess(userService.getPass());
+    }
+
     // 이력서 셍성
     @PostMapping("/resume")
     public ResponseEntity<CommonResponse<ResumeResponse>> createResume(@RequestPart MultipartFile file){
