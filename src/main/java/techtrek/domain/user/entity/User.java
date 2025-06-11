@@ -3,9 +3,11 @@ package techtrek.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.stack.entity.Stack;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,9 +31,16 @@ public class User {
     @Column(length = 255)
     private String resume;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "user")
     private List<SessionInfo> sessionInfoList;
 
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stack> stackList;
 }

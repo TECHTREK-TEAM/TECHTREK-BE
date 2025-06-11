@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="analysis")
 @Getter
@@ -31,10 +33,16 @@ public class Analysis {
     @Column(length = 12, nullable = false)
     private String keyword;
 
+    @Column(length = 12, nullable = false)
+    private String keywordNumber;
+
     @Column(length = 36, nullable = false)
     private String analysisGroup;
 
     private int duration;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_info_id")

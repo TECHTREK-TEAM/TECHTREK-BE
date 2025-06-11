@@ -53,8 +53,8 @@
     }
   },
   "keyKeywords": {
-    "keyword": "해당 면접에서의 중요했던 키워드 혹은 제대로 대답하지 못했던 키워드",
-    "totalQuestionNumber": "0"
+    "keyword": "해당 면접에서의 중요했던 키워드 혹은 제대로 대답하지 못했던 키워드를 하나 적어줘. not null",
+    "questionNumber": "해당 키워드의 questionNumber (String형식) not null"
   },
   "totalScore": "accuracy+ keyConcept+companyFit+logic 총 score의 합산 (followScore 제외), Double형식",
   "result": "해당 CS 면접 답변에 대해, 해당 기업의 기술적 경향성을 자연스럽게 반영해 면접관 입장에서 구체적인 지적과 함께 CS 지식 기반의 보완점, 그리고 이상적인 예시 답변을 포함해 4~5줄 이내로 요약 피드백을 제공해줘. 만약에 모든 답변이 완벽할 경우엔 억지로 피드백을 하지 말고 칭찬을 해줘."

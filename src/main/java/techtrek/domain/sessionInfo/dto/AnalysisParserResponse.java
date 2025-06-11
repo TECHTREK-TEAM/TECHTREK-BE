@@ -44,7 +44,7 @@ public class AnalysisParserResponse {
     @Builder
     public static class KeyKeywords {
         private String keyword;
-        private String totalQuestionNumber;
+        private String questionNumber;
     }
 }
 

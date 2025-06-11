@@ -64,7 +64,8 @@ public class CreateAnalysisBean {
         StringBuilder qaBuilder = new StringBuilder();
         for (RedisResponse.ListData data : listData) {
             qaBuilder.append("질문: ").append(data.getQuestion()).append("\n");
-            qaBuilder.append("답변: ").append(data.getAnswer() != null ? data.getAnswer() : "응답 없음").append("\n\n");
+            qaBuilder.append("답변: ").append(data.getAnswer() != null ? data.getAnswer() : "응답 없음").append("\n");
+            qaBuilder.append("번호: ").append(data.getQuestionNumber()).append("\n\n");
         }
 
         // 프롬프트 생성 후, 분석결과 받기
@@ -82,7 +83,7 @@ public class CreateAnalysisBean {
         else status = Boolean.FALSE;
 
         // 분석 테이블에 저장
-        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(),userGroup, duration);
+        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(), object.getKeyKeywords().getQuestionNumber(), userGroup, duration);
 
         return new SessionInfoResponse.Analysis(AnalysisId, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), duration, object.getKeyKeywords().getKeyword());
     }
