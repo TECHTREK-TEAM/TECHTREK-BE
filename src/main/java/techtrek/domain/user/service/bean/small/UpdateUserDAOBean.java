@@ -22,7 +22,7 @@ public class UpdateUserDAOBean {
         if (newName != null) user.setName(newName);
         if (newUserGroup != null) user.setUserGroup(newUserGroup);
         if (newSeniority != null) user.setSeniority(newSeniority);
-        user.setUpdatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now().withNano(0));
 
         // 사용자 스택 수정
         if (newStacks != null) {
