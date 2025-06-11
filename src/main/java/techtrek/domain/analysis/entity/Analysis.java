@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="analysis")
 @Getter
@@ -38,6 +40,9 @@ public class Analysis {
     private String analysisGroup;
 
     private int duration;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_info_id")

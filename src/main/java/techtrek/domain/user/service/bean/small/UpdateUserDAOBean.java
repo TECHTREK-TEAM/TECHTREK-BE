@@ -7,6 +7,7 @@ import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class UpdateUserDAOBean {
         if (newName != null) user.setName(newName);
         if (newUserGroup != null) user.setUserGroup(newUserGroup);
         if (newSeniority != null) user.setSeniority(newSeniority);
+        user.setUpdatedAt(LocalDateTime.now());
 
         // 사용자 스택 수정
         if (newStacks != null) {

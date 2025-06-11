@@ -6,6 +6,7 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
@@ -27,6 +28,7 @@ public class SaveAnalysisDAOBean {
                 .keywordNumber(totalQuestionNumber)
                 .analysisGroup(userGroup)
                 .duration(duration)
+                .createdAt(LocalDateTime.now())
                 .sessionInfo(sessionInfo)
                 .build();
 
