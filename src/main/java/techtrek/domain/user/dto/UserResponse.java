@@ -80,7 +80,7 @@ public class UserResponse {
     @AllArgsConstructor
     public static class Interview {
         private InterviewData highestScore;
-        private InterviewData mostRecentInterview;
+        private InterviewData recentInterview;
         private Resume resume;
 
         @Getter

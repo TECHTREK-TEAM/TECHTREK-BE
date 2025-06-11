@@ -45,7 +45,7 @@ public class GetInterviewDTOBean {
         // 최종 DTO 반환
         return UserResponse.Interview.builder()
                 .highestScore(highestScore)
-                .mostRecentInterview(mostRecent)
+                .recentInterview(mostRecent)
                 .resume(resume)
                 .build();
     }
