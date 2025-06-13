@@ -44,7 +44,7 @@ public class Analysis {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_info_id")
     private SessionInfo sessionInfo;
 

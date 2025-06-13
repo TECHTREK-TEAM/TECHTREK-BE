@@ -32,6 +32,6 @@ public class SessionInfo {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "sessionInfo")
-    private List<Analysis> analysisList;
+    @OneToOne(mappedBy = "sessionInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Analysis analysis;
 }
