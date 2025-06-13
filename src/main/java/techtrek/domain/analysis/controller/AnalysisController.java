@@ -23,4 +23,10 @@ public class AnalysisController {
     public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@RequestBody AnalysisRequest.Recent request){
         return ApiResponse.onSuccess(analysisService.getAnalysisRecent(request));
     }
+
+    // 세션 리스트 불러오기
+    @PostMapping("/list")
+    public ResponseEntity<CommonResponse<AnalysisResponse.SessionList>> getAnalysisList(@RequestBody AnalysisRequest.Recent request){
+        return ApiResponse.onSuccess(analysisService.getAnalysisList(request));
+    }
 }
