@@ -1,24 +1,25 @@
 package techtrek.domain.basicQuestion.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import techtrek.domain.basicQuestion.entity.status.CsCategory;
 
 @Entity
-@Table(name="basic_question")
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="basic_question")
 public class BasicQuestion {
     @Id
-    @Column(length = 36, nullable = false)
+    @Column(name = "id", length = 36, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "question", nullable = false)
     private String question;
 
-    @Column(nullable = false)
+    @Column(name = "cs_category", nullable = false)
     @Enumerated(EnumType.STRING)
     private CsCategory csCategory;
 }

@@ -10,18 +10,17 @@ import techtrek.domain.user.entity.User;
 import java.util.List;
 
 @Entity
-@Table(name="session_info")
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="session_info")
 public class SessionInfo {
     @Id
-    @Column(length = 36, nullable = false)
+    @Column(name="id", length = 36, nullable = false)
     private String id;
 
-    @Column(length = 36, nullable = false)
+    @Column(name="session_id", length = 36, nullable = false)
     private String sessionId;
 
     @Column(nullable = false)
