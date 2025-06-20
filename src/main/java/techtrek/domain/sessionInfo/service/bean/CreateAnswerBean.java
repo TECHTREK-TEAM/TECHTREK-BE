@@ -2,7 +2,7 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.global.redis.service.dao.SaveAnswerDAO;
+import techtrek.domain.redis.service.dao.SaveAnswerDAO;
 
 @Component
 @RequiredArgsConstructor

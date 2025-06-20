@@ -1,4 +1,4 @@
-package techtrek.global.gpt.service.bean.util;
+package techtrek.global.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

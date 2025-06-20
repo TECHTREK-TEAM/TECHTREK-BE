@@ -1,23 +1,20 @@
-package techtrek.global.redis.service.dao;
+package techtrek.domain.redis.service.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class GetRedisDataByKeysDAO {
+public class GetRedisByKeyDAO {
     private final RedisTemplate<String, String> redisTemplate;
 
-    // key들에 의해 데이터 조회 (list)
+    // key로 데이터 조회
     public List<SessionParserResponse.ListData> exec(Set<String> keys){
-        // 필요한 필드만 추출해서 저장할 리스트
+        // 저장할 리스트
         List<SessionParserResponse.ListData> response = new ArrayList<>();
 
         // 추출
@@ -35,6 +32,9 @@ public class GetRedisDataByKeysDAO {
 
             response.add(new SessionParserResponse.ListData(question, answer, questionNumber, totalQuestionNumber, tailQuestionMessage));
         }
+
+        // totalQuestionNumber 기준 오름차순 정렬
+        response.sort(Comparator.comparingInt(data -> Integer.parseInt(data.getTotalQuestionNumber())));
 
         return response;
     }

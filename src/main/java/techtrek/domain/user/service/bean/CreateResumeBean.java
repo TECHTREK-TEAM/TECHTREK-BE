@@ -10,11 +10,11 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dao.GetUserDAO;
 import techtrek.domain.user.service.dao.SaveResumeDAO;
 import techtrek.domain.user.service.dao.SaveStackDAO;
-import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
-import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
+import techtrek.global.util.ChangeJsonReadUtil;
+import techtrek.global.util.CreatePromptUtil;
+import techtrek.global.util.CreatePromptTemplateUtil;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class CreateResumeBean {
 
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
-    private final CreateJsonReadUtil createJsonReadUtil;
+    private final ChangeJsonReadUtil changeJsonReadUtil;
 
     private final SaveResumeDAO saveResumeDAO;
     private final SaveStackDAO saveStackDAO;
@@ -54,7 +54,7 @@ public class CreateResumeBean {
         String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
-        UserResponse.Resume object = createJsonReadUtil.exec(gptResponse, UserResponse.Resume.class);
+        UserResponse.Resume object = changeJsonReadUtil.exec(gptResponse, UserResponse.Resume.class);
 
         // 이력서, 스택 등 값 저장
         saveResumeDAO.exec(user, object.getGroup(), object.getSeniority(), object.getResume());

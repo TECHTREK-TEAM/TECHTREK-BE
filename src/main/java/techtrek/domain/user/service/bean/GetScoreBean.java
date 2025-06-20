@@ -2,8 +2,8 @@ package techtrek.domain.user.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.analysis.service.dao.GetAverageResultScoreDAO;
-import techtrek.domain.analysis.service.dao.GetTotalAverageResultScoreDAO;
+import techtrek.domain.analysis.service.small.GetAverageResultScoreDAO;
+import techtrek.domain.analysis.service.small.GetTotalAverageResultScoreDAO;
 import techtrek.domain.sessionInfo.service.dao.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;

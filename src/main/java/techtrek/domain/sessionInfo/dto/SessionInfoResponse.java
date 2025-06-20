@@ -42,20 +42,5 @@ public class SessionInfoResponse {
         private String resultTotalQuestionNumber;
     }
 
-    // 분석
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Analysis {
-        private String AnalysisId;
-        private Boolean status;
-        private Double resultScore;
-        private Double followScore;
-        private String result;
-        private int duration;
-        private String keyword;
-    }
-
 
 }

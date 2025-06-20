@@ -15,7 +15,6 @@ public class AnalysisRequest {
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
 
-        @NotBlank(message = "소요시간은 필수입니다.")
         private int duration;
     }
 }

@@ -12,10 +12,9 @@ import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dao.GetUserDAO;
-import techtrek.global.redis.service.dao.GetRedisDataByKeysDAO;
+import techtrek.domain.redis.service.dao.GetRedisByKeyDAO;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ import java.util.Set;
 public class GetAnalysisRecentBean {
 
     private final GetUserDAO getUserDAO;
-    private final GetRedisDataByKeysDAO redisDataByKeysDAOBean;
+    private final GetRedisByKeyDAO redisDataByKeysDAOBean;
     private final SessionInfoRepository sessionInfoRepository;
     private final AnalysisRepository analysisRepository;
     private final RedisTemplate<String, String> redisTemplate;
@@ -82,8 +81,6 @@ public class GetAnalysisRecentBean {
 
         List<SessionParserResponse.ListData> listData = redisDataByKeysDAOBean.exec( keys);
 
-        // totalQuestionNumber 기준 오름차순 정렬
-        listData.sort(Comparator.comparingInt(data -> Integer.parseInt(data.getTotalQuestionNumber())));
 
         List<AnalysisResponse.Detail.Interview> interviewList = new ArrayList<>();
         for (SessionParserResponse.ListData data : listData) {

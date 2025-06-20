@@ -13,9 +13,9 @@ import techtrek.domain.sessionInfo.service.bean.common.CreateBasicUtil;
 import techtrek.domain.sessionInfo.service.bean.common.CreateResumeUtil;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dao.GetUserDAO;
-import techtrek.global.redis.service.dao.GetRedisDAO;
-import techtrek.global.redis.service.dao.GetRedisTotalNumberDAO;
-import techtrek.global.redis.service.dao.SaveNewQuestionDAO;
+import techtrek.domain.redis.service.dao.GetRedisDAO;
+import techtrek.domain.redis.service.dao.GetRedisTotalNumberDAO;
+import techtrek.domain.redis.service.dao.SaveNewQuestionDAO;
 
 import java.util.*;
 

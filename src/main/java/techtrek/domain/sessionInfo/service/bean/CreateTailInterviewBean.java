@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.service.dao.CheckSessionInfoDAO;
-import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
-import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
-import techtrek.global.redis.service.dao.GetRedisDAO;
-import techtrek.global.redis.service.dao.GetRedisTotalNumberDAO;
-import techtrek.global.redis.service.dao.GetTailNumberDAO;
-import techtrek.global.redis.service.dao.SaveTailQuestionDAO;
+import techtrek.global.util.CreatePromptUtil;
+import techtrek.global.util.CreatePromptTemplateUtil;
+import techtrek.domain.redis.service.dao.GetRedisDAO;
+import techtrek.domain.redis.service.dao.GetRedisTotalNumberDAO;
+import techtrek.domain.redis.service.dao.GetTailNumberDAO;
+import techtrek.domain.redis.service.dao.SaveTailQuestionDAO;
 
 import java.util.UUID;
 

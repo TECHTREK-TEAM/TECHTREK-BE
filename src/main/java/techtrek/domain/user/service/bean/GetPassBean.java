@@ -2,7 +2,7 @@ package techtrek.domain.user.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.analysis.service.dao.GetAnalysisDAO;
+import techtrek.domain.analysis.service.small.GetAnalysisDAO;
 import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;

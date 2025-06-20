@@ -8,6 +8,22 @@ import java.util.List;
 
 public class AnalysisResponse {
 
+    // 분석
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Analysis {
+        private String analysisId;
+        private Boolean status;
+        private Double resultScore;
+        private Double followScore;
+        private String result;
+        private int duration;
+        private String keyword;
+    }
+
+
     // 세션 불러오기
     @Getter
     @Builder

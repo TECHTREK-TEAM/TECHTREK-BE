@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.AnalysisService;
-import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
@@ -20,7 +19,7 @@ public class AnalysisController {
 
     // 분석하기
     @PostMapping
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Analysis>> createAnalysis(@Valid @RequestBody AnalysisRequest.Analysis request) {
+    public ResponseEntity<CommonResponse<AnalysisResponse.Analysis>> createAnalysis(@Valid @RequestBody AnalysisRequest.Analysis request) {
         return ApiResponse.onSuccess(analysisService.createAnalysis(request));
     }
 

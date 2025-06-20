@@ -1,4 +1,4 @@
-package techtrek.global.redis.service.dao;
+package techtrek.domain.redis.service.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

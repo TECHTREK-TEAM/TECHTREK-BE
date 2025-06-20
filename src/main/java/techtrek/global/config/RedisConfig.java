@@ -1,4 +1,4 @@
-package techtrek.global.redis;
+package techtrek.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

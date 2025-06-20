@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
 import techtrek.domain.user.entity.User;
-import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
-import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
+import techtrek.global.util.CreatePromptUtil;
+import techtrek.global.util.CreatePromptTemplateUtil;
 
 @Component
 @RequiredArgsConstructor
