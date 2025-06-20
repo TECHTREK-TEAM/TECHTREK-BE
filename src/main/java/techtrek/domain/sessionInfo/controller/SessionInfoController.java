@@ -42,7 +42,7 @@ public class SessionInfoController {
     }
 
     // 분석하기
-    @PostMapping("/analysis")
+    @PostMapping("/analyses")
     public ResponseEntity<CommonResponse<SessionInfoResponse.Analysis>> createAnalysis(@RequestBody SessionInfoRequest.Analysis request) {
         return ApiResponse.onSuccess(sessionInfoService.createAnalysis(request));
     }

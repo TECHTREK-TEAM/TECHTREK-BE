@@ -51,7 +51,7 @@ public class UserController {
     }
 
     // 면접 정보 조회
-    @GetMapping("/interview")
+    @GetMapping("/interviews")
     public ResponseEntity<CommonResponse<UserResponse.Interview>> getInterview(){
         return ApiResponse.onSuccess(userService.getInterview());
     }
