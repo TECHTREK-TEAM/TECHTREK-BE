@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.bean.util.CreateBasicUtil;
-import techtrek.domain.sessionInfo.service.bean.small.*;
+import techtrek.domain.sessionInfo.service.bean.common.CreateBasicUtil;
+import techtrek.domain.sessionInfo.service.dto.CreateStartDTO;
+import techtrek.domain.sessionInfo.service.dao.SaveSessionInfoDAO;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.global.redis.service.bean.small.SaveNewQuestionDAOBean;
+import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.global.redis.service.dao.SaveNewQuestionDAO;
 
 import java.util.*;
 
@@ -17,11 +18,10 @@ import java.util.*;
 public class CreateStartInterviewBean {
     private final CreateBasicUtil createBasicUtil;
 
-    private final GetUserDAOBean getUserDAOBean;
-    private final SaveSessionInfoDAOBean saveSessionInfoDAOBean;
-    private final SaveNewQuestionDAOBean saveNewQuestionDAOBean;
-
-    private final CreateStartDTOBean saveSessionInfoDTOBean;
+    private final GetUserDAO getUserDAO;
+    private final SaveSessionInfoDAO saveSessionInfoDAO;
+    private final SaveNewQuestionDAO saveNewQuestionDAO;
+    private final CreateStartDTO createStartDTO;
 
     // 면접 시작하기
     public SessionInfoResponse.Start exec(String enterpriseNameStr){
@@ -29,7 +29,7 @@ public class CreateStartInterviewBean {
         EnterpriseName enterpriseName = EnterpriseName.fromString(enterpriseNameStr);
 
         // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        User user = getUserDAO.exec("1");
 
         // 세션 생성
         String sessionId = UUID.randomUUID().toString();
@@ -46,11 +46,11 @@ public class CreateStartInterviewBean {
         String totalQuestionNumber ="1";
 
         // redis 저장
-        saveNewQuestionDAOBean.exec(fieldKey, "basic", "1", question,  questionNumber, totalQuestionNumber);
+        saveNewQuestionDAO.exec(fieldKey, "basic", "1", question,  questionNumber, totalQuestionNumber);
 
         // 세션정보 테이블에 값 저장
-        saveSessionInfoDAOBean.exec(sessionId, enterpriseName, user);
+        saveSessionInfoDAO.exec(sessionId, enterpriseName, user);
 
-        return saveSessionInfoDTOBean.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber);
+        return createStartDTO.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber);
     }
 }

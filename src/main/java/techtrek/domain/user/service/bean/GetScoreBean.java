@@ -2,12 +2,12 @@ package techtrek.domain.user.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.analysis.service.bean.small.GetAverageResultScoreDAOBean;
-import techtrek.domain.analysis.service.bean.small.GetTotalAverageResultScoreDAOBean;
-import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoListDAOBean;
+import techtrek.domain.analysis.service.dao.GetAverageResultScoreDAO;
+import techtrek.domain.analysis.service.dao.GetTotalAverageResultScoreDAO;
+import techtrek.domain.sessionInfo.service.dao.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
+import techtrek.domain.user.service.dao.GetUserDAO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,20 +16,20 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GetScoreBean {
-    private final GetUserDAOBean getUserDAOBean;
-    private final GetSessionInfoListDAOBean getSessionInfoListDAOBean;
-    private final GetTotalAverageResultScoreDAOBean getTotalAverageResultScoreDAOBean;
-    private final GetAverageResultScoreDAOBean averageResultScoreDAOBean;
+    private final GetUserDAO getUserDAO;
+    private final GetSessionInfoListDAO getSessionInfoListDAO;
+    private final GetTotalAverageResultScoreDAO getTotalAverageResultScoreDAO;
+    private final GetAverageResultScoreDAO getAverageResultScoreDAO;
 
     public UserResponse.Score exec(){
         // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        User user = getUserDAO.exec("1");
 
         // 유저의 모든 세션 ID 조회
-        List<String> sessionIds = getSessionInfoListDAOBean.exec(user.getId());
+        List<String> sessionIds = getSessionInfoListDAO.exec(user.getId());
 
         // 전체 평균 점수
-        Double average = getTotalAverageResultScoreDAOBean.exec(sessionIds);
+        Double average = getTotalAverageResultScoreDAO.exec(sessionIds);
         if (average == null) average = 0.0;
 
         // 범위
@@ -38,8 +38,8 @@ public class GetScoreBean {
         LocalDateTime endOfPreviousMonth = startOfCurrentMonth.minusSeconds(1);
 
         // 저번 달, 이번 달 평균
-        Double lastMonthAvg = averageResultScoreDAOBean.exec( sessionIds, startOfPreviousMonth, endOfPreviousMonth);
-        Double thisMonthAvg =  averageResultScoreDAOBean.exec(sessionIds, startOfCurrentMonth, LocalDateTime.now());
+        Double lastMonthAvg = getAverageResultScoreDAO.exec( sessionIds, startOfPreviousMonth, endOfPreviousMonth);
+        Double thisMonthAvg =  getAverageResultScoreDAO.exec(sessionIds, startOfCurrentMonth, LocalDateTime.now());
 
         // 증가율 계산 (this - last) / last * 100
         double enhancedPercent = 0.0;

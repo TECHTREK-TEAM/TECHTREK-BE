@@ -4,20 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDTOBean;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
+import techtrek.domain.user.service.dto.GetUserDTO;
+import techtrek.domain.user.service.dao.GetUserDAO;
 
 @Component
 @RequiredArgsConstructor
 public class GetUserBean {
 
-    private final GetUserDAOBean getUserDAOBean;
-    private final GetUserDTOBean getUserDTOBean;
+    private final GetUserDAO getUserDAO;
+    private final GetUserDTO getUserDTO;
 
     public UserResponse.Info exec() {
         // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        User user = getUserDAO.exec("1");
 
-        return getUserDTOBean.exec(user);
+        return getUserDTO.exec(user);
     }
 }

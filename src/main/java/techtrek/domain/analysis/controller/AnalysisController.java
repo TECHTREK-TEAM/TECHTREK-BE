@@ -18,7 +18,7 @@ import techtrek.global.common.response.CommonResponse;
 public class AnalysisController {
     private final AnalysisService analysisService;
 
-    // 세션 불러오기
+    // 현재 세션 불러오기
     @PostMapping("/recent")
     public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@RequestBody AnalysisRequest.Recent request){
         return ApiResponse.onSuccess(analysisService.getAnalysisRecent(request));

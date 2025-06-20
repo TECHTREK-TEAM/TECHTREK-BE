@@ -3,10 +3,10 @@ package techtrek.domain.user.service.bean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
-import techtrek.domain.sessionInfo.service.bean.small.GetEnterpriseNameCountDAOBean;
+import techtrek.domain.sessionInfo.service.dao.GetEnterpriseNameCountDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
+import techtrek.domain.user.service.dao.GetUserDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +14,15 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GetCompanyBean {
-    private final GetUserDAOBean getUserDAOBean;
-    private final GetEnterpriseNameCountDAOBean getEnterpriseNameCountDAOBean;
+    private final GetUserDAO getUserDAO;
+    private final GetEnterpriseNameCountDAO getEnterpriseNameCountDAO;
 
     public UserResponse.CompanyList exec(){
         // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        User user = getUserDAO.exec("1");
 
         // 기업이름에 따른 면접 개수 조회
-        List<SessionInfoRepository.EnterpriseCount> enterpriseCount = getEnterpriseNameCountDAOBean.exec(user);
+        List<SessionInfoRepository.EnterpriseCount> enterpriseCount = getEnterpriseNameCountDAO.exec(user);
 
         // 총 면접 개수 계산
         long total = enterpriseCount.stream().mapToLong(SessionInfoRepository.EnterpriseCount::getCnt).sum();

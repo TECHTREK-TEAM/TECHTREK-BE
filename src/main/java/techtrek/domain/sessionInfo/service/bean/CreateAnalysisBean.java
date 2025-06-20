@@ -6,16 +6,16 @@ import techtrek.domain.sessionInfo.dto.AnalysisParserResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.bean.small.GetSessionInfoDAOBean;
-import techtrek.domain.sessionInfo.service.bean.small.SaveAnalysisDAOBean;
+import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
+import techtrek.domain.sessionInfo.service.dao.SaveAnalysisDAO;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
+import techtrek.domain.user.service.dao.GetUserDAO;
 import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
 import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
 import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
 import techtrek.global.redis.dto.RedisResponse;
-import techtrek.global.redis.service.bean.small.GetRedisDataByKeysDAOBean;
-import techtrek.global.redis.service.bean.util.GetHashDataUtil;
+import techtrek.global.redis.service.dao.GetRedisDataByKeysDAO;
+import techtrek.global.redis.service.bean.common.GetHashDataUtil;
 
 import java.util.*;
 
@@ -28,20 +28,20 @@ public class CreateAnalysisBean {
     private final CreatePromptUtil createPromptUtil;
     private final CreateJsonReadUtil createJsonReadUtil;
 
-    private final GetUserDAOBean getUserDAOBean;
-    private final GetRedisDataByKeysDAOBean getRedisDataByKeysDAOBean;
-    private final GetSessionInfoDAOBean getSessionInfoDAOBean;
-    private final SaveAnalysisDAOBean saveAnalysisDAOBean;
+    private final GetUserDAO getUserDAO;
+    private final GetRedisDataByKeysDAO getRedisDataByKeysDAO;
+    private final GetSessionInfoDAO getSessionInfoDAO;
+    private final SaveAnalysisDAO saveAnalysisDAO;
 
     // 분석하기
     public SessionInfoResponse.Analysis exec(String sessionId, int duration){
         // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        User user = getUserDAO.exec("1");
         String seniority = user.getSeniority();
         String userGroup = user.getUserGroup();
 
         // 세션정보 조회
-        SessionInfo sessionInfo = getSessionInfoDAOBean.exec(sessionId);
+        SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
         EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
         String enterpriseDescription = enterpriseName.getDescription();
 
@@ -55,7 +55,7 @@ public class CreateAnalysisBean {
         allKeys.addAll(getHashDataUtil.exec(tailKey + "*"));
 
         // 필요한 필드만 바로 추출해서 저장할 리스트
-        List<RedisResponse.ListData> listData = getRedisDataByKeysDAOBean.exec(allKeys);
+        List<RedisResponse.ListData> listData = getRedisDataByKeysDAO.exec(allKeys);
 
         // totalQuestionNumber 기준 오름차순 정렬
         listData.sort(Comparator.comparingInt(data -> Integer.parseInt(data.getTotalQuestionNumber())));
@@ -83,7 +83,7 @@ public class CreateAnalysisBean {
         else status = Boolean.FALSE;
 
         // 분석 테이블에 저장
-        String AnalysisId= saveAnalysisDAOBean.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(), object.getKeyKeywords().getQuestionNumber(), userGroup, duration);
+        String AnalysisId= saveAnalysisDAO.exec(sessionInfo, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), object.getKeyKeywords().getKeyword(), object.getKeyKeywords().getQuestionNumber(), userGroup, duration);
 
         return new SessionInfoResponse.Analysis(AnalysisId, status, object.getTotalScore(), object.getEvaluation().getFollowScore().getScore(), object.getResult(), duration, object.getKeyKeywords().getKeyword());
     }

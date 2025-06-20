@@ -29,7 +29,7 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(sessionInfoService.createNewInterview(request));
     }
 
-    // 꼬리질문 불러오기
+    // 꼬리질문 생성하기
     @PostMapping("/questions/tail")
     public ResponseEntity<CommonResponse<SessionInfoResponse.TailQuestion>> createTailInterview(@Valid @RequestBody SessionInfoRequest.TailQuestion request) {
         return ApiResponse.onSuccess(sessionInfoService.createTailInterview(request));

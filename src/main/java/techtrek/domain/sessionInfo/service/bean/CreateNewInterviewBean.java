@@ -2,18 +2,20 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import techtrek.domain.sessionInfo.service.dao.CheckSessionInfoDAO;
+import techtrek.domain.sessionInfo.service.dto.CreateNewDTO;
+import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
 import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.bean.util.CreateBasicUtil;
-import techtrek.domain.sessionInfo.service.bean.util.CreateResumeUtil;
-import techtrek.domain.sessionInfo.service.bean.small.*;
+import techtrek.domain.sessionInfo.service.bean.common.CreateBasicUtil;
+import techtrek.domain.sessionInfo.service.bean.common.CreateResumeUtil;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.global.redis.service.bean.small.GetRedisDAOBean;
-import techtrek.global.redis.service.bean.small.GetRedisTotalNumberDAOBean;
-import techtrek.global.redis.service.bean.small.SaveNewQuestionDAOBean;
+import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.global.redis.service.dao.GetRedisDAO;
+import techtrek.global.redis.service.dao.GetRedisTotalNumberDAO;
+import techtrek.global.redis.service.dao.SaveNewQuestionDAO;
 
 import java.util.*;
 
@@ -23,23 +25,22 @@ public class CreateNewInterviewBean {
     private final CreateBasicUtil createBasicUtil;
     private final CreateResumeUtil createResumeUtil;
 
-    private final GetUserDAOBean getUserDAOBean;
-    private final GetSessionInfoDAOBean getSessionInfoDAOBean;
-    private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
-    private final GetRedisDAOBean getRedisDAOBean;
-    private final SaveNewQuestionDAOBean saveNewQuestionDAOBean;
-    private final GetRedisTotalNumberDAOBean getRedisTotalNumberDAOBean;
-
-    private final CreateNewDTOBean createNewDTOBean;
+    private final GetUserDAO getUserDAO;
+    private final GetSessionInfoDAO getSessionInfoDAO;
+    private final CheckSessionInfoDAO checkSessionInfoDAO;
+    private final GetRedisDAO getRedisDAO;
+    private final SaveNewQuestionDAO saveNewQuestionDAO;
+    private final GetRedisTotalNumberDAO getRedisTotalNumberDAO;
+    private final CreateNewDTO createNewDTO;
 
     // 새로운 질문 생성하기 ( 기본질문 or 이력서기반)
     public SessionInfoResponse.NewQuestion exec(String sessionId, String previousFieldId){
         // 세션 존재 확인
-        checkSessionInfoDAOBean.exec(sessionId);
+        checkSessionInfoDAO.exec(sessionId);
 
         // 사용자, 기업이름, 기업유형 조회
-        User user = getUserDAOBean.exec("1");
-        SessionInfo sessionInfo = getSessionInfoDAOBean.exec(sessionId);
+        User user = getUserDAO.exec("1");
+        SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
         EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
 
         // 필드Id, 세션키 생성
@@ -50,7 +51,7 @@ public class CreateNewInterviewBean {
         String question = "";
 
         // 이전 질문 조회
-        RedisResponse.FieldData previousData = getRedisDAOBean.exec(previousKey);
+        RedisResponse.FieldData previousData = getRedisDAO.exec(previousKey);
         String phase = previousData.getPhase();
         int questionNumberData = Integer.parseInt(previousData.getQuestionNumber());
         int countData = Integer.parseInt(previousData.getCount());
@@ -69,15 +70,15 @@ public class CreateNewInterviewBean {
         // 카운트, 질문 번호, 총 질문 번호
         String count = String.valueOf(countData + 1);
         String questionNumber= String.valueOf(questionNumberData + 1);
-        int newCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":new");
-        int tailCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":tail");
+        int newCount = getRedisTotalNumberDAO.exec(sessionKey + ":new");
+        int tailCount = getRedisTotalNumberDAO.exec(sessionKey + ":tail");
         int totalData = newCount + tailCount + 1;
         String totalQuestionNumber= String.valueOf(totalData);
 
         // redis 저장
-        saveNewQuestionDAOBean.exec(fieldKey, phase, count, question,  questionNumber, totalQuestionNumber);
+        saveNewQuestionDAO.exec(fieldKey, phase, count, question,  questionNumber, totalQuestionNumber);
 
-        return createNewDTOBean.exec(fieldId, question, questionNumber, totalQuestionNumber);
+        return createNewDTO.exec(fieldId, question, questionNumber, totalQuestionNumber);
 
     }
 }

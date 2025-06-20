@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
-import techtrek.domain.sessionInfo.service.bean.small.CheckSessionInfoDAOBean;
+import techtrek.domain.sessionInfo.service.dao.CheckSessionInfoDAO;
 import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
 import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
-import techtrek.global.redis.service.bean.small.GetRedisDAOBean;
-import techtrek.global.redis.service.bean.small.GetRedisTotalNumberDAOBean;
-import techtrek.global.redis.service.bean.small.GetTailNumberDAOBean;
-import techtrek.global.redis.service.bean.small.SaveTailQuestionDAOBean;
+import techtrek.global.redis.service.dao.GetRedisDAO;
+import techtrek.global.redis.service.dao.GetRedisTotalNumberDAO;
+import techtrek.global.redis.service.dao.GetTailNumberDAO;
+import techtrek.global.redis.service.dao.SaveTailQuestionDAO;
 
 import java.util.UUID;
 
@@ -20,16 +20,16 @@ public class CreateTailInterviewBean {
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
 
-    private final CheckSessionInfoDAOBean checkSessionInfoDAOBean;
-    private final GetRedisTotalNumberDAOBean getRedisTotalNumberDAOBean;
-    private final SaveTailQuestionDAOBean saveTailQuestionDAOBean;
-    private final GetTailNumberDAOBean getTailNumberDAOBean;
-    private final GetRedisDAOBean getRedisDAOBean;
+    private final CheckSessionInfoDAO checkSessionInfoDAO;
+    private final GetRedisTotalNumberDAO getRedisTotalNumberDAO;
+    private final SaveTailQuestionDAO saveTailQuestionDAO;
+    private final GetTailNumberDAO getTailNumberDAO;
+    private final GetRedisDAO getRedisDAO;
 
     // 꼬리질문 생성
     public SessionInfoResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
         // 세션 존재 확인
-        checkSessionInfoDAOBean.exec(sessionId);
+        checkSessionInfoDAO.exec(sessionId);
 
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
@@ -39,23 +39,23 @@ public class CreateTailInterviewBean {
         String previousAnswer;
 
         // 부모 질문 번호 조회
-        RedisResponse.FieldData parentData = getRedisDAOBean.exec(sessionKey + ":new:"+ parentId);
+        RedisResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);
         String parentQuestionNumber = parentData.getQuestionNumber();
 
         // 질문, 답변 조회
         if(previousFieldId != null){
-            RedisResponse.FieldData previousData = getRedisDAOBean.exec(sessionKey+":tail:"+previousFieldId);
+            RedisResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":tail:"+previousFieldId);
             previousQuestion = previousData.getQuestion();
             previousAnswer = previousData.getAnswer();
         } else {
-            RedisResponse.FieldData previousData = getRedisDAOBean.exec(sessionKey+":new:"+parentId);
+            RedisResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":new:"+parentId);
             previousQuestion = previousData.getQuestion();
             previousAnswer = previousData.getAnswer();
         }
 
         // 총 질문 개수 조회
-        int newCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":new");
-        int tailCount = getRedisTotalNumberDAOBean.exec(sessionKey + ":tail");
+        int newCount = getRedisTotalNumberDAO.exec(sessionKey + ":new");
+        int tailCount = getRedisTotalNumberDAO.exec(sessionKey + ":tail");
         int totalData = newCount + tailCount + 1;
         String totalQuestionNumber= String.valueOf(totalData);
 
@@ -65,11 +65,11 @@ public class CreateTailInterviewBean {
         String question = createPromptUtil.exec(prompt);
 
         // 꼬리질문 개수, 질문 번호
-       String tailQuestionNumber = getTailNumberDAOBean.exec(sessionKey, parentQuestionNumber);
+       String tailQuestionNumber = getTailNumberDAO.exec(sessionKey, parentQuestionNumber);
        String questionNumber = parentQuestionNumber + "-" + tailQuestionNumber;
 
         // redis에 저장
-        saveTailQuestionDAOBean.exec(fieldKey, question, parentQuestionNumber,tailQuestionNumber,questionNumber, totalQuestionNumber);
+        saveTailQuestionDAO.exec(fieldKey, question, parentQuestionNumber,tailQuestionNumber,questionNumber, totalQuestionNumber);
 
 
         return new SessionInfoResponse.TailQuestion(fieldId, question, parentQuestionNumber, tailQuestionNumber, totalQuestionNumber);

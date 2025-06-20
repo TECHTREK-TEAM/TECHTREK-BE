@@ -2,12 +2,12 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.global.redis.service.bean.small.SaveAnswerDAOBean;
+import techtrek.global.redis.service.dao.SaveAnswerDAO;
 
 @Component
 @RequiredArgsConstructor
 public class CreateAnswerBean {
-    private final SaveAnswerDAOBean saveAnswerDAOBean;
+    private final SaveAnswerDAO saveAnswerDAO;
 
     // 답변하기
     public Boolean exec(String sessionId, String fieldId, String type, String answer){
@@ -15,7 +15,7 @@ public class CreateAnswerBean {
         String fieldKey = "interview:session:" + sessionId + ":" + type + ":"+ fieldId;
 
         // 답변 저장
-        saveAnswerDAOBean.exec(fieldKey,answer);
+        saveAnswerDAO.exec(fieldKey,answer);
 
         return true;
     };

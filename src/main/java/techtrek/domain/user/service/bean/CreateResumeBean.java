@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.ResumeResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.domain.user.service.bean.small.SaveResumeDAOBean;
-import techtrek.domain.user.service.bean.small.SaveStackDAOBean;
+import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.domain.user.service.dao.SaveResumeDAO;
+import techtrek.domain.user.service.dao.SaveStackDAO;
 import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
@@ -26,9 +26,9 @@ public class CreateResumeBean {
     private final CreatePromptUtil createPromptUtil;
     private final CreateJsonReadUtil createJsonReadUtil;
 
-    private final SaveResumeDAOBean saveResumeDAOBean;
-    private final SaveStackDAOBean saveStackDAOBean;
-    private final GetUserDAOBean getUserDAOBean;
+    private final SaveResumeDAO saveResumeDAO;
+    private final SaveStackDAO saveStackDAO;
+    private final GetUserDAO getUserDAO;
 
     // 이력서 추출
     public ResumeResponse exec(MultipartFile file) {
@@ -36,7 +36,7 @@ public class CreateResumeBean {
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
         // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        User user = getUserDAO.exec("1");
 
         // 이력서 추출
         String extractedText;
@@ -57,8 +57,8 @@ public class CreateResumeBean {
         ResumeResponse object = createJsonReadUtil.exec(gptResponse, ResumeResponse.class);
 
         // 이력서, 스택 등 값 저장
-        saveResumeDAOBean.exec(user, object.getGroup(), object.getSeniority(), object.getResume());
-        saveStackDAOBean.exec(user, object.getStacks());
+        saveResumeDAO.exec(user, object.getGroup(), object.getSeniority(), object.getResume());
+        saveStackDAO.exec(user, object.getStacks());
 
         return object;
     }
