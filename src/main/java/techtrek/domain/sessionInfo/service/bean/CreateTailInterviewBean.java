@@ -2,8 +2,8 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
+import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.service.dao.CheckSessionInfoDAO;
 import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
 import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
@@ -39,16 +39,16 @@ public class CreateTailInterviewBean {
         String previousAnswer;
 
         // 부모 질문 번호 조회
-        RedisResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);
+        SessionParserResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);
         String parentQuestionNumber = parentData.getQuestionNumber();
 
         // 질문, 답변 조회
         if(previousFieldId != null){
-            RedisResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":tail:"+previousFieldId);
+            SessionParserResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":tail:"+previousFieldId);
             previousQuestion = previousData.getQuestion();
             previousAnswer = previousData.getAnswer();
         } else {
-            RedisResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":new:"+parentId);
+            SessionParserResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":new:"+parentId);
             previousQuestion = previousData.getQuestion();
             previousAnswer = previousData.getAnswer();
         }

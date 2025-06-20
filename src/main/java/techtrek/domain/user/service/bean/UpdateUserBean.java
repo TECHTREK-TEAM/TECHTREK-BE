@@ -19,7 +19,7 @@ public class UpdateUserBean {
     private final GetUserDTO getUserDTO;
 
     // 사용자 정보 수정
-    public UserResponse.Info exec (String newName, String newUserGroup, String newSeniority, List<UserRequest.Stack> newStacks) {
+    public UserResponse.Info exec (String newName, String newUserGroup, String newSeniority, List<UserRequest.Info.Stack> newStacks) {
         // 사용자 조회
         User user = getUserDAO.exec("1");
 

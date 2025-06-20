@@ -10,10 +10,9 @@ public class AnalysisResponse {
 
     // 세션 불러오기
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Detail{
         private String sessionInfoId;
         private Analysis analysis;
@@ -67,6 +66,7 @@ public class AnalysisResponse {
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class SessionData {
         private String sessionInfoId;
         private EnterpriseName enterpriseName;

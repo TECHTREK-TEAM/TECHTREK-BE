@@ -9,13 +9,12 @@ public class CreateNewDTO {
     // 새로운 질문 Response DTO
     public SessionInfoResponse.NewQuestion exec(String fieldId, String question, String questionNumber, String totalQuestionNumber) {
 
-        SessionInfoResponse.NewQuestion response = new SessionInfoResponse.NewQuestion();
-        response.setFieldId(fieldId);
-        response.setQuestion(question);
-        response.setQuestionNumber(questionNumber);
-        response.setTotalQuestionNumber(totalQuestionNumber);
-
-        return response;
+        return SessionInfoResponse.NewQuestion.builder()
+                .fieldId(fieldId)
+                .question(question)
+                .questionNumber(questionNumber)
+                .totalQuestionNumber(totalQuestionNumber)
+                .build();
 
     }
 }

@@ -13,9 +13,9 @@ public class SaveResumeDAO {
 
     // 이력서 및 직군, 연차 저장
     public void exec(User user, String group, String seniority, String resume) {
-        user.setUserGroup(group);
-        user.setSeniority(seniority);
-        user.setResume(resume);
+        if (group != null) user.changeUserGroup(group);
+        if (seniority != null) user.changeSeniority(seniority);
+        if (resume != null) user.changeResume(resume);
 
         userRepository.save(user);
     }

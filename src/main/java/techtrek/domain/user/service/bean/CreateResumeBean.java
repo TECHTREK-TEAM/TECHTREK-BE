@@ -5,7 +5,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import techtrek.domain.user.dto.ResumeResponse;
+import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dao.GetUserDAO;
 import techtrek.domain.user.service.dao.SaveResumeDAO;
@@ -31,7 +31,7 @@ public class CreateResumeBean {
     private final GetUserDAO getUserDAO;
 
     // 이력서 추출
-    public ResumeResponse exec(MultipartFile file) {
+    public UserResponse.Resume exec(MultipartFile file) {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
@@ -54,7 +54,7 @@ public class CreateResumeBean {
         String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
-        ResumeResponse object = createJsonReadUtil.exec(gptResponse, ResumeResponse.class);
+        UserResponse.Resume object = createJsonReadUtil.exec(gptResponse, UserResponse.Resume.class);
 
         // 이력서, 스택 등 값 저장
         saveResumeDAO.exec(user, object.getGroup(), object.getSeniority(), object.getResume());

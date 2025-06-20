@@ -11,14 +11,13 @@ public class CreateStartDTO {
     // 면접 시작 Response DTO
     public SessionInfoResponse.Start exec(String sessionId, String fieldId, String question, String questionNumber, String totalQuestionNumber) {
 
-        SessionInfoResponse.Start response = new SessionInfoResponse.Start();
-        response.setSessionId(sessionId);
-        response.setFieldId(fieldId);
-        response.setQuestion(question);
-        response.setQuestionNumber(questionNumber);
-        response.setTotalQuestionNumber(totalQuestionNumber);
-
-        return response;
+        return SessionInfoResponse.Start.builder()
+                .sessionId(sessionId)
+                .fieldId(fieldId)
+                .question(question)
+                .questionNumber(questionNumber)
+                .totalQuestionNumber(totalQuestionNumber)
+                .build();
 
     }
 

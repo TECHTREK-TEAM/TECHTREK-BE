@@ -16,7 +16,6 @@ public class SessionInfoService {
     private final CreateNewInterviewBean createNewInterviewBean;
     private final CreateTailInterviewBean createTailInterviewBean;
     private final CreateAnswerBean createAnswerBean;
-    private final CreateAnalysisBean createAnalysisBean;
 
     //면접 시작하기
     public SessionInfoResponse.Start createInterview(SessionInfoRequest.Start request) {
@@ -36,11 +35,6 @@ public class SessionInfoService {
     //답변하기
     public Boolean createAnswer(SessionInfoRequest.Answer request) {
         return createAnswerBean.exec(request. getSessionId(),request.getFieldId(),request.getType(),request.getAnswer());
-    }
-
-    //분석하기
-    public SessionInfoResponse.Analysis createAnalysis(SessionInfoRequest.Analysis request) {
-        return createAnalysisBean.exec(request.getSessionId(), request.getDuration());
     }
 
 }

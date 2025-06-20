@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
+import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dao.GetUserDAO;
-import techtrek.global.redis.dto.RedisResponse;
 import techtrek.global.redis.service.dao.GetRedisDataByKeysDAO;
 
 import java.util.ArrayList;
@@ -80,13 +80,13 @@ public class GetAnalysisRecentBean {
         String pattern = "interview:session:" + sessionId + ":*";
         Set<String> keys = redisTemplate.keys(pattern);
 
-        List<RedisResponse.ListData> listData = redisDataByKeysDAOBean.exec( keys);
+        List<SessionParserResponse.ListData> listData = redisDataByKeysDAOBean.exec( keys);
 
         // totalQuestionNumber 기준 오름차순 정렬
         listData.sort(Comparator.comparingInt(data -> Integer.parseInt(data.getTotalQuestionNumber())));
 
         List<AnalysisResponse.Detail.Interview> interviewList = new ArrayList<>();
-        for (RedisResponse.ListData data : listData) {
+        for (SessionParserResponse.ListData data : listData) {
             AnalysisResponse.Detail.Interview interview = AnalysisResponse.Detail.Interview.builder()
                     .question(data.getQuestion())
                     .answer(data.getAnswer())

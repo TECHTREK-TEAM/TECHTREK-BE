@@ -1,9 +1,10 @@
-package techtrek.domain.sessionInfo.service.bean;
+package techtrek.domain.analysis.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.sessionInfo.dto.AnalysisParserResponse;
+import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
+import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
@@ -13,7 +14,6 @@ import techtrek.domain.user.service.dao.GetUserDAO;
 import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
 import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
 import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
-import techtrek.global.redis.dto.RedisResponse;
 import techtrek.global.redis.service.dao.GetRedisDataByKeysDAO;
 import techtrek.global.redis.service.bean.common.GetHashDataUtil;
 
@@ -55,14 +55,14 @@ public class CreateAnalysisBean {
         allKeys.addAll(getHashDataUtil.exec(tailKey + "*"));
 
         // 필요한 필드만 바로 추출해서 저장할 리스트
-        List<RedisResponse.ListData> listData = getRedisDataByKeysDAO.exec(allKeys);
+        List<SessionParserResponse.ListData> listData = getRedisDataByKeysDAO.exec(allKeys);
 
         // totalQuestionNumber 기준 오름차순 정렬
         listData.sort(Comparator.comparingInt(data -> Integer.parseInt(data.getTotalQuestionNumber())));
 
         // 질문/답변 문자열 누적
         StringBuilder qaBuilder = new StringBuilder();
-        for (RedisResponse.ListData data : listData) {
+        for (SessionParserResponse.ListData data : listData) {
             qaBuilder.append("질문: ").append(data.getQuestion()).append("\n");
             qaBuilder.append("답변: ").append(data.getAnswer() != null ? data.getAnswer() : "응답 없음").append("\n");
             qaBuilder.append("번호: ").append(data.getQuestionNumber()).append("\n\n");

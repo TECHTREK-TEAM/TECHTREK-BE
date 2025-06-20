@@ -15,9 +15,9 @@ public class GetUserDTO {
     public UserResponse.Info exec(User user) {
 
         // 스택을 list형태로 불러오기
-        List<UserResponse.Stack> stackDTOs = new ArrayList<>();
+        List<UserResponse.Info.Stack> stackDTOs = new ArrayList<>();
         for (Stack stack : user.getStackList()) {
-            UserResponse.Stack dto = UserResponse.Stack.builder()
+            UserResponse.Info.Stack dto = UserResponse.Info.Stack.builder()
                     .stackName(stack.getStackName())
                     .build();
             stackDTOs.add(dto);

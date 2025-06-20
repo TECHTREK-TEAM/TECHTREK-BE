@@ -17,26 +17,26 @@ public class UpdateUserDAO {
     private final UserRepository userRepository;
 
     // 사용자 정보 수정 저장
-    public void exec(User user, String newName, String newSeniority, String newUserGroup, List<UserRequest.Stack> newStacks){
-        if (newName != null) user.setName(newName);
-        if (newUserGroup != null) user.setUserGroup(newUserGroup);
-        if (newSeniority != null) user.setSeniority(newSeniority);
-        user.setUpdatedAt(LocalDateTime.now().withNano(0));
+    public void exec(User user, String newName, String newSeniority, String newUserGroup, List<UserRequest.Info.Stack> newStacks){
+        // 이름, 그룹, 시니어리티 변경
+        if (newName != null) user.changeUsername(newName);
+        if (newUserGroup != null) user.changeUserGroup(newUserGroup);
+        if (newSeniority != null) user.changeSeniority(newSeniority);
 
-        // 사용자 스택 수정
+        // 타임스탬프 갱신
+        user.updateTimestamp();
+
+        // 스택 리스트 교체
         if (newStacks != null) {
-            // 기존 스택 삭제
-            List<Stack> currentStacks = user.getStackList();
-            currentStacks.clear();
+            List<Stack> newStackList = newStacks.stream()
+                    .map(dto -> Stack.builder()
+                            .id(UUID.randomUUID().toString())
+                            .stackName(dto.getStackName())
+                            .user(user)
+                            .build())
+                    .toList();
 
-            // 새 스택 리스트 저장
-            for (UserRequest.Stack dto : newStacks) {
-                Stack stack = new Stack();
-                stack.setId(UUID.randomUUID().toString());
-                stack.setStackName(dto.getStackName());
-                stack.setUser(user);
-                currentStacks.add(stack);
-            }
+            user.replaceStacks(newStackList);  // 도메인 메서드 사용
         }
 
         userRepository.save(user);

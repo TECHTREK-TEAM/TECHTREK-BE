@@ -14,7 +14,6 @@ import techtrek.global.common.response.CommonResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/interview")
 public class SessionInfoController {
-
     private final SessionInfoService sessionInfoService;
 
     // 면접 시작하기
@@ -37,13 +36,8 @@ public class SessionInfoController {
 
     // 답변하기
     @PostMapping("/answers")
-    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
+    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@Valid @RequestBody SessionInfoRequest.Answer request) {
         return ApiResponse.onSuccess(sessionInfoService.createAnswer(request));
     }
 
-    // 분석하기
-    @PostMapping("/analyses")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Analysis>> createAnalysis(@RequestBody SessionInfoRequest.Analysis request) {
-        return ApiResponse.onSuccess(sessionInfoService.createAnalysis(request));
-    }
 }

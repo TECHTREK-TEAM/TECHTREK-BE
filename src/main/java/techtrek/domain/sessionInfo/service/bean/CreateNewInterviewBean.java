@@ -2,10 +2,10 @@ package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.service.dao.CheckSessionInfoDAO;
 import techtrek.domain.sessionInfo.service.dto.CreateNewDTO;
 import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
-import techtrek.global.redis.dto.RedisResponse;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
@@ -51,7 +51,7 @@ public class CreateNewInterviewBean {
         String question = "";
 
         // 이전 질문 조회
-        RedisResponse.FieldData previousData = getRedisDAO.exec(previousKey);
+        SessionParserResponse.FieldData previousData = getRedisDAO.exec(previousKey);
         String phase = previousData.getPhase();
         int questionNumberData = Integer.parseInt(previousData.getQuestionNumber());
         int countData = Integer.parseInt(previousData.getCount());

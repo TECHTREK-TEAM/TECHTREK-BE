@@ -10,65 +10,60 @@ public class UserResponse {
 
     // 사용자 정보
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Info {
         private String name;
         private String userGroup;
         private String seniority;
         private List<Stack> stacks;
-    }
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Stack {
-        private String stackName;
+        @Getter
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Stack {
+            private String stackName;
+        }
     }
 
     // 관심 기업
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class CompanyList {
         private List<Company> companies;
+
+        @Getter
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Company {
+            private String companyName;
+            private Double companyPercent;
+        }
     }
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Company {
-        private String companyName;
-        private Double companyPercent;
-    }
 
     // 합격률
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     @JsonPropertyOrder({"interviewTotal", "interviewPass", "interviewPercent"})
     public static class Pass {
-        private int InterviewTotal;
+        private int interviewTotal;
         private int interviewPass;
         private Double interviewPercent;
     }
 
     // 일치율
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Score {
         private Double averageResultScore;
         private Double enhancedPercent;
@@ -77,6 +72,7 @@ public class UserResponse {
     // 면접
     @Getter
     @Builder
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Interview {
         private InterviewData highestScore;
@@ -85,6 +81,7 @@ public class UserResponse {
 
         @Getter
         @Builder
+        @NoArgsConstructor
         @AllArgsConstructor
         public static class InterviewData {
             private boolean status;
@@ -95,9 +92,31 @@ public class UserResponse {
 
         @Getter
         @Builder
+        @NoArgsConstructor
         @AllArgsConstructor
         public static class Resume {
             private boolean status;
+        }
+    }
+
+
+    // 이력서
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Resume {
+        private String group;
+        private String seniority;
+        private String resume;
+        private List<Stack> stacks;
+
+        @Getter
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Stack {
+            private String stackName;
         }
     }
 

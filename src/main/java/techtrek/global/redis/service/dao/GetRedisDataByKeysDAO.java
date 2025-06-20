@@ -3,7 +3,7 @@ package techtrek.global.redis.service.dao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.global.redis.dto.RedisResponse;
+import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ public class GetRedisDataByKeysDAO {
     private final RedisTemplate<String, String> redisTemplate;
 
     // key들에 의해 데이터 조회 (list)
-    public List<RedisResponse.ListData> exec(Set<String> keys){
+    public List<SessionParserResponse.ListData> exec(Set<String> keys){
         // 필요한 필드만 추출해서 저장할 리스트
-        List<RedisResponse.ListData> response = new ArrayList<>();
+        List<SessionParserResponse.ListData> response = new ArrayList<>();
 
         // 추출
         for (String key : keys) {
@@ -33,7 +33,7 @@ public class GetRedisDataByKeysDAO {
                 tailQuestionMessage = "연계 질문입니다.";
             }
 
-            response.add(new RedisResponse.ListData(question, answer, questionNumber, totalQuestionNumber, tailQuestionMessage));
+            response.add(new SessionParserResponse.ListData(question, answer, questionNumber, totalQuestionNumber, tailQuestionMessage));
         }
 
         return response;

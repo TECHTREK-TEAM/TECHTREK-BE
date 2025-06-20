@@ -1,12 +1,12 @@
-package techtrek.domain.sessionInfo.dto;
+package techtrek.domain.analysis.dto;
 
 import lombok.*;
 
+// gpt 분석 결과를 파싱해 담는 dto
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class AnalysisParserResponse {
 
     private Evaluation evaluation;
@@ -15,10 +15,9 @@ public class AnalysisParserResponse {
     private String result;
 
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Evaluation {
         private ScoreDetail accuracy;
         private ScoreDetail keyConcept;
@@ -28,20 +27,18 @@ public class AnalysisParserResponse {
     }
 
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class ScoreDetail {
         private double score;
         private String reason;
     }
 
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class KeyKeywords {
         private String keyword;
         private String questionNumber;

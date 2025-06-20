@@ -28,18 +28,18 @@ public class GetCompanyBean {
         long total = enterpriseCount.stream().mapToLong(SessionInfoRepository.EnterpriseCount::getCnt).sum();
 
         // 퍼센트 계산
-        List<UserResponse.Company> companyList = new ArrayList<>();
+        List<UserResponse.CompanyList.Company> companyList = new ArrayList<>();
         for (SessionInfoRepository.EnterpriseCount c : enterpriseCount) {
             double percent = total == 0 ? 0.0 : (c.getCnt() * 100.0 / total);
             percent = Math.round(percent * 10.0) / 10.0;
-            companyList.add(new UserResponse.Company(c.getEnterpriseName(), percent));
+            companyList.add(new UserResponse.CompanyList.Company(c.getEnterpriseName(), percent));
         }
 
         // 내림차순
         companyList.sort((a, b) -> Double.compare(b.getCompanyPercent(), a.getCompanyPercent()));
 
         // 상위 3개
-        List<UserResponse.Company> top3Companies = companyList.size() > 3 ? companyList.subList(0, 3) : companyList;
+        List<UserResponse.CompanyList.Company> top3Companies = companyList.size() > 3 ? companyList.subList(0, 3) : companyList;
 
         return new UserResponse.CompanyList(top3Companies);
 

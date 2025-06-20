@@ -1,14 +1,12 @@
 package techtrek.domain.sessionInfo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 public class SessionInfoResponse {
 
+    // 면접 시작
     @Getter
-    @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Start {
@@ -19,8 +17,9 @@ public class SessionInfoResponse {
         private String totalQuestionNumber;
     }
 
+    // 새 질문
     @Getter
-    @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class NewQuestion {
@@ -30,8 +29,9 @@ public class SessionInfoResponse {
         private String totalQuestionNumber;
     }
 
+    // 꼬리 질문
     @Getter
-    @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class TailQuestion {
@@ -42,8 +42,9 @@ public class SessionInfoResponse {
         private String resultTotalQuestionNumber;
     }
 
+    // 분석
     @Getter
-    @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Analysis {
