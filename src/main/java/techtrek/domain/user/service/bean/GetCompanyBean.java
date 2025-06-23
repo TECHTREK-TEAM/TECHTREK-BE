@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.CreateCompanyDTO;
@@ -18,14 +19,14 @@ import java.util.stream.Collectors;
 public class GetCompanyBean {
 
     private final GetUserDAO getUserDAO;
-    private final GetSessionInfoDAO getSessionInfoDAO;
+    private final GetSessionInfoListDAO getSessionInfoListDAO;
     private final CreateCompanyDTO createCompanyDTO;
 
     // 관심기업 Top 3 조회
     public UserResponse.CompanyList exec(){
         // TODO:사용자, 세션정보 조회
         User user = getUserDAO.exec("1");
-        List<SessionInfo> sessionInfos = getSessionInfoDAO.exec(user);
+        List<SessionInfo> sessionInfos = getSessionInfoListDAO.exec(user);
 
         // 기업이름에 따른 면접 개수 조회
         Map<EnterpriseName, Long> countMap = new HashMap<>();

@@ -22,11 +22,4 @@ public class GetSessionInfoDAO {
         return sessionInfo;
     }
 
-    // 세션정보 조회
-    public List<SessionInfo> exec(User user) {
-        List<SessionInfo> sessionInfos = sessionInfoRepository.findAllByUser(user);
-        return sessionInfos;
-    }
-
-
 }

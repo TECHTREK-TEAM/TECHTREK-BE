@@ -55,7 +55,7 @@ public class GetScoreBean {
         return createScoreDTO.exec(average, enhancedPercent);
     }
 
-    // score null 체크 
+    // score null 체크
     private double checkScore(Double score) {
         return score != null ? score : 0.0;
     }

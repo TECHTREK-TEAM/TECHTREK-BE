@@ -1,20 +1,23 @@
 package techtrek.domain.analysis.service.bean;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.analysis.repository.AnalysisRepository;
+import techtrek.domain.analysis.service.small.CreateAnalysisDetailDTO;
+import techtrek.domain.analysis.service.small.GetAverageFollowScoreDAO;
+import techtrek.domain.analysis.service.small.GetAvgDurationDAO;
+import techtrek.domain.analysis.service.small.GetEnterpriseAnalysisCountDAO;
+import techtrek.domain.redis.service.common.GetRedisHashUtil;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,83 +25,50 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class GetAnalysisRecentBean {
 
-    private final GetUserDAO getUserDAO;
-    private final GetRedisByKeyDAO redisDataByKeysDAOBean;
-    private final SessionInfoRepository sessionInfoRepository;
-    private final AnalysisRepository analysisRepository;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final GetRedisHashUtil getRedisHashUtil;
 
-    // 세션 불러오기
+    private final GetUserDAO getUserDAO;
+    private final GetRedisByKeyDAO getRedisByKeyDAO;
+    private final GetSessionInfoListDAO getSessionInfoListDAO;
+    private final GetAvgDurationDAO getAvgDurationDAO;
+    private final GetAverageFollowScoreDAO getAverageFollowScoreDAO;
+    private final GetEnterpriseAnalysisCountDAO getEnterpriseAnalysisCountDAO;
+    private final CreateAnalysisDetailDTO createAnalysisDetailDTO;
+
+    // 최근 세션 불러오기
     public AnalysisResponse.Detail exec(EnterpriseName enterpriseName){
-        // 사용자 조회
+        // TODO:사용자 조회
         User user = getUserDAO.exec("1");
 
-        // 세션정보 list 조회
-        List<SessionInfo> sessionInfos = sessionInfoRepository
-                .findTopByUserIdAndEnterpriseNameOrderByAnalysisCreatedAtDesc(user.getId(), enterpriseName);
-
-        // 사용자의 분석 데이터
+        // 해당 기업의 세션정보 list 조회 (내림차순)
+        List<SessionInfo> sessionInfos = getSessionInfoListDAO.exec(user.getId(), enterpriseName);
         SessionInfo sessionInfo = sessionInfos.get(0);
-        String sessionInfoId = sessionInfo.getId();
-        String sessionId = sessionInfo.getSessionId();
         Analysis analysis = sessionInfo.getAnalysis();
 
-        double userFollowScore = analysis.getFollowScore();
-        int userDuration = analysis.getDuration();
-
-        // 전체 평균 가져오기
-        double avgFollowScore = analysisRepository.getAverageFollowScore();
-        double avgDuration = analysisRepository.getAverageDuration();
-
-        // 퍼센트 차이 계산
-        double followScoreDiffPercent = ((userFollowScore - avgFollowScore) / avgFollowScore) * 100;
-        double durationDiffPercent = ((userDuration - avgDuration) / avgDuration) * 100;
-
+        // 분석 데이터 수치
+        double followScore = analysis.getFollowScore();
+        int duration = analysis.getDuration();
         double resultScore = analysis.getResultScore();
 
-        // 전체 수
-        long total = analysisRepository.countByEnterprise(enterpriseName);
+        // 전체 평균 데이터
+        double avgFollowScore = getAverageFollowScoreDAO.exec();
+        double avgDuration = getAvgDurationDAO.exec();
 
-        // 나보다 낮은 사람 수
-        long lower = analysisRepository.countLowerScoreInEnterprise(enterpriseName, resultScore);
+        // 퍼센트 차이 계산
+        double followScoreDiffPercent = ((followScore - avgFollowScore) / avgFollowScore) * 100;
+        double durationDiffPercent = ((duration - avgDuration) / avgDuration) * 100;
 
-        // 상위 퍼센트 계산
-        double topScorePercent = ((double)(lower + 1) / total) * 100;
+        // 상위 점수 비율 계산
+        long totalCount = getEnterpriseAnalysisCountDAO.exec(enterpriseName);
+        long lowerCount = getEnterpriseAnalysisCountDAO.exec(enterpriseName, resultScore);
+        double topScorePercent = ((double)(lowerCount + 1) / totalCount) * 100;
 
-        // dto
-        AnalysisResponse.Detail.Analysis analysisResult = AnalysisResponse.Detail.Analysis.builder()
-                .followScore(userFollowScore)
-                .averageFollowPercent(followScoreDiffPercent)
-                .duration(userDuration)
-                .averageDurationPercent(durationDiffPercent)
-                .resultScore(analysis.getResultScore())
-                .topScore(topScorePercent)
-                .status(analysis.isStatus())
-                .build();
+        // 모든 hash 데이터 조회
+        Set<String> allKeys = new HashSet<>();
+        allKeys.addAll(getRedisHashUtil.exec("interview:session:" + sessionInfo.getSessionId() + "*"));
+        List<SessionParserResponse.ListData> listData = getRedisByKeyDAO.exec(allKeys);
 
-        String pattern = "interview:session:" + sessionId + ":*";
-        Set<String> keys = redisTemplate.keys(pattern);
-
-        List<SessionParserResponse.ListData> listData = redisDataByKeysDAOBean.exec( keys);
-
-
-        List<AnalysisResponse.Detail.Interview> interviewList = new ArrayList<>();
-        for (SessionParserResponse.ListData data : listData) {
-            AnalysisResponse.Detail.Interview interview = AnalysisResponse.Detail.Interview.builder()
-                    .question(data.getQuestion())
-                    .answer(data.getAnswer())
-                    .questionNumber(data.getQuestionNumber())
-                    .build();
-            interviewList.add(interview);
-        }
-
-        AnalysisResponse.Detail.Feedback feedback = AnalysisResponse.Detail.Feedback.builder()
-                .keyword(analysis.getKeyword())
-                .keywordNumber(analysis.getKeywordNumber())
-                .result(analysis.getResult())
-                .build();
-
-        return new AnalysisResponse.Detail(sessionInfoId,analysisResult,interviewList,feedback);
+        return createAnalysisDetailDTO.exec(sessionInfo, analysis, followScoreDiffPercent, durationDiffPercent, topScorePercent, listData);
 
     }
 }
