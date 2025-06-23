@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.dao;
+package techtrek.domain.user.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

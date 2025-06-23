@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.dto;
+package techtrek.domain.user.service.small;
 
 import org.springframework.stereotype.Component;
 import techtrek.domain.stack.entity.Stack;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class GetUserDTO {
+public class CreateUserDTO {
 
     // 사용자 정보 조회 dto
     public UserResponse.Info exec(User user) {

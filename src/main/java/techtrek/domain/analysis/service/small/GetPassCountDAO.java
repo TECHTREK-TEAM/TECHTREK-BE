@@ -4,16 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
-public class GetTotalAverageResultScoreDAO {
+public class GetPassCountDAO {
     private final AnalysisRepository analysisRepository;
 
-    // 일치율 평균 (총)
-    public Double exec(List<String> sessionIds){
-        Double average = analysisRepository.findAverageScoreBySessionIds(sessionIds);
-        return average;
+    // userId를 이용하여 합격 면접 수 조회
+    public int exec(String userId){
+        int interviewPass = analysisRepository.countByStatusTrueAndSessionInfoUserId(userId);
+        return interviewPass;
     }
 }

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.dao.GetUserDAO;
-import techtrek.domain.user.service.dao.SaveResumeDAO;
-import techtrek.domain.user.service.dao.SaveStackDAO;
+import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.service.small.SaveResumeDAO;
+import techtrek.domain.user.service.small.SaveStackDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.util.ChangeJsonReadUtil;
@@ -21,6 +21,8 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class CreateResumeBean {
+    //상수 정의
+    private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
 
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
@@ -35,7 +37,7 @@ public class CreateResumeBean {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
-        // 사용자 조회
+        // TODO:사용자 조회
         User user = getUserDAO.exec("1");
 
         // 이력서 추출
@@ -48,8 +50,7 @@ public class CreateResumeBean {
         }
 
         // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = createPromptTemplateUtil.exec("prompts/resume_summary_prompt.txt");
-
+        String promptTemplate = createPromptTemplateUtil.exec(PROMPT_PATH_RESUME);
         String prompt = String.format(promptTemplate, extractedText);
         String gptResponse = createPromptUtil.exec(prompt);
 

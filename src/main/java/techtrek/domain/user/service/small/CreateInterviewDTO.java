@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.dto;
+package techtrek.domain.user.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,8 +9,9 @@ import techtrek.domain.user.entity.User;
 
 @Component
 @RequiredArgsConstructor
-public class GetInterviewDTO {
+public class CreateInterviewDTO {
 
+    // 면접 정보 dto
     public UserResponse.Interview exec(User user, Analysis highestScoreAnalysis, Analysis recentAnalysis) {
 
         // 가장 점수 높은 면접 정보 구성

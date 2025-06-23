@@ -41,7 +41,7 @@ public class UserResponse {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class Company {
-            private String companyName;
+            private EnterpriseName companyName;
             private Double companyPercent;
         }
     }

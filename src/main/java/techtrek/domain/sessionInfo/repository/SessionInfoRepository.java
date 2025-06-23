@@ -13,29 +13,19 @@ import java.util.Optional;
 
 @Repository
 public interface SessionInfoRepository extends JpaRepository<SessionInfo, String> {
-    // sessionId로 sessionInfo 찾기
+    // sessionId로 sessionInfo 조회
     Optional<SessionInfo> findBySessionId(String sessionId);
 
-    // userId로 sessionInfo 찾기
-    List<SessionInfo> findByUserId(String userId);
+    // 사용자 기준으로 모든 SessionInfo 조회
+    List<SessionInfo> findAllByUser(User user);
 
     // 전체 면접 수
     @Query("SELECT COUNT(s) FROM SessionInfo s WHERE s.user.id = :userid")
     int countAllSessions(@Param("userid") String userid);
 
-    // 전체 면접 조회
+    // 전체 sessionInfoId 조회
     @Query("SELECT s.id FROM SessionInfo s WHERE s.user.id = :userId")
-    List<String> findSessionIdsByUserId(@Param("userId") String userId);
-
-    // user로 enterpriseName 개수 계산
-    @Query("SELECT s.enterpriseName AS enterpriseName, COUNT(s) AS cnt " +
-            "FROM SessionInfo s WHERE s.user = :user GROUP BY s.enterpriseName")
-    List<EnterpriseCount> countByEnterpriseName(@Param("user") User user);
-
-    interface EnterpriseCount {
-        String getEnterpriseName();
-        Long getCnt();
-    }
+    List<String> findSessionIdsByUserId(String userId);
 
 
     // enterpriseName, userId + 분석테이블에서 가장 최근 날짜 sessionInfoId 조회

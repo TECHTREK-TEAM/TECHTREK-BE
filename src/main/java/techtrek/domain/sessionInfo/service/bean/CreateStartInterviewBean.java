@@ -9,7 +9,7 @@ import techtrek.domain.sessionInfo.service.common.CreateBasicUtil;
 import techtrek.domain.sessionInfo.service.small.CreateStartDTO;
 import techtrek.domain.sessionInfo.service.small.SaveSessionInfoDAO;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.redis.service.small.SaveNewQuestionDAO;
 
 import java.util.*;

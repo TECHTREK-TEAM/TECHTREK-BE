@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
+import techtrek.domain.user.entity.User;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -19,10 +22,11 @@ public class GetSessionInfoDAO {
         return sessionInfo;
     }
 
-    // userId를 이용하여 전체 면접 수 조회
-    public int execCount(String userId) {
-        int InterviewTotal = sessionInfoRepository.countAllSessions(userId);
-        return InterviewTotal;
+    // 세션정보 조회
+    public List<SessionInfo> exec(User user) {
+        List<SessionInfo> sessionInfos = sessionInfoRepository.findAllByUser(user);
+        return sessionInfos;
     }
+
 
 }

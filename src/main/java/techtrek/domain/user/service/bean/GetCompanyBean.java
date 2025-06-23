@@ -2,46 +2,53 @@ package techtrek.domain.user.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
-import techtrek.domain.sessionInfo.service.small.GetEnterpriseNameCountDAO;
+import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.domain.user.service.small.CreateCompanyDTO;
+import techtrek.domain.user.service.small.GetUserDAO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class GetCompanyBean {
-    private final GetUserDAO getUserDAO;
-    private final GetEnterpriseNameCountDAO getEnterpriseNameCountDAO;
 
+    private final GetUserDAO getUserDAO;
+    private final GetSessionInfoDAO getSessionInfoDAO;
+    private final CreateCompanyDTO createCompanyDTO;
+
+    // 관심기업 Top 3 조회
     public UserResponse.CompanyList exec(){
-        // 사용자 조회
+        // TODO:사용자, 세션정보 조회
         User user = getUserDAO.exec("1");
+        List<SessionInfo> sessionInfos = getSessionInfoDAO.exec(user);
 
         // 기업이름에 따른 면접 개수 조회
-        List<SessionInfoRepository.EnterpriseCount> enterpriseCount = getEnterpriseNameCountDAO.exec(user);
-
-        // 총 면접 개수 계산
-        long total = enterpriseCount.stream().mapToLong(SessionInfoRepository.EnterpriseCount::getCnt).sum();
-
-        // 퍼센트 계산
-        List<UserResponse.CompanyList.Company> companyList = new ArrayList<>();
-        for (SessionInfoRepository.EnterpriseCount c : enterpriseCount) {
-            double percent = total == 0 ? 0.0 : (c.getCnt() * 100.0 / total);
-            percent = Math.round(percent * 10.0) / 10.0;
-            companyList.add(new UserResponse.CompanyList.Company(c.getEnterpriseName(), percent));
+        Map<EnterpriseName, Long> countMap = new HashMap<>();
+        for (SessionInfo sessionInfo : sessionInfos) {
+            EnterpriseName name = sessionInfo.getEnterpriseName();
+            countMap.put(name, countMap.getOrDefault(name, 0L) + 1);
         }
 
-        // 내림차순
-        companyList.sort((a, b) -> Double.compare(b.getCompanyPercent(), a.getCompanyPercent()));
+        // 전체 면접 수
+        long total = sessionInfos.size();
 
-        // 상위 3개
-        List<UserResponse.CompanyList.Company> top3Companies = companyList.size() > 3 ? companyList.subList(0, 3) : companyList;
+        // 비율 계산 및 DTO 생성
+        List<UserResponse.CompanyList.Company> top3Companies = countMap.entrySet().stream()
+                .map(entry -> {
+                    double percent = (entry.getValue() * 100.0) / total;
+                    percent = Math.round(percent * 10.0) / 10.0; // 소수점 첫째자리 반올림
+                    return new UserResponse.CompanyList.Company(entry.getKey(), percent);
+                })
+                .sorted(Comparator.comparingDouble(UserResponse.CompanyList.Company::getCompanyPercent).reversed()) // 내림차순
+                .limit(3) // 상위 3개
+                .collect(Collectors.toList());
 
-        return new UserResponse.CompanyList(top3Companies);
+        return createCompanyDTO.exec(top3Companies);
 
     }
 }

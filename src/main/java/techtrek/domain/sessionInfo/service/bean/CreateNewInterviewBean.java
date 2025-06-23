@@ -12,7 +12,7 @@ import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.service.common.CreateBasicUtil;
 import techtrek.domain.sessionInfo.service.common.CreateResumeUtil;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.redis.service.small.GetRedisDAO;
 import techtrek.domain.redis.service.small.GetRedisTotalKeyCountDAO;
 import techtrek.domain.redis.service.small.SaveNewQuestionDAO;

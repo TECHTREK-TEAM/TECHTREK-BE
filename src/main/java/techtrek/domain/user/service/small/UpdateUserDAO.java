@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.dao;
+package techtrek.domain.user.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,6 @@ import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

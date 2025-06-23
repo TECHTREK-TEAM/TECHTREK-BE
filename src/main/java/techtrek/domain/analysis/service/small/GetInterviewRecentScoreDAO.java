@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetRecentScoreDAO {
+public class GetInterviewRecentScoreDAO {
     private final AnalysisRepository analysisRepository;
 
     // 해당 sessionId 중 analysis 가장 높은 점수 하나

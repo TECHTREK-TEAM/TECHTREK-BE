@@ -11,7 +11,7 @@ import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.dao.GetUserDAO;
+import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
 
 import java.util.ArrayList;
