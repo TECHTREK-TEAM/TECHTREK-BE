@@ -9,13 +9,13 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.service.small.CreateAnalysisDTO;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.analysis.service.small.SaveAnalysisDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dao.GetUserDAO;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
-import techtrek.domain.redis.service.dao.GetRedisByKeyDAO;
+import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
 import techtrek.domain.redis.service.common.GetRedisHashUtil;
 import techtrek.global.util.ChangeJsonReadUtil;
 

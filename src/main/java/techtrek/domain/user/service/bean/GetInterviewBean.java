@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.service.small.GetHighScoreDAO;
 import techtrek.domain.analysis.service.small.GetRecentScoreDAO;
-import techtrek.domain.sessionInfo.service.dao.GetSessionInfoListDAO;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.dto.GetInterviewDTO;

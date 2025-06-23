@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.dto;
+package techtrek.domain.sessionInfo.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

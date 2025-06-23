@@ -1,66 +1,61 @@
 package techtrek.domain.sessionInfo.service.bean;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
-import techtrek.domain.sessionInfo.service.dao.CheckSessionInfoDAO;
+import techtrek.domain.sessionInfo.service.small.CreateTailDTO;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
-import techtrek.domain.redis.service.dao.GetRedisDAO;
-import techtrek.domain.redis.service.dao.GetRedisTotalNumberDAO;
-import techtrek.domain.redis.service.dao.GetTailNumberDAO;
-import techtrek.domain.redis.service.dao.SaveTailQuestionDAO;
+import techtrek.domain.redis.service.small.GetRedisDAO;
+import techtrek.domain.redis.service.small.GetRedisTotalKeyCountDAO;
+import techtrek.domain.redis.service.small.GetTailNumberDAO;
+import techtrek.domain.redis.service.small.SaveTailQuestionDAO;
 
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class CreateTailInterviewBean {
+    // 상수 정의
+    private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
+
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
 
-    private final CheckSessionInfoDAO checkSessionInfoDAO;
-    private final GetRedisTotalNumberDAO getRedisTotalNumberDAO;
+    private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
     private final SaveTailQuestionDAO saveTailQuestionDAO;
     private final GetTailNumberDAO getTailNumberDAO;
     private final GetRedisDAO getRedisDAO;
+    private final CreateTailDTO createTailDTO;
+
+    @Value("${custom.redis.prefix.interview}")
+    private String interviewPrefix;
 
     // 꼬리질문 생성
     public SessionInfoResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
-        // 세션 존재 확인
-        checkSessionInfoDAO.exec(sessionId);
-
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
-        String sessionKey = "interview:session:" + sessionId;
+        String sessionKey = interviewPrefix + sessionId;
         String fieldKey =  sessionKey + ":tail:" + fieldId;
-        String previousQuestion;
-        String previousAnswer;
 
-        // 부모 질문 번호 조회
+        // 부모 질문 조회
         SessionParserResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);
         String parentQuestionNumber = parentData.getQuestionNumber();
 
-        // 질문, 답변 조회
-        if(previousFieldId != null){
-            SessionParserResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":tail:"+previousFieldId);
-            previousQuestion = previousData.getQuestion();
-            previousAnswer = previousData.getAnswer();
-        } else {
-            SessionParserResponse.FieldData previousData = getRedisDAO.exec(sessionKey+":new:"+parentId);
-            previousQuestion = previousData.getQuestion();
-            previousAnswer = previousData.getAnswer();
-        }
+        // 질문, 답변 조회 (부모 or 이전)
+        SessionParserResponse.FieldData previousData = getPreviousData(sessionKey, parentId, previousFieldId);
+        String previousQuestion = previousData.getQuestion();
+        String previousAnswer = previousData.getAnswer();
 
         // 총 질문 개수 조회
-        int newCount = getRedisTotalNumberDAO.exec(sessionKey + ":new");
-        int tailCount = getRedisTotalNumberDAO.exec(sessionKey + ":tail");
-        int totalData = newCount + tailCount + 1;
-        String totalQuestionNumber= String.valueOf(totalData);
+        int newCount = getRedisTotalKeyCountDAO.exec(sessionKey + ":new");
+        int tailCount = getRedisTotalKeyCountDAO.exec(sessionKey + ":tail");
+        String totalQuestionNumber= String.valueOf(newCount + tailCount + 1);
 
         // 프롬프트 생성 후, 꼬리질문 생성
-        String promptTemplate = createPromptTemplateUtil.exec("prompts/tail_question_prompt.txt");
+        String promptTemplate = createPromptTemplateUtil.exec(PROMPT_PATH_TAIL);
         String prompt = String.format(promptTemplate, previousQuestion, previousAnswer);
         String question = createPromptUtil.exec(prompt);
 
@@ -71,7 +66,14 @@ public class CreateTailInterviewBean {
         // redis에 저장
         saveTailQuestionDAO.exec(fieldKey, question, parentQuestionNumber,tailQuestionNumber,questionNumber, totalQuestionNumber);
 
+        return createTailDTO.exec(fieldId, question, parentQuestionNumber, tailQuestionNumber, totalQuestionNumber);
+    }
 
-        return new SessionInfoResponse.TailQuestion(fieldId, question, parentQuestionNumber, tailQuestionNumber, totalQuestionNumber);
+    // 이전 질문 데이터 조회
+    private SessionParserResponse.FieldData getPreviousData(String sessionKey, String parentId, String previousFieldId) {
+        if (previousFieldId != null) {
+            return getRedisDAO.exec(sessionKey+":tail:"+previousFieldId);
+        }
+        return getRedisDAO.exec(sessionKey+":new:"+parentId);
     }
 }

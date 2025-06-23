@@ -39,7 +39,7 @@ public class SessionInfoResponse {
         private String question;
         private String parentQuestionNumber;
         private String tailQuestionNumber;
-        private String resultTotalQuestionNumber;
+        private String totalQuestionNumber;
     }
 
 

@@ -18,7 +18,7 @@ public class SessionInfoController {
 
     // 면접 시작하기
     @PostMapping("/start")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@Valid @RequestBody SessionInfoRequest.Start request) {
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@RequestBody SessionInfoRequest.Start request) {
         return ApiResponse.onSuccess(sessionInfoService.createInterview(request));
     }
 

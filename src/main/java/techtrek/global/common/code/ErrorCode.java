@@ -13,7 +13,6 @@ public enum ErrorCode implements ResponseCode {
 
     // 세션, 필드
     SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다"),
-
     PARENTFIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "부모 필드를 찾을 수 없습니다"),
 
     // 사용자

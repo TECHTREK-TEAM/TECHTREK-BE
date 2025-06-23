@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.dto;
+package techtrek.domain.sessionInfo.service.small;
 
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;

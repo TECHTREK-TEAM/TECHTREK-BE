@@ -1,9 +1,9 @@
-package techtrek.domain.sessionInfo.service.bean.common;
+package techtrek.domain.sessionInfo.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.service.dao.GetSessionInfoDAO;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
@@ -14,12 +14,12 @@ public class CreateResumeUtil {
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
 
-    private final GetSessionInfoDAO getSessionInfoDAOBean;
+    private final GetSessionInfoDAO getSessionInfoDAO;
 
     // 이력서 질문 생성
     public String exec(User user, String sessionId){
         // 세션 정보 불러오기
-        SessionInfo sessionInfo = getSessionInfoDAOBean.exec(sessionId);
+        SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
 
         // 이력서와 기업 설명 불러오기
         String resume = user.getResume();

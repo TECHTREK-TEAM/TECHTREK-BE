@@ -1,10 +1,10 @@
-package techtrek.domain.sessionInfo.service.bean.common;
+package techtrek.domain.sessionInfo.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.basicQuestion.entity.status.CsCategory;
-import techtrek.domain.basicQuestion.service.dao.GetBasicQuestionDAO;
-import techtrek.domain.basicQuestion.service.dao.GetCSCategoryDAO;
+import techtrek.domain.basicQuestion.service.small.GetBasicQuestionDAO;
+import techtrek.domain.basicQuestion.service.small.GetCSCategoryDAO;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;

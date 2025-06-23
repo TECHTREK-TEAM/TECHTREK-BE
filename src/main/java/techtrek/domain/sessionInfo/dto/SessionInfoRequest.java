@@ -2,6 +2,7 @@ package techtrek.domain.sessionInfo.dto;
 
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
+import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 
 public class SessionInfoRequest {
 
@@ -10,8 +11,7 @@ public class SessionInfoRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Start {
-        @NotBlank(message = "기업 이름은 필수입니다.")
-        private String enterpriseName;
+        private EnterpriseName enterpriseName;
     }
 
     // 새 질문

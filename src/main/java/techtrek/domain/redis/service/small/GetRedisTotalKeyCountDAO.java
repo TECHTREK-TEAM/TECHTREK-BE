@@ -1,4 +1,4 @@
-package techtrek.domain.redis.service.dao;
+package techtrek.domain.redis.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class GetRedisTotalNumberDAO {
+public class GetRedisTotalKeyCountDAO {
     private final RedisTemplate<String, String> redisTemplate;
 
     // 총 질문 개수(키 개수) 조회
