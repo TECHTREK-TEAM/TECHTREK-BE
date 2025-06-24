@@ -45,11 +45,11 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
 
     // 내가 속한 enterpriseName 전체 score 수
     @Query("SELECT COUNT(a) FROM Analysis a WHERE a.sessionInfo.enterpriseName = :enterpriseName")
-    long countByEnterprise(@Param("enterpriseName") EnterpriseName enterpriseName);
+    long countByEnterprise(EnterpriseName enterpriseName);
 
     // 나보다 낮은 점수 수
     @Query("SELECT COUNT(a) FROM Analysis a WHERE a.sessionInfo.enterpriseName = :enterpriseName AND a.resultScore < :resultScore")
-    long countLowerScoreInEnterprise(@Param("enterpriseName") EnterpriseName enterpriseName, @Param("resultScore") double resultScore);
+    long countLowerScoreInEnterprise(EnterpriseName enterpriseName, double resultScore);
 
 
 }

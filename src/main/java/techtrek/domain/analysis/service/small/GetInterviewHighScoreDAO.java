@@ -12,11 +12,9 @@ import java.util.List;
 public class GetInterviewHighScoreDAO {
     private final AnalysisRepository analysisRepository;
 
-    // 해당 sessionId 중 analysis 가장 높은 점수 하나
+    // 해당 sessionId 중 analysis 점수가 가장 높은 데이터 조회
     public Analysis exec(List<String> sessionIds){
-        Analysis highestScoreAnalysis = analysisRepository.findTopBySessionInfoIdInOrderByResultScoreDesc(sessionIds)
+        return analysisRepository.findTopBySessionInfoIdInOrderByResultScoreDesc(sessionIds)
                 .orElse(null);
-
-        return highestScoreAnalysis;
     }
 }

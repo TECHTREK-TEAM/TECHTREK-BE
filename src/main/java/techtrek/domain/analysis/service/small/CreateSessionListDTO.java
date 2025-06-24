@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CreateSessionListDTO {
 
-    // 세션 리스트 dto
+    // 세션 리스트 DTO
     public AnalysisResponse.SessionList exec(List<SessionInfo> sessionInfos) {
         List<AnalysisResponse.SessionData> sessionDataList = sessionInfos.stream()
                 .map(session -> AnalysisResponse.SessionData.builder()

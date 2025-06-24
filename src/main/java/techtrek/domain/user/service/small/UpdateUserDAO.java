@@ -15,7 +15,7 @@ import java.util.UUID;
 public class UpdateUserDAO {
     private final UserRepository userRepository;
 
-    // 사용자 정보 수정 저장
+    // 사용자 정보 수정
     public void exec(User user, String newName, String newSeniority, String newUserGroup, List<UserRequest.Info.Stack> newStacks){
         // 이름, 그룹, 시니어리티 변경
         if (newName != null) user.changeUsername(newName);
@@ -35,7 +35,7 @@ public class UpdateUserDAO {
                             .build())
                     .toList();
 
-            user.replaceStacks(newStackList);  // 도메인 메서드 사용
+            user.replaceStacks(newStackList); 
         }
 
         userRepository.save(user);

@@ -11,7 +11,6 @@ public class GetPassCountDAO {
 
     // userId를 이용하여 합격 면접 수 조회
     public int exec(String userId){
-        int interviewPass = analysisRepository.countByStatusTrueAndSessionInfoUserId(userId);
-        return interviewPass;
+        return analysisRepository.countByStatusTrueAndSessionInfoUserId(userId);
     }
 }

@@ -8,7 +8,7 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 @RequiredArgsConstructor
 public class CreateStartDTO {
 
-    // 면접 시작 Response DTO
+    // 면접 시작 DTO
     public SessionInfoResponse.Start exec(String sessionId, String fieldId, String question, String questionNumber, String totalQuestionNumber) {
 
         return SessionInfoResponse.Start.builder()

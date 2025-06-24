@@ -4,10 +4,10 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
 
-// 분석하기 결과 DTO
 @Component
 public class CreateAnalysisDTO {
 
+    // 분석하기 결과 DTO
     public AnalysisResponse.Analysis exec(Analysis analysis){
         return AnalysisResponse.Analysis.builder()
                 .analysisId(analysis.getId())

@@ -8,7 +8,7 @@ import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 @RequiredArgsConstructor
 public class CreateTailDTO {
 
-    // 꼬리 질문 Response DTO
+    // 꼬리 질문 DTO
     public SessionInfoResponse.TailQuestion exec(String fieldId, String question, String parentQuestionNumber, String tailQuestionNumber, String totalQuestionNumber) {
 
         return SessionInfoResponse.TailQuestion.builder()

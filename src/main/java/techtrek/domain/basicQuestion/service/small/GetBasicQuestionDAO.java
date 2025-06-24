@@ -17,14 +17,14 @@ public class GetBasicQuestionDAO {
 
     private final BasicQuestionRepository basicQuestionRepository;
 
-    // cs로 램덤 질문 불러오기
+    // cs로 램덤 질문 조회
     public String exec(CsCategory cs){
 
-        // 리스트 불러오기
+        // 리스트 조회
         List<BasicQuestion> questions = basicQuestionRepository.findByCsCategory(cs);
         if (questions == null || questions.isEmpty()) throw new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND);
 
-        // 랜덤 질문 불러오기
+        // 랜덤 질문 조회
         String question = questions.get(new Random().nextInt(questions.size())).getQuestion();
 
         return question;

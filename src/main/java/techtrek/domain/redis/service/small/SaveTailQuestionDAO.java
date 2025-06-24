@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class SaveTailQuestionDAO {
     private final RedisTemplate<String, String> redisTemplate;
 
-    // 꼬리 질문 RedisDTO
+    // 꼬리 질문 Redis 저장
     public void exec(String fieldKey, String question, String parentQuestionNumber, String tailQuestionNumber, String questionNumber, String totalQuestionNumber ) {
         redisTemplate.opsForHash().put(fieldKey, "question", question);
         redisTemplate.opsForHash().put(fieldKey, "parentQuestionNumber", parentQuestionNumber);

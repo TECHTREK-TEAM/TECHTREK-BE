@@ -10,7 +10,7 @@ import techtrek.global.common.exception.CustomException;
 @RequiredArgsConstructor
 public class GetCSCategoryDAO {
 
-    // cs 불러오기
+    // cs 조회
     public CsCategory exec(String selectedKeyword) {
 
         return CsCategory.fromKeyword(selectedKeyword)

@@ -12,11 +12,9 @@ import java.util.List;
 public class GetInterviewRecentScoreDAO {
     private final AnalysisRepository analysisRepository;
 
-    // 해당 sessionId 중 analysis 가장 높은 점수 하나
+    // 해당 sessionId 중 analysis 가장 최근 데이터 조회
     public Analysis exec(List<String> sessionIds){
-        Analysis recentAnalysis = analysisRepository.findTopBySessionInfoIdInOrderByCreatedAtDesc(sessionIds)
+        return analysisRepository.findTopBySessionInfoIdInOrderByCreatedAtDesc(sessionIds)
                 .orElse(null);
-
-        return recentAnalysis;
     }
 }

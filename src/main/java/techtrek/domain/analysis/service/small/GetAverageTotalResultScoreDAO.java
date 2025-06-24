@@ -11,9 +11,8 @@ import java.util.List;
 public class GetAverageTotalResultScoreDAO {
     private final AnalysisRepository analysisRepository;
 
-    // 일치율 평균 (총)
+    // 일치율 평균 (총) 조회
     public Double exec(List<String> sessionIds){
-        Double average = analysisRepository.findAverageScoreBySessionIds(sessionIds);
-        return average;
+        return analysisRepository.findAverageScoreBySessionIds(sessionIds);
     }
 }

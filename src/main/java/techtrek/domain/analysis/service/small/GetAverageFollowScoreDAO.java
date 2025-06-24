@@ -9,8 +9,8 @@ import techtrek.domain.analysis.repository.AnalysisRepository;
 public class GetAverageFollowScoreDAO {
     private final AnalysisRepository analysisRepository;
 
+    // 연계질문 대응력 평균 조회
     public double exec(){
         return analysisRepository.getAverageFollowScore();
-
     }
 }

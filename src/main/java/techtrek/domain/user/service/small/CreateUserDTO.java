@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class CreateUserDTO {
 
-    // 사용자 정보 조회 dto
+    // 사용자 정보 조회 DTO
     public UserResponse.Info exec(User user) {
 
         // 스택을 list형태로 불러오기

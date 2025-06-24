@@ -9,7 +9,7 @@ import techtrek.domain.analysis.repository.AnalysisRepository;
 public class GetAvgDurationDAO {
     private final AnalysisRepository analysisRepository;
 
-    // 평균 소요시간
+    // 평균 소요시간 조회
     public double exec(){
        return analysisRepository.getAverageDuration();
 

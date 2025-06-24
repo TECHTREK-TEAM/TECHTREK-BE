@@ -11,7 +11,7 @@ import techtrek.domain.user.entity.User;
 @RequiredArgsConstructor
 public class CreateInterviewDTO {
 
-    // 면접 정보 dto
+    // 면접 정보 DTO
     public UserResponse.Interview exec(User user, Analysis highestScoreAnalysis, Analysis recentAnalysis) {
 
         // 가장 점수 높은 면접 정보 구성

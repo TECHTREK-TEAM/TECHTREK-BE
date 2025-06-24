@@ -9,6 +9,7 @@ import techtrek.domain.stack.entity.Stack;
 
 @Repository
 public interface StackRepository extends JpaRepository<Stack, String> {
+    // 스택 삭제
     @Modifying
     @Transactional
     @Query("delete from Stack s where s.user.id = :userId")
