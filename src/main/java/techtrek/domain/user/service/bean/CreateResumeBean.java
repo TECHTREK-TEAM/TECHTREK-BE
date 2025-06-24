@@ -46,7 +46,7 @@ public class CreateResumeBean {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             extractedText = pdfStripper.getText(document);
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.RESUME_PARSING_FAILED);
+            throw new CustomException(ErrorCode.RESUME_PDF_PARSING_FAILED);
         }
 
         // 프롬프트 생성 후 gpt 호출

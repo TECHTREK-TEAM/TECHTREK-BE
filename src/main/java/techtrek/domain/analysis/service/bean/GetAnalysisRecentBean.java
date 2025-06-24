@@ -56,7 +56,9 @@ public class GetAnalysisRecentBean {
 
         // 퍼센트 차이 계산
         double followScoreDiffPercent = ((followScore - avgFollowScore) / avgFollowScore) * 100;
+        followScoreDiffPercent = Math.round(followScoreDiffPercent * 10) / 10.0;
         double durationDiffPercent = ((duration - avgDuration) / avgDuration) * 100;
+        durationDiffPercent = Math.round(durationDiffPercent * 10) / 10.0;
 
         // 상위 점수 비율 계산
         long totalCount = getEnterpriseAnalysisCountDAO.exec(enterpriseName);

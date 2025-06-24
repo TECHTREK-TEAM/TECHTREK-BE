@@ -35,7 +35,7 @@ public class UpdateUserDAO {
                             .build())
                     .toList();
 
-            user.replaceStacks(newStackList); 
+            user.replaceStacks(newStackList);
         }
 
         userRepository.save(user);

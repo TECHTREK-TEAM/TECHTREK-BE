@@ -3,15 +3,14 @@ package techtrek.domain.sessionInfo.service.bean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import techtrek.domain.redis.service.small.*;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.service.small.CreateTailDTO;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
-import techtrek.domain.redis.service.small.GetRedisDAO;
-import techtrek.domain.redis.service.small.GetRedisTotalKeyCountDAO;
-import techtrek.domain.redis.service.small.GetTailNumberDAO;
-import techtrek.domain.redis.service.small.SaveTailQuestionDAO;
 
 import java.util.UUID;
 
@@ -25,6 +24,7 @@ public class CreateTailInterviewBean {
     private final CreatePromptUtil createPromptUtil;
 
     private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
+    private final CheckRedisKeyDAO checkRedisKeyDAO;
     private final SaveTailQuestionDAO saveTailQuestionDAO;
     private final GetTailNumberDAO getTailNumberDAO;
     private final GetRedisDAO getRedisDAO;
@@ -39,6 +39,10 @@ public class CreateTailInterviewBean {
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
         String fieldKey =  sessionKey + ":tail:" + fieldId;
+
+        // parentId 키, previousFieldId 키 존재 확인
+        if (!checkRedisKeyDAO.exec(sessionKey + ":new:"+ parentId)) { throw new CustomException(ErrorCode.PARENT_FIELD_NOT_FOUND);}
+        if (!checkRedisKeyDAO.exec(sessionKey + ":tail:"+ previousFieldId)) { throw new CustomException(ErrorCode.PREVIOUS_FIELD_NOT_FOUND);}
 
         // 부모 질문 조회
         SessionParserResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);

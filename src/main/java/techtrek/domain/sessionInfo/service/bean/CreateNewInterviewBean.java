@@ -3,6 +3,7 @@ package techtrek.domain.sessionInfo.service.bean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import techtrek.domain.redis.service.small.*;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
 import techtrek.domain.sessionInfo.service.small.CreateNewDTO;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
@@ -13,9 +14,8 @@ import techtrek.domain.sessionInfo.service.common.CreateBasicUtil;
 import techtrek.domain.sessionInfo.service.common.CreateResumeUtil;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
-import techtrek.domain.redis.service.small.GetRedisDAO;
-import techtrek.domain.redis.service.small.GetRedisTotalKeyCountDAO;
-import techtrek.domain.redis.service.small.SaveNewQuestionDAO;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 
 import java.util.*;
 
@@ -32,6 +32,7 @@ public class CreateNewInterviewBean {
 
     private final GetUserDAO getUserDAO;
     private final GetSessionInfoDAO getSessionInfoDAO;
+    private final CheckRedisKeyDAO checkRedisKeyDAO;
     private final GetRedisDAO getRedisDAO;
     private final SaveNewQuestionDAO saveNewQuestionDAO;
     private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
@@ -52,6 +53,9 @@ public class CreateNewInterviewBean {
         String sessionKey = interviewPrefix + sessionId;
         String previousKey = sessionKey + ":new:" + previousFieldId;
         String fieldKey = sessionKey + ":new:" +fieldId;
+
+        // 이전필드Id 존재 확인
+        if (!checkRedisKeyDAO.exec(previousKey)) { throw new CustomException(ErrorCode.PREVIOUS_FIELD_NOT_FOUND);}
 
         // 이전 질문 조회
         SessionParserResponse.FieldData previousData = getRedisDAO.exec(previousKey);

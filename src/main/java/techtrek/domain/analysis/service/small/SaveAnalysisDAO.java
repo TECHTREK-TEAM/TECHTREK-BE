@@ -30,7 +30,7 @@ public class SaveAnalysisDAO {
                 .keywordNumber(object.getKeyKeywords().getQuestionNumber())
                 .analysisGroup(user.getUserGroup())
                 .duration(duration)
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().withNano(0))
                 .sessionInfo(sessionInfo)
                 .build();
 

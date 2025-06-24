@@ -49,14 +49,6 @@ public enum EnterpriseName {
         return Arrays.asList(keywords);
     }
 
-    // String응 enum 객체로 변환
-    public static EnterpriseName fromString(String value) {
-        try {
-            return EnterpriseName.valueOf(value.toUpperCase());
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND);
-        }
-    }
 }
 
 

@@ -33,4 +33,5 @@ public class CommonResponse<T> {
     public static <T> CommonResponse<T> from(ResponseCode code) {
         return new CommonResponse<>(code, null);
     }
+
 }
