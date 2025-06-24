@@ -1,5 +1,6 @@
 package techtrek.domain.sessionInfo.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
@@ -54,6 +55,7 @@ public class SessionInfoRequest {
         private String type;
 
         @NotBlank(message = "답변은 필수입니다.")
+        @Size(min = 1, max = 500, message = "답변은 1자 이상 500자 이하로 작성해주세요.")
         private String answer;
     }
 
