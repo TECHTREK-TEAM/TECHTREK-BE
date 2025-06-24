@@ -6,24 +6,23 @@ import java.util.List;
 
 public class UserRequest {
 
+    // 사용자 정보
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Info {
         private String name;
         private String userGroup;
         private String seniority;
         private List<Stack> stacks;
+
+        @Getter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Stack {
+            private String stackName;
+        }
     }
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Stack {
-        private String stackName;
-    }
+
 }

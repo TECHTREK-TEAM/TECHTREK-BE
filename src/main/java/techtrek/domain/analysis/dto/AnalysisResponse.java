@@ -8,12 +8,27 @@ import java.util.List;
 
 public class AnalysisResponse {
 
+    // 분석
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Analysis {
+        private String analysisId;
+        private Boolean status;
+        private Double resultScore;
+        private Double followScore;
+        private String result;
+        private int duration;
+        private String keyword;
+    }
+
+
     // 세션 불러오기
     @Getter
-    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Detail{
         private String sessionInfoId;
         private Analysis analysis;
@@ -67,6 +82,7 @@ public class AnalysisResponse {
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class SessionData {
         private String sessionInfoId;
         private EnterpriseName enterpriseName;

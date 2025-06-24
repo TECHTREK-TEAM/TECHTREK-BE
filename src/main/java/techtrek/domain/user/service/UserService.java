@@ -2,6 +2,7 @@ package techtrek.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.service.bean.*;
@@ -15,6 +16,7 @@ public class UserService {
     private final GetPassBean getPassBean;
     private final GetScoreBean getScoreBean;
     private final GetInterviewBean getInterviewBean;
+    private final CreateResumeBean createResumeBean;
 
     // 사용자 정보 조회
     public UserResponse.Info getUser(){
@@ -45,4 +47,7 @@ public class UserService {
     public UserResponse.Interview getInterview(){
         return getInterviewBean.exec();
     }
+
+    // 이력서 생성
+    public UserResponse.Resume createResume(MultipartFile file){ return createResumeBean.exec(file); }
 }

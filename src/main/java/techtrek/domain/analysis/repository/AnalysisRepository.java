@@ -13,12 +13,15 @@ import java.util.Optional;
 
 @Repository
 public interface AnalysisRepository extends JpaRepository<Analysis, String> {
-    // 합격 면접 수 (status = true)
-    int countByStatusTrueAndSessionInfoUserId(String userId);
+    // 점수가 가장 높은 면접
+    Optional<Analysis> findTopBySessionInfoIdInOrderByResultScoreDesc(List<String> sessionIds);
+
+    // 가장 최근 면접
+    Optional<Analysis> findTopBySessionInfoIdInOrderByCreatedAtDesc(List<String> sessionIds);
 
     // 일치율 전체 평균
     @Query("SELECT AVG(a.resultScore) FROM Analysis a WHERE a.sessionInfo.id IN :sessionIds")
-    Double findAverageScoreBySessionIds(@Param("sessionIds") List<String> sessionIds);
+    Double findAverageScoreBySessionIds(List<String> sessionIds);
 
     // 일치율 해당 달 평균
     @Query("SELECT AVG(a.resultScore) FROM Analysis a " +
@@ -29,11 +32,8 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
             @Param("end") LocalDateTime end
     );
 
-    // 점수 가장 높은 면접
-    Optional<Analysis> findTopBySessionInfoIdInOrderByResultScoreDesc(List<String> sessionIds);
-
-    // 가장 최근 면접
-    Optional<Analysis> findTopBySessionInfoIdInOrderByCreatedAtDesc(List<String> sessionIds);
+    // 합격 면접 수 (status = true)
+    int countByStatusTrueAndSessionInfoUserId(String userId);
 
     // 평균 연계질문 점수
     @Query("SELECT AVG(a.followScore) FROM Analysis a")
@@ -45,11 +45,11 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
 
     // 내가 속한 enterpriseName 전체 score 수
     @Query("SELECT COUNT(a) FROM Analysis a WHERE a.sessionInfo.enterpriseName = :enterpriseName")
-    long countByEnterprise(@Param("enterpriseName") EnterpriseName enterpriseName);
+    long countByEnterprise(EnterpriseName enterpriseName);
 
     // 나보다 낮은 점수 수
     @Query("SELECT COUNT(a) FROM Analysis a WHERE a.sessionInfo.enterpriseName = :enterpriseName AND a.resultScore < :resultScore")
-    long countLowerScoreInEnterprise(@Param("enterpriseName") EnterpriseName enterpriseName, @Param("resultScore") double resultScore);
+    long countLowerScoreInEnterprise(EnterpriseName enterpriseName, double resultScore);
 
 
 }

@@ -5,38 +5,40 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import techtrek.domain.user.dto.ResumeResponse;
+import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.bean.small.GetUserDAOBean;
-import techtrek.domain.user.service.bean.small.SaveResumeDAOBean;
-import techtrek.domain.user.service.bean.small.SaveStackDAOBean;
-import techtrek.global.gpt.service.bean.util.CreateJsonReadUtil;
+import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.service.small.SaveResumeDAO;
+import techtrek.domain.user.service.small.SaveStackDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.gpt.service.bean.util.CreatePromptUtil;
-import techtrek.global.gpt.service.bean.util.CreatePromptTemplateUtil;
+import techtrek.global.util.ChangeJsonReadUtil;
+import techtrek.global.util.CreatePromptUtil;
+import techtrek.global.util.CreatePromptTemplateUtil;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class CreateResumeBean {
+    //상수 정의
+    private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
 
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
-    private final CreateJsonReadUtil createJsonReadUtil;
+    private final ChangeJsonReadUtil changeJsonReadUtil;
 
-    private final SaveResumeDAOBean saveResumeDAOBean;
-    private final SaveStackDAOBean saveStackDAOBean;
-    private final GetUserDAOBean getUserDAOBean;
+    private final SaveResumeDAO saveResumeDAO;
+    private final SaveStackDAO saveStackDAO;
+    private final GetUserDAO getUserDAO;
 
     // 이력서 추출
-    public ResumeResponse exec(MultipartFile file) {
+    public UserResponse.Resume exec(MultipartFile file) {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
-        // 사용자 조회
-        User user = getUserDAOBean.exec("1");
+        // TODO:사용자 조회
+        User user = getUserDAO.exec("1");
 
         // 이력서 추출
         String extractedText;
@@ -44,21 +46,20 @@ public class CreateResumeBean {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             extractedText = pdfStripper.getText(document);
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.RESUME_PARSING_FAILED);
+            throw new CustomException(ErrorCode.RESUME_PDF_PARSING_FAILED);
         }
 
         // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = createPromptTemplateUtil.exec("prompts/resume_summary_prompt.txt");
-
+        String promptTemplate = createPromptTemplateUtil.exec(PROMPT_PATH_RESUME);
         String prompt = String.format(promptTemplate, extractedText);
         String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
-        ResumeResponse object = createJsonReadUtil.exec(gptResponse, ResumeResponse.class);
+        UserResponse.Resume object = changeJsonReadUtil.exec(gptResponse, UserResponse.Resume.class);
 
         // 이력서, 스택 등 값 저장
-        saveResumeDAOBean.exec(user, object.getGroup(), object.getSeniority(), object.getResume());
-        saveStackDAOBean.exec(user, object.getStacks());
+        saveResumeDAO.exec(user, object.getGroup(), object.getSeniority(), object.getResume());
+        saveStackDAO.exec(user, object.getStacks());
 
         return object;
     }

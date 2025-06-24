@@ -1,22 +1,23 @@
 package techtrek.domain.stack.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import jakarta.persistence.Id;
 import techtrek.domain.user.entity.User;
 
 
 @Entity
-@Table(name="stack")
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="stack")
 public class Stack {
     @Id
-    @Column(length = 36, nullable = false)
+    @Column(name="id", length = 36, nullable = false)
     private String id;
 
-    @Column(length = 12)
+    @Column(name="stack_name", length = 12, nullable = true)
     private String stackName;
 
     @ManyToOne(fetch = FetchType.LAZY)

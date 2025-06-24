@@ -14,12 +14,11 @@ import techtrek.global.common.response.CommonResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/interview")
 public class SessionInfoController {
-
     private final SessionInfoService sessionInfoService;
 
     // 면접 시작하기
     @PostMapping("/start")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@Valid @RequestBody SessionInfoRequest.Start request) {
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@RequestBody SessionInfoRequest.Start request) {
         return ApiResponse.onSuccess(sessionInfoService.createInterview(request));
     }
 
@@ -29,7 +28,7 @@ public class SessionInfoController {
         return ApiResponse.onSuccess(sessionInfoService.createNewInterview(request));
     }
 
-    // 꼬리질문 불러오기
+    // 꼬리질문 생성하기
     @PostMapping("/questions/tail")
     public ResponseEntity<CommonResponse<SessionInfoResponse.TailQuestion>> createTailInterview(@Valid @RequestBody SessionInfoRequest.TailQuestion request) {
         return ApiResponse.onSuccess(sessionInfoService.createTailInterview(request));
@@ -37,13 +36,8 @@ public class SessionInfoController {
 
     // 답변하기
     @PostMapping("/answers")
-    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@RequestBody SessionInfoRequest.Answer request) {
+    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@Valid @RequestBody SessionInfoRequest.Answer request) {
         return ApiResponse.onSuccess(sessionInfoService.createAnswer(request));
     }
 
-    // 분석하기
-    @PostMapping("/analysis")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Analysis>> createAnalysis(@RequestBody SessionInfoRequest.Analysis request) {
-        return ApiResponse.onSuccess(sessionInfoService.createAnalysis(request));
-    }
 }
