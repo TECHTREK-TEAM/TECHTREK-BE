@@ -9,7 +9,7 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class DeleteRedisDAO {
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     // redis 삭제
     public void exec(String redisKey){

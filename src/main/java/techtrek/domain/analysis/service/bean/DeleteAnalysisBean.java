@@ -2,17 +2,12 @@ package techtrek.domain.analysis.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.analysis.service.small.DeleteAnalysisDAO;
 import techtrek.domain.redis.service.small.DeleteRedisDAO;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
 import techtrek.domain.sessionInfo.service.small.DeleteSessionInfoDAO;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
-
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
