@@ -41,5 +41,10 @@ public class AnalysisController {
         return ApiResponse.onSuccess(analysisService.getAnalysis(sessionInfoId));
     }
 
-   
+    // 선택한 세션 삭제
+    @DeleteMapping("/{sessionInfoId}")
+    public ResponseEntity<CommonResponse<Boolean>> deleteAnalysis(@PathVariable String sessionInfoId){
+        return ApiResponse.onSuccess(analysisService.deleteAnalysis(sessionInfoId));
+    }
+
 }

@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
-import techtrek.domain.analysis.service.bean.GetAnalysisListBean;
-import techtrek.domain.analysis.service.bean.GetAnalysisRecentBean;
-import techtrek.domain.analysis.service.bean.GetAnalysisBean;
+import techtrek.domain.analysis.service.bean.*;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.analysis.service.bean.CreateAnalysisBean;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +14,7 @@ public class AnalysisService {
     private final GetAnalysisRecentBean getAnalysisRecentBean;
     private final GetAnalysisListBean getAnalysisListBean;
     private final GetAnalysisBean getAnalysisBean;
+    private final DeleteAnalysisBean deleteAnalysisBean;
 
     // 분석하기
     public AnalysisResponse.Analysis createAnalysis(AnalysisRequest.Analysis request) {
@@ -36,5 +34,10 @@ public class AnalysisService {
     // 선택한 세션 불러오기
     public AnalysisResponse.Detail getAnalysis(String sessionInfoId){
         return getAnalysisBean.exec(sessionInfoId);
+    }
+
+    // 선택한 세션 불러오기
+    public Boolean deleteAnalysis(String sessionInfoId){
+        return deleteAnalysisBean.exec(sessionInfoId);
     }
 }
