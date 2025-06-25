@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.repository.AnalysisRepository;
+import techtrek.domain.analysis.service.small.DeleteAnalysisDAO;
+import techtrek.domain.redis.service.small.DeleteRedisDAO;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.repository.SessionInfoRepository;
+import techtrek.domain.sessionInfo.service.small.DeleteSessionInfoDAO;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 
 import java.util.Set;
@@ -15,34 +18,28 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class DeleteAnalysisBean {
     private final GetSessionInfoDAO getSessionInfoDAO;
-    private final AnalysisRepository analysisRepository;
-    private final SessionInfoRepository sessionInfoRepository;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final DeleteAnalysisDAO deleteAnalysisDAO;
+    private final DeleteRedisDAO deleteRedisDAO;
+    private final DeleteSessionInfoDAO deleteSessionInfoDAO;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
     public Boolean exec(String sessionInfoId){
-
+        // 선택한 세션의 정보 조회
         SessionInfo sessionInfo = getSessionInfoDAO.execById(sessionInfoId);
 
-        // 2. 연관된 analysis 삭제
-        analysisRepository.deleteById(sessionInfo.getAnalysis().getId());
+        // 연관된 analysis 삭제
+        deleteAnalysisDAO.exec(sessionInfo.getAnalysis().getId());
 
-        // 3. Redis 데이터 삭제
+        // Redis 데이터 삭제
         String sessionId = sessionInfo.getSessionId();
-        String redisKeyPattern = interviewPrefix + sessionId + "*";
-        Set<String> keys = redisTemplate.keys(redisKeyPattern);
-        if (keys != null && !keys.isEmpty()) {
-            redisTemplate.delete(keys);
-        }
+        String redisKey = interviewPrefix + sessionId + "*";
+        deleteRedisDAO.exec(redisKey);
 
-        // 4. sessionInfo 삭제
-        sessionInfoRepository.delete(sessionInfo);
+        // sessionInfo 삭제
+        deleteSessionInfoDAO.exec(sessionInfo);
 
         return true;
-
-
     }
-
 }
