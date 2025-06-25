@@ -27,21 +27,28 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
     @Query("SELECT AVG(a.resultScore) FROM Analysis a " +
             "WHERE a.sessionInfo.id IN :sessionIds AND a.createdAt BETWEEN :start AND :end")
     Double findAverageScoreBySessionIdsAndDateRange(
-            @Param("sessionIds") List<String> sessionIds,
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end
+            List<String> sessionIds, LocalDateTime start, LocalDateTime end
     );
 
     // 합격 면접 수 (status = true)
     int countByStatusTrueAndSessionInfoUserId(String userId);
 
     // 평균 연계질문 점수
-    @Query("SELECT AVG(a.followScore) FROM Analysis a")
-    double getAverageFollowScore();
-
+    @Query("""
+    SELECT AVG(a.followScore)
+    FROM Analysis a
+    WHERE a.sessionInfo.user.id = :userId
+      AND a.sessionInfo.enterpriseName = :enterpriseName
+""")
+    double getAverageFollowScoreByUserAndEnterprise(String userId, EnterpriseName enterpriseName);
     // 평균 시간
-    @Query("SELECT AVG(a.duration) FROM Analysis a")
-    double getAverageDuration();
+    @Query("""
+    SELECT AVG(a.duration)
+    FROM Analysis a
+    WHERE a.sessionInfo.user.id = :userId
+      AND a.sessionInfo.enterpriseName = :enterpriseName
+""")
+    double getAverageDurationByUserAndEnterprise(String userId, EnterpriseName enterpriseName);
 
     // 내가 속한 enterpriseName 전체 score 수
     @Query("SELECT COUNT(a) FROM Analysis a WHERE a.sessionInfo.enterpriseName = :enterpriseName")

@@ -34,4 +34,12 @@ public class AnalysisController {
     public ResponseEntity<CommonResponse<AnalysisResponse.SessionList>> getAnalysisList(@PathVariable EnterpriseName enterpriseName){
         return ApiResponse.onSuccess(analysisService.getAnalysisList(enterpriseName));
     }
+
+    // 선택한 세션 불러오기
+    @GetMapping("/{sessionInfoId}")
+    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@PathVariable String sessionInfoId){
+        return ApiResponse.onSuccess(analysisService.getAnalysis(sessionInfoId));
+    }
+
+   
 }
