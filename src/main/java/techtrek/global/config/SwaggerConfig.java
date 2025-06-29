@@ -1,6 +1,5 @@
 package techtrek.global.config;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +10,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .version("v1.0") //버전
-                .title("CineBite API") //이름
-                .description("영화 커뮤니티 프로젝트 API"); //설명
+                .title("TechTrek API")
+                .version("v1.0")
+                .description("TechTrek 기업 맞춤형 면접 플랫폼 API 문서입니다.\n\n");
         return new OpenAPI()
                 .info(info);
     }
