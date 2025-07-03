@@ -1,4 +1,6 @@
-INSERT INTO basic_question (question, cs_category) VALUES
+ALTER TABLE basic_question ADD UNIQUE (question);
+
+INSERT IGNORE INTO basic_question (question, cs_category) VALUES
 ('데이터베이스의 인덱스에 대해서 설명해주세요.', '데이터베이스'),
 ('인덱스 테이블을 해시 테이블과 B+트리로 구성할때 각각이 어떤 차이점이 있을까요?', '데이터베이스'),
 ('클러스터형 인덱스에 대해서 설명해주세요.', '데이터베이스'),
@@ -85,3 +87,6 @@ INSERT INTO basic_question (question, cs_category) VALUES
 ('교착 상태의 발생조건에 대해서 자세히 설명해주세요.', '운영체제'),
 ('교착 상태의 해결방법에 대해서 설명해주세요.', '운영체제'),
 ('캐시 메모리란 무엇이며, 캐시의 지역성(Locality)이란 어떤 개념인가요?', '컴퓨터구조');
+
+INSERT IGNORE INTO users (id, name, user_group, seniority, resume, created_at) VALUES
+('1', '홍길동', 'Frontend Developer', '지망생', 'Java와 Spring Boot 기반 백엔드 개발 경험...', NOW());

@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="user")
+@Table(name="users")
 public class User {
     @Id
     @Column(name="id", length = 36, nullable = false)
