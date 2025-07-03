@@ -2,7 +2,7 @@
 FROM gradle:8.7.0-jdk17 AS build
 
 # 캐시 최적화를 위해 설정
-COPY --chown=gradle:gradle backend /home/app
+COPY --chown=gradle:gradle . /home/app
 WORKDIR /home/app
 
 # 프로젝트 빌드 수행
