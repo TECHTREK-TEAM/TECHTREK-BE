@@ -1,5 +1,5 @@
 # 임시 이미지 생성
-FROM gradle:8.7.0-jdk17-alpine AS build
+FROM gradle:8.7.0-jdk17 AS build
 
 # 캐시 최적화를 위해 설정
 COPY --chown=gradle:gradle backend /home/app
