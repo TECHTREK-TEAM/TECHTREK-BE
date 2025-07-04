@@ -22,4 +22,9 @@ public class BasicQuestion {
     @Column(name = "cs_category", nullable = false)
     @Enumerated(EnumType.STRING)
     private CsCategory csCategory;
+
+    public BasicQuestion(String question, CsCategory csCategory) {
+        this.question = question;
+        this.csCategory = csCategory;
+    }
 }
