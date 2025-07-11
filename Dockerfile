@@ -14,12 +14,12 @@ FROM openjdk:17-jdk-slim
 # UTF-8 locale 설치
 RUN apt-get update && \
     apt-get install -y locales && \
-    locale-gen ko_KR.UTF-8 && \
-    update-locale LANG=ko_KR.UTF-8
+    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
 
-ENV LANG=ko_KR.UTF-8 \
-    LANGUAGE=ko_KR:ko \
-    LC_ALL=ko_KR.UTF-8
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 
 VOLUME /tmp
 
