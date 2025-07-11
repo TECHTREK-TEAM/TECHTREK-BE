@@ -35,3 +35,9 @@ custom:
   redis:
     prefix:
       interview: "interview:session:"
+server:
+  servlet:
+    encoding:
+      force: true
+      enabled: true
+      charset: UTF-8
