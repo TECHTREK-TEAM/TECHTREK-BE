@@ -26,8 +26,8 @@ VOLUME /tmp
 # JAR 파일 복사
 COPY --from=build /home/app/build/libs/*.jar app.jar
 
-# 외부에서 환경변수 주입 가능
-ENV JAVA_OPTS=""
+# JVM 인코딩 설정 환경 변수 추가
+ENV JAVA_OPTS="-Dfile.encoding=UTF-8"
 
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
