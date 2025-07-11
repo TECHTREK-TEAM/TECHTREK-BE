@@ -10,6 +10,17 @@ RUN gradle clean build -x test
 
 # 실행용 이미지
 FROM openjdk:17-jdk-slim
+
+# UTF-8 locale 설치
+RUN apt-get update && \
+    apt-get install -y locales && \
+    locale-gen ko_KR.UTF-8 && \
+    update-locale LANG=ko_KR.UTF-8
+
+ENV LANG=ko_KR.UTF-8 \
+    LANGUAGE=ko_KR:ko \
+    LC_ALL=ko_KR.UTF-8
+
 VOLUME /tmp
 
 # JAR 파일 복사
