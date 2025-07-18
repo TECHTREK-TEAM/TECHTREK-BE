@@ -13,7 +13,7 @@ public class CreatePromptTemplateUtil {
 
     // 프롬프트 템플릿 생성
     public String exec(String resourcePath) {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+        try (InputStream is = getClass().getResourceAsStream("/" + resourcePath)) {
             if (is == null) throw new CustomException(ErrorCode.PROMPT_NOT_FOUND);
             return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
