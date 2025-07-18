@@ -24,7 +24,8 @@ public class CreatePromptUtil {
     private String apiUrl;
 
     public String exec(String prompt){
-
+        System.out.println("[DEBUG] OPENAI_API_KEY starts with: " + (apiKey != null ? apiKey.substring(0, 5) : "null"));
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(apiKey);

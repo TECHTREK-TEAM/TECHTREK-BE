@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CommonResponse<?>> handleGeneralException(Exception ex) {
         ErrorCode code = ErrorCode.INTERNAL_SERVER_ERROR;
         return ResponseEntity
-                .status(Integer.parseInt(code.getCode()))
+                .status(code.getHttpStatus())
                 .body(CommonResponse.from(code));
     }
 
