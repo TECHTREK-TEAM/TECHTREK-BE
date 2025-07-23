@@ -16,11 +16,12 @@ import java.util.Map;
 public class CustomOAuthDetails implements OAuth2User {
     private final String id;
     private final String name;
+    private final String email;
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomOAuthDetails(String id, String name) {
-        this(id, name, Collections.emptyList());
+    public CustomOAuthDetails(String id, String email, String name) {
+        this(id, name,email, Collections.emptyList());
     }
 
     @Override
@@ -28,7 +29,8 @@ public class CustomOAuthDetails implements OAuth2User {
     public Map<String, Object> getAttributes() {
         return Map.of(
                 "id", id,
-                "name", name
+                "name", name,
+                "email", email
         );
     }
 }
