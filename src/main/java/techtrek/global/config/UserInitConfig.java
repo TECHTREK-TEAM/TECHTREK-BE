@@ -28,6 +28,8 @@ public class UserInitConfig {
         User user = User.builder()
                 .id("1")
                 .name("홍길동")
+                .email("user01@naver.com")
+                .provider("kakao")
                 .userGroup("Frontend Developer")
                 .seniority("지망생")
                 .resume("Java와 Spring Boot...")

@@ -17,11 +17,17 @@ import java.util.List;
 @Table(name="user")
 public class User {
     @Id
-    @Column(name="id", length = 36, nullable = false)
+    @Column(name="id", length = 256, nullable = false)
     private String id;
 
     @Column(name="name", length = 36, nullable = false)
     private String name;
+
+    @Column(name = "email", length = 100, nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "provider", length = 20, nullable = false)
+    private String provider;
 
     @Column(name="user_group", length = 36, nullable = true)
     private String userGroup;
