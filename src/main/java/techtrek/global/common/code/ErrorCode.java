@@ -36,7 +36,14 @@ public enum ErrorCode implements ResponseCode {
     JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다."), //ok
 
     // 분석
-    ANALYSIS_DUPLICATE(HttpStatus.CONFLICT, "DB409", "해당 세션에 이미 분석 데이터가 존재합니다. 중복 생성할 수 없습니다."); //ok
+    ANALYSIS_DUPLICATE(HttpStatus.CONFLICT, "DB409", "해당 세션에 이미 분석 데이터가 존재합니다. 중복 생성할 수 없습니다."), //ok
+
+    // 소셜 로그인
+    OAUTH_PROVIDER_NOT_FOUND(HttpStatus.BAD_REQUEST, "OAUTH400", "지원하지 않는 OAuth 제공자입니다."), // 400
+    OAUTH_TOKEN_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH500", "토큰 요청에 실패했습니다."), // 500
+    OAUTH_USERINFO_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH501", "사용자 정보를 가져오는데 실패했습니다."), // 500
+    LOGIN_ALREADY_EXISTS(HttpStatus.CONFLICT, "OAUTH409", "이미 다른 로그인 방식으로 가입된 회원입니다."); // 409
+
 
 
     private final HttpStatus httpStatus;
