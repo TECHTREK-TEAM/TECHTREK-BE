@@ -37,7 +37,7 @@ public class SecurityConfig {
                 )                                             // 세션 미사용 (JWT 기반)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
-                        .requestMatchers("/oauth2/**","/auth/**","/login/**").permitAll()  // 인증 없이 접근 허용
+                        .requestMatchers("/oauth2/**","/auth/**").permitAll()  // 인증 없이 접근 허용
                         .anyRequest().authenticated()                            // 나머지 요청 인증 필요
                 )
                 .oauth2Login(oauth -> oauth
