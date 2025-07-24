@@ -11,7 +11,7 @@ import techtrek.domain.user.service.small.GetUserByEmailDAO;
 import techtrek.domain.user.service.small.SaveUserDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.provider.JwtProvider;
+import techtrek.global.securty.provider.JwtProvider;
 
 @Component
 @RequiredArgsConstructor

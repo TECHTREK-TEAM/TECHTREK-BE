@@ -1,4 +1,4 @@
-package techtrek.global.provider;
+package techtrek.global.securty.provider;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
