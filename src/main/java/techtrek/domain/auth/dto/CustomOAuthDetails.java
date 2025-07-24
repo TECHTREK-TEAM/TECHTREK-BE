@@ -20,8 +20,8 @@ public class CustomOAuthDetails implements OAuth2User {
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomOAuthDetails(String id, String email, String name) {
-        this(id, name,email, Collections.emptyList());
+    public CustomOAuthDetails(String id, String name, String email) {
+        this(id, name, email, Collections.emptyList());
     }
 
     @Override

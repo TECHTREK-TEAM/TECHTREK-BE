@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import techtrek.domain.auth.dto.AuthResponse;
 import techtrek.domain.auth.service.AuthService;
 
 @RestController
@@ -17,7 +18,7 @@ public class AuthController {
     // 콜백 URI 처리
     @GetMapping("/auth/{provider}/callback")
     @Operation(summary = "콜백 조회(프론트 x)")
-    public ResponseEntity<String> oauthCallback(@RequestParam String code, @PathVariable String provider) {
+    public ResponseEntity<AuthResponse.Login> oauthCallback(@RequestParam String code, @PathVariable String provider) {
         return ResponseEntity.ok(authService.loginOAuth(provider, code));
     }
 }

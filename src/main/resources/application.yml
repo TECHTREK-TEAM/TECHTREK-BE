@@ -97,3 +97,6 @@ server:
       force: true
       enabled: true
       charset: UTF-8
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 86400000 #(24시간)
