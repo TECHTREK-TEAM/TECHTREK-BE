@@ -11,6 +11,7 @@ import techtrek.domain.sessionInfo.service.small.SaveSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.redis.service.small.SaveNewQuestionDAO;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.*;
 
@@ -33,9 +34,9 @@ public class CreateStartInterviewBean {
     private String interviewPrefix;
 
     // 면접 시작하기
-    public SessionInfoResponse.Start exec(EnterpriseName enterpriseName){
-        // TODO: 사용자 조회
-        User user = getUserDAO.exec("1");
+    public SessionInfoResponse.Start exec(EnterpriseName enterpriseName, CustomUserDetails userDetails){
+        // 사용자 조회
+        User user = getUserDAO.exec(userDetails.getId());
 
         // 세션 생성
         String sessionId = UUID.randomUUID().toString();

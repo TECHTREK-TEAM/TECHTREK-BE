@@ -10,6 +10,7 @@ import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.CreateCompanyDTO;
 import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,9 +24,9 @@ public class GetCompanyBean {
     private final CreateCompanyDTO createCompanyDTO;
 
     // 관심기업 Top 3 조회
-    public UserResponse.CompanyList exec(){
-        // TODO:사용자, 세션정보 조회
-        User user = getUserDAO.exec("1");
+    public UserResponse.CompanyList exec(CustomUserDetails userDetails){
+        // 사용자, 세션정보 조회
+        User user = getUserDAO.exec(userDetails.getId());
         List<SessionInfo> sessionInfos = getSessionInfoListDAO.exec(user);
 
         // 기업이름에 따른 면접 개수 조회

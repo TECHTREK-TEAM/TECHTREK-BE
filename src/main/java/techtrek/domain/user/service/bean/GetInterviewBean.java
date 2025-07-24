@@ -10,6 +10,7 @@ import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.CreateInterviewDTO;
 import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class GetInterviewBean {
     private final CreateInterviewDTO createInterviewDTO;
 
     // 면접 정보(높은점수, 최근) 조회
-    public UserResponse.Interview exec() {
-        // TODO:사용자 조회
-        User user = getUserDAO.exec("1");
+    public UserResponse.Interview exec(CustomUserDetails userDetails) {
+        // 사용자 조회
+        User user = getUserDAO.exec(userDetails.getId());
 
         // 유저의 모든 세션 ID 조회
         List<String> sessionIds = getSessionInfoListDAO.exec(user.getId());

@@ -13,6 +13,7 @@ public enum ErrorCode implements ResponseCode {
 
     // 사용자
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."), //ok
+    UNAUTHORIZED(HttpStatus.FORBIDDEN, "AUTH403", "해당 세션에 대한 권한이 없습니다."),
 
     // 기업, 기본 질문
     ENUM_ENTERPRISE_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM 기업 키워드를 찾을 수 없습니다."),  //ok

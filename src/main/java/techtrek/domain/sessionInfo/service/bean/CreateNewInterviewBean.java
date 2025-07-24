@@ -16,6 +16,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.*;
 
@@ -42,11 +43,14 @@ public class CreateNewInterviewBean {
     private String interviewPrefix;
 
     // 새로운 질문 생성하기 ( 기본질문 or 이력서기반)
-    public SessionInfoResponse.NewQuestion exec(String sessionId, String previousFieldId){
-        // TODO: 사용자, 기업이름 조회
-        User user = getUserDAO.exec("1");
+    public SessionInfoResponse.NewQuestion exec(String sessionId, String previousFieldId, CustomUserDetails userDetails){
+        // 사용자, 기업이름 조회
+        User user = getUserDAO.exec(userDetails.getId());
         SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
         EnterpriseName enterpriseName = sessionInfo.getEnterpriseName();
+
+        // 권한체크
+        if (!sessionInfo.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
         // 필드Id, 세션키 생성
         String fieldId = UUID.randomUUID().toString();

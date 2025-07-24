@@ -12,6 +12,7 @@ import techtrek.domain.user.service.small.SaveResumeDAO;
 import techtrek.domain.user.service.small.SaveStackDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.util.ChangeJsonReadUtil;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
@@ -33,12 +34,12 @@ public class CreateResumeBean {
     private final GetUserDAO getUserDAO;
 
     // 이력서 추출
-    public UserResponse.Resume exec(MultipartFile file) {
+    public UserResponse.Resume exec(MultipartFile file, CustomUserDetails userDetails) {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
-        // TODO:사용자 조회
-        User user = getUserDAO.exec("1");
+        // 사용자 조회
+        User user = getUserDAO.exec(userDetails.getId());
 
         // 이력서 추출
         String extractedText;

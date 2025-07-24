@@ -13,6 +13,9 @@ import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.analysis.service.small.SaveAnalysisDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
 import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
@@ -40,10 +43,13 @@ public class CreateAnalysisBean {
     private String interviewPrefix;
 
     // 분석하기
-    public AnalysisResponse.Analysis exec(String sessionId, int duration){
-        // TODO: 사용자, 세션정보 조회
-        User user = getUserDAO.exec("1");
+    public AnalysisResponse.Analysis exec(String sessionId, int duration, CustomUserDetails userDetails){
+        // 사용자, 세션정보 조회
+        User user = getUserDAO.exec(userDetails.getId());
         SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
+
+        // 권한 체크
+        if (!sessionInfo.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
         // 키 생성
         String newKey = interviewPrefix + sessionId + ":new:";

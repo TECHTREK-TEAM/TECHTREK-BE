@@ -8,6 +8,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.user.service.small.CreateUserDTO;
 import techtrek.domain.user.service.small.UpdateUserDAO;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.List;
 
@@ -19,9 +20,9 @@ public class UpdateUserBean {
     private final CreateUserDTO createUserDTO;
 
     // 사용자 정보 수정
-    public UserResponse.Info exec (String newName, String newUserGroup, String newSeniority, List<UserRequest.Info.Stack> newStacks) {
-        // TODO:사용자 조회
-        User user = getUserDAO.exec("1");
+    public UserResponse.Info exec (String newName, String newUserGroup, String newSeniority, List<UserRequest.Info.Stack> newStacks, CustomUserDetails userDetails) {
+        // 사용자 조회
+        User user = getUserDAO.exec(userDetails.getId());
 
         // 사용자 정보 수정 저장
         updateUserDAO.exec(user, newName, newUserGroup, newSeniority, newStacks);

@@ -6,9 +6,12 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.redis.service.small.*;
 import techtrek.domain.sessionInfo.dto.SessionInfoResponse;
 import techtrek.domain.sessionInfo.dto.SessionParserResponse;
+import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.service.small.CreateTailDTO;
+import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
 
@@ -23,6 +26,7 @@ public class CreateTailInterviewBean {
     private final CreatePromptTemplateUtil createPromptTemplateUtil;
     private final CreatePromptUtil createPromptUtil;
 
+    private final GetSessionInfoDAO getSessionInfoDAO;
     private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
     private final CheckRedisKeyDAO checkRedisKeyDAO;
     private final SaveTailQuestionDAO saveTailQuestionDAO;
@@ -34,7 +38,11 @@ public class CreateTailInterviewBean {
     private String interviewPrefix;
 
     // 꼬리질문 생성
-    public SessionInfoResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
+    public SessionInfoResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId, CustomUserDetails userDetails) {
+        // 권한 체크
+        SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
+        if (!sessionInfo.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
+
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;

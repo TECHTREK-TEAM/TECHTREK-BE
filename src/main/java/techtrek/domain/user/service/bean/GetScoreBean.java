@@ -10,6 +10,7 @@ import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.CreateScoreDTO;
 import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,9 +26,9 @@ public class GetScoreBean {
     private final CreateScoreDTO createScoreDTO;
 
     // 일치율 조회
-    public UserResponse.Score exec(){
-        // TODO:사용자 조회
-        User user = getUserDAO.exec("1");
+    public UserResponse.Score exec(CustomUserDetails userDetails){
+        // 사용자 조회
+        User user = getUserDAO.exec(userDetails.getId());
 
         // 유저의 모든 세션 ID 조회
         List<String> sessionIds = getSessionInfoListDAO.exec(user.getId());

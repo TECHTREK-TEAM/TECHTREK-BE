@@ -15,6 +15,9 @@ import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,13 +36,16 @@ public class GetAnalysisBean {
     private final CreateAnalysisDetailDTO createAnalysisDetailDTO;
 
     // 선택한 세션 불러오기
-    public AnalysisResponse.Detail exec(String sessionInfoId){
-        // TODO:사용자 조회
-        User user = getUserDAO.exec("1");
+    public AnalysisResponse.Detail exec(String sessionInfoId, CustomUserDetails userDetails){
+        // 사용자 조회
+        User user = getUserDAO.exec(userDetails.getId());
 
         // 선택한 세션의 정보 조회
         SessionInfo sessionInfo =getSessionInfoDAO.execById(sessionInfoId);
         Analysis analysis = sessionInfo.getAnalysis();
+
+        // 권한체크
+        if (!sessionInfo.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
         // 분석 데이터 수치
         double followScore = analysis.getFollowScore();
