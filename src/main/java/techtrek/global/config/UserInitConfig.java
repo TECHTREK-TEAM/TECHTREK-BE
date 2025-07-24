@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import techtrek.domain.stack.entity.Stack;
+import techtrek.domain.user.entity.Role;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 
@@ -33,6 +34,7 @@ public class UserInitConfig {
                 .userGroup("Frontend Developer")
                 .seniority("지망생")
                 .resume("Java와 Spring Boot...")
+                .role(Role.USER)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
 

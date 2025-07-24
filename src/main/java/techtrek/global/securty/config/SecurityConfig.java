@@ -1,32 +1,54 @@
 package techtrek.global.securty.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import techtrek.global.securty.filter.JwtAuthenticationFilter;
+import techtrek.global.securty.provider.JwtProvider;
+import techtrek.global.securty.service.CustomUserDetailsService;
 
 import java.util.List;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtProvider jwtProvider;
+    private final CustomUserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .httpBasic(httpBasic -> httpBasic.disable()) // httpBasic 인증 비활성화
+                .csrf(csrf -> csrf.disable())                // CSRF 비활성화 (API 서버용)
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )                                             // 세션 미사용 (JWT 기반)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // OPTIONS 요청 허용
-                        .requestMatchers("/**").permitAll() // 전체 요청 허용 (임시)
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
+                        .requestMatchers("/**").permitAll()                 // 인증 없이 접근 허용
+                        // .requestMatchers("/oauth2/**").permitAll()            // 인증 없이 접근 허용
+                        .anyRequest().authenticated()                            // 나머지 요청 인증 필요
                 )
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login") // 타임리프로 만든 로그인 페이지 경로
-                );
+                )
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtProvider, userDetailsService),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .cors(withDefaults()); // CORS 설정 활성화
 
         return http.build();
     }

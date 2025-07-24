@@ -38,6 +38,10 @@ public class User {
     @Column(name="resume", length = 255, nullable = true)
     private String resume;
 
+    @Column(name = "role", length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 

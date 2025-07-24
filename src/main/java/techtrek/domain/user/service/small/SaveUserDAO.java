@@ -2,6 +2,7 @@ package techtrek.domain.user.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import techtrek.domain.user.entity.Role;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 
@@ -20,6 +21,7 @@ public class SaveUserDAO {
                 .name(name)
                 .email(email)
                 .provider(provider)
+                .role(Role.USER)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
 

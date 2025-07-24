@@ -35,7 +35,7 @@ public class LoginOAuthBean {
 
         // 신규 사용자면 저장
         if (user == null) {
-            user = saveUserDAO.exec(provider, email, userInfo.getName(), accessToken);
+            user = saveUserDAO.exec(provider, userInfo.getName(), email, accessToken);
         }
         // 기존 사용자인데 provider가 다르면 예외
         else if (!user.getProvider().equals(provider)) {
