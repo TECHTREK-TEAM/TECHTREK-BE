@@ -42,7 +42,7 @@ public class CreateTailInterviewBean {
 
         // parentId 키, previousFieldId 키 존재 확인
         if (!checkRedisKeyDAO.exec(sessionKey + ":new:"+ parentId)) { throw new CustomException(ErrorCode.PARENT_FIELD_NOT_FOUND);}
-        if (!checkRedisKeyDAO.exec(sessionKey + ":tail:"+ previousFieldId)) { throw new CustomException(ErrorCode.PREVIOUS_FIELD_NOT_FOUND);}
+        //if (!checkRedisKeyDAO.exec(sessionKey + ":tail:"+ previousFieldId)) { throw new CustomException(ErrorCode.PREVIOUS_FIELD_NOT_FOUND);}
 
         // 부모 질문 조회
         SessionParserResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);
