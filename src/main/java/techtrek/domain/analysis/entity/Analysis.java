@@ -29,7 +29,7 @@ public class Analysis {
     @Column(name = "result", length = 255, nullable = false)
     private String result;
 
-    @Column(name = "keyword", length = 12, nullable = false)
+    @Column(name = "keyword", length = 255, nullable = false)
     private String keyword;
 
     @Column(name = "keyword_number", length = 12, nullable = false)
