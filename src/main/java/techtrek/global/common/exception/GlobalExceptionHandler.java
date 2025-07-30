@@ -44,13 +44,13 @@ public class GlobalExceptionHandler {
     }
 
     // 중복 데이터 존재할 경우
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<CommonResponse<?>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-        ErrorCode code = ErrorCode.ANALYSIS_DUPLICATE;
-        return ResponseEntity
-                .status(code.getHttpStatus())
-                .body(CommonResponse.from(code));
-    }
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public ResponseEntity<CommonResponse<?>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+//        ErrorCode code = ErrorCode.ANALYSIS_DUPLICATE;
+//        return ResponseEntity
+//                .status(code.getHttpStatus())
+//                .body(CommonResponse.from(code));
+//    }
 
     // 이력서: Multipart 요청이 아닌 경우
     @ExceptionHandler(MultipartException.class)
