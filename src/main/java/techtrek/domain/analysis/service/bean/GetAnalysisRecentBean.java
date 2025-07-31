@@ -46,6 +46,9 @@ public class GetAnalysisRecentBean {
         List<SessionInfo> sessionInfos = getSessionInfoListDAO.exec(user.getId(), enterpriseName);
         if (sessionInfos == null || sessionInfos.isEmpty()) return createAnalysisDetailDTO.exec(null, null, 0.0, 0.0, 0.0, Collections.emptyList());
         SessionInfo sessionInfo = sessionInfos.get(0);
+        if (sessionInfo == null) {
+            return createAnalysisDetailDTO.exec(null, null, 0.0, 0.0, 0.0, Collections.emptyList());
+        }
 
         // 분석정보 조회
         Analysis analysis = sessionInfo.getAnalysis();
