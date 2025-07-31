@@ -17,6 +17,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,10 +41,20 @@ public class GetAnalysisRecentBean {
         // TODO:사용자 조회
         User user = getUserDAO.exec("1");
 
-        // 해당 기업의 세션정보 list 조회 (내림차순)
+        // 해당 기업의 세션정보 조회 (내림차순 후, 첫번째 세션정보 조회)
         List<SessionInfo> sessionInfos = getSessionInfoListDAO.exec(user.getId(), enterpriseName);
+        if (sessionInfos == null || sessionInfos.isEmpty()) {
+            return createAnalysisDetailDTO.exec(null, null, 0.0, 0.0, 0.0, Collections.emptyList());
+        }
         SessionInfo sessionInfo = sessionInfos.get(0);
+        if (sessionInfo == null) {
+            return createAnalysisDetailDTO.exec(null, null, 0.0, 0.0, 0.0, Collections.emptyList());
+        }
+
         Analysis analysis = sessionInfo.getAnalysis();
+        if (analysis == null) {
+            return createAnalysisDetailDTO.exec(sessionInfo, null, 0.0, 0.0, 0.0, Collections.emptyList());
+        }
 
         // 분석 데이터 수치
         double followScore = analysis.getFollowScore();
