@@ -21,12 +21,19 @@ public class GetRedisByKeyDAO {
         for (String key : keys) {
             Map<Object, Object> data = redisTemplate.opsForHash().entries(key);
 
+            if (data == null || data.isEmpty()) {
+                System.out.println("  - Redis hash 데이터가 없거나 비어있음.");
+                continue;
+            }
+
             String question = String.valueOf(data.get("question"));
             String answer = data.containsKey("answer") ? String.valueOf(data.get("answer")) : null;
             String questionNumber = String.valueOf(data.get("questionNumber"));
             String totalQuestionNumber = data.get("totalQuestionNumber").toString();
+
             String tailQuestionMessage = null;
-            if(data.containsKey("tailQuestionNumber")) {
+            String tailQuestionNumberVal = String.valueOf(data.getOrDefault("tailQuestionNumber", "0"));
+            if ("1".equals(tailQuestionNumberVal) || "true".equalsIgnoreCase(tailQuestionNumberVal)) {
                 tailQuestionMessage = "연계 질문입니다.";
             }
 
