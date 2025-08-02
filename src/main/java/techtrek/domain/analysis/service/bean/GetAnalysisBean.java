@@ -68,8 +68,10 @@ public class GetAnalysisBean {
         double topScorePercent = ((double)(lowerCount + 1) / totalCount) * 100;
 
         // 모든 hash 데이터 조회
-        Set<String> allKeys = new HashSet<>();
-        allKeys.addAll(getRedisHashUtil.exec("interview:session:" + sessionInfo.getSessionId() + "*"));
+        Set<String> allKeys = new HashSet<>(getRedisHashUtil.exec("interview:session:" + sessionInfo.getSessionId() + ":*"));
+
+        // 'count'가 포함된 키는 제외
+        allKeys.removeIf(key -> key.contains(":count:"));
         List<SessionParserResponse.ListData> listData = getRedisByKeyDAO.exec(allKeys);
 
         return createAnalysisDetailDTO.exec(sessionInfo, analysis, followScoreDiffPercent, durationDiffPercent, topScorePercent, listData);
