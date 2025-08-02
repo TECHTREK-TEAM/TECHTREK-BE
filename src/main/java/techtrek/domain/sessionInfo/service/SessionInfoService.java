@@ -40,8 +40,8 @@ public class SessionInfoService {
     }
 
     // 종료하기
-    public Boolean deleteInterview(String sessionInfoId){
-        return deleteInterview.exec(sessionInfoId);
+    public Boolean deleteInterview(String sessionInfoId, CustomUserDetails userDetails){
+        return deleteInterview.exec(sessionInfoId, userDetails);
     }
 }
 

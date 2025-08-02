@@ -53,8 +53,8 @@ public class SessionInfoController {
     // 종료하기
     @DeleteMapping("/close/{sessionInfoId}")
     @Operation(summary = "면접 종료", description = "면접을 종료합니다 (분석 x, 데이터 삭제)")
-    public ResponseEntity<CommonResponse<Boolean>> deleteInterview(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId){
-        return ApiResponse.onSuccess(sessionInfoService.deleteInterview(sessionInfoId));
+    public ResponseEntity<CommonResponse<Boolean>> deleteInterview(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return ApiResponse.onSuccess(sessionInfoService.deleteInterview(sessionInfoId, userDetails));
     }
 
 }
