@@ -16,7 +16,7 @@ public class SaveSessionInfoDAO {
     private final SessionInfoRepository sessionInfoRepository;
 
     // 세션정보 테이블 저장
-    public void exec(String sessionId, EnterpriseName enterpriseName, User user){
+    public String exec(String sessionId, EnterpriseName enterpriseName, User user){
         SessionInfo sessionInfo = SessionInfo.builder()
                 .id(UUID.randomUUID().toString())
                 .sessionId(sessionId)
@@ -25,5 +25,7 @@ public class SaveSessionInfoDAO {
                 .build();
 
         sessionInfoRepository.save(sessionInfo);
+
+        return sessionInfo.getId();
     }
 }

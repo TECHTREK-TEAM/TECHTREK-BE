@@ -45,14 +45,14 @@ public class AnalysisController {
     // 선택한 세션 불러오기
     @GetMapping("/{sessionInfoId}")
     @Operation(summary = "분석 세션 상세 조회", description = "선택한 분석 세션의 상세 정보를 조회합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@Parameter(description = "세션 ID", required = true) @PathVariable String sessionInfoId){
+    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId){
         return ApiResponse.onSuccess(analysisService.getAnalysis(sessionInfoId));
     }
 
     // 선택한 세션 삭제
     @DeleteMapping("/{sessionInfoId}")
     @Operation(summary = "분석 세션 삭제", description = "선택한 분석 세션을 삭제합니다.")
-    public ResponseEntity<CommonResponse<Boolean>> deleteAnalysis(@Parameter(description = "세션 ID", required = true) @PathVariable String sessionInfoId){
+    public ResponseEntity<CommonResponse<Boolean>> deleteAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId){
         return ApiResponse.onSuccess(analysisService.deleteAnalysis(sessionInfoId));
     }
 
