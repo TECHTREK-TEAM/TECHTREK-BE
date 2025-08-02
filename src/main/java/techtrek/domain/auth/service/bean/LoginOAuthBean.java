@@ -2,7 +2,6 @@ package techtrek.domain.auth.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.auth.dto.AuthResponse;
 import techtrek.domain.auth.dto.CustomOAuthDetails;
 import techtrek.domain.auth.service.common.GetAccessToken;
 import techtrek.domain.auth.service.common.GetOAuthUserInfo;
@@ -22,7 +21,7 @@ public class LoginOAuthBean {
     private final SaveUserDAO saveUserDAO;
     private final JwtProvider jwtProvider;
 
-    public AuthResponse.Login exec(String provider, String code){
+    public String exec(String provider, String code){
         // 인가 코드로 액세스 토큰 요청
         String accessToken = getAccessToken.exec(provider, code);
 
@@ -44,6 +43,10 @@ public class LoginOAuthBean {
         // JWT 생성
         String jwt = jwtProvider.createToken(user.getId());
 
-        return new AuthResponse.Login(jwt,user.getName());
+        return String.format(
+                "http://localhost:5173/social-login/callback?token=%s&name=%s",
+                jwt,
+                java.net.URLEncoder.encode(user.getName(), java.nio.charset.StandardCharsets.UTF_8)
+        );
     }
 }
