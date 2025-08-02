@@ -36,7 +36,7 @@ public class AnalysisService {
         return getAnalysisBean.exec(sessionInfoId);
     }
 
-    // 선택한 세션 불러오기
+    // 선택한 세션 삭제하기
     public Boolean deleteAnalysis(String sessionInfoId){
         return deleteAnalysisBean.exec(sessionInfoId);
     }

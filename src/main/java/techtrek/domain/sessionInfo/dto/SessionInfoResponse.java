@@ -26,6 +26,9 @@ public class SessionInfoResponse {
 
         @Schema(description = "전체 질문 수", example = "10")
         private String totalQuestionNumber;
+
+        @Schema(description = "면접 ID", example = "10")
+        private String sessionInfoId;
     }
 
     // 새 질문
