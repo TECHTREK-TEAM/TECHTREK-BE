@@ -56,8 +56,8 @@ public class CreateStartInterviewBean {
         saveNewQuestionDAO.exec(fieldKey, START_PHASE, START_COUNT, question,  questionNumber, totalQuestionNumber);
 
         // 세션정보 테이블에 값 저장
-        saveSessionInfoDAO.exec(sessionId, enterpriseName, user);
+        String sessionInfoId =saveSessionInfoDAO.exec(sessionId, enterpriseName, user);
 
-        return createStartDTO.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber);
+        return createStartDTO.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber,sessionInfoId);
     }
 }

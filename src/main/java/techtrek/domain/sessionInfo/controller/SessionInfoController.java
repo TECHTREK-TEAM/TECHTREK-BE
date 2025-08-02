@@ -1,6 +1,7 @@
 package techtrek.domain.sessionInfo.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,13 @@ public class SessionInfoController {
     @Operation(summary = "답변 등록", description = "질문에 대한 사용자의 답변을 등록합니다.")
     public ResponseEntity<CommonResponse<Boolean>> createAnswer(@Valid @RequestBody SessionInfoRequest.Answer request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ApiResponse.onSuccess(sessionInfoService.createAnswer(request,userDetails));
+    }
+
+    // 종료하기
+    @DeleteMapping("/close/{sessionInfoId}")
+    @Operation(summary = "면접 종료", description = "면접을 종료합니다 (분석 x, 데이터 삭제)")
+    public ResponseEntity<CommonResponse<Boolean>> deleteInterview(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId){
+        return ApiResponse.onSuccess(sessionInfoService.deleteInterview(sessionInfoId));
     }
 
 }

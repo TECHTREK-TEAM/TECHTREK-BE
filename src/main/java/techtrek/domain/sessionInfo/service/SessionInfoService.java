@@ -17,6 +17,7 @@ public class SessionInfoService {
     private final CreateNewInterviewBean createNewInterviewBean;
     private final CreateTailInterviewBean createTailInterviewBean;
     private final CreateAnswerBean createAnswerBean;
+    private final DeleteInterview deleteInterview;
 
     //면접 시작하기
     public SessionInfoResponse.Start createInterview(SessionInfoRequest.Start request, CustomUserDetails userDetails) {
@@ -38,6 +39,10 @@ public class SessionInfoService {
         return createAnswerBean.exec(request. getSessionId(),request.getFieldId(),request.getType(),request.getAnswer(),userDetails);
     }
 
+    // 종료하기
+    public Boolean deleteInterview(String sessionInfoId){
+        return deleteInterview.exec(sessionInfoId);
+    }
 }
 
 
