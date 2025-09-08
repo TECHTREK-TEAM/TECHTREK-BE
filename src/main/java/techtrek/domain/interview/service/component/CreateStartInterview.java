@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
+import techtrek.domain.interview.dto.BasicQuestionResponse;
 import techtrek.domain.interview.dto.SessionInfoResponse;
 import techtrek.domain.interview.service.common.BasicQuestion;
 import techtrek.domain.interview.service.small.CreateStartDTO;
@@ -51,8 +52,8 @@ public class CreateStartInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 기본 질문 생성
-        String question = basicQuestion.exec(enterprise);
-        System.out.println(question);
+        BasicQuestionResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
+        System.out.println(basicQuestionResult.getQuestion());
 
         // 총 질문 번호, 질문 번호
 //        String questionNumber= START_QUESTION_NUMBER;
@@ -65,6 +66,6 @@ public class CreateStartInterview {
 //        String sessionInfoId =saveSessionInfoDAO.exec(sessionId, enterpriseName, user);
 
         // return createStartDTO.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber,sessionInfoId);
-        return createStartDTO.exec(sessionId, fieldId, question, "1","1","1");
+        return createStartDTO.exec(sessionId, fieldId, basicQuestionResult.getQuestion(), "1","1","1");
     }
 }
