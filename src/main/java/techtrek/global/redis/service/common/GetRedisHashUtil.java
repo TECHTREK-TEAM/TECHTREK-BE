@@ -1,4 +1,4 @@
-package techtrek.domain.redis.service.common;
+package techtrek.global.redis.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.RedisConnection;

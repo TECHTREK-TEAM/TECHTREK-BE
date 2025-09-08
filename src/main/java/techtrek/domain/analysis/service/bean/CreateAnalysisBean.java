@@ -15,8 +15,8 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.global.util.CreatePromptUtil;
 import techtrek.global.util.CreatePromptTemplateUtil;
-import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
-import techtrek.domain.redis.service.common.GetRedisHashUtil;
+import techtrek.global.redis.service.small.GetRedisByKeyDAO;
+import techtrek.global.redis.service.common.GetRedisHashUtil;
 import techtrek.global.util.ChangeJsonReadUtil;
 
 import java.util.*;

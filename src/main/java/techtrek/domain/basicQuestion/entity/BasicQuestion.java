@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import techtrek.domain.basicQuestion.entity.status.Category;
 import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.enterprise.entity.Enterprise;
 
 @Entity
 @Getter
@@ -23,9 +24,9 @@ public class BasicQuestion {
     @Column(name = "correct_answer", nullable = false)
     private String correctAnswer;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "enterprise_name", nullable = false)
-    private EnterpriseName enterpriseName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "enterprise_id", nullable = false)
+    private Enterprise enterprise;
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)

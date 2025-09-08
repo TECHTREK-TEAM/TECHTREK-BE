@@ -4,13 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import techtrek.domain.interview.dto.SessionInfoResponse;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
 import techtrek.domain.interview.service.common.BasicQuestion;
 import techtrek.domain.interview.service.small.CreateStartDTO;
 import techtrek.domain.interview.service.small.SaveSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
-import techtrek.domain.redis.service.small.SaveNewQuestionDAO;
+import techtrek.global.redis.service.small.SaveNewQuestionDAO;
 
 import java.util.*;
 

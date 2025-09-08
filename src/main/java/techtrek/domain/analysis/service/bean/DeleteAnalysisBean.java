@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.service.small.DeleteAnalysisDAO;
-import techtrek.domain.redis.service.small.DeleteRedisDAO;
+import techtrek.global.redis.service.small.DeleteRedisDAO;
 import techtrek.domain.interview.entity.SessionInfo;
 import techtrek.domain.interview.service.small.DeleteSessionInfoDAO;
 import techtrek.domain.interview.service.small.GetSessionInfoDAO;

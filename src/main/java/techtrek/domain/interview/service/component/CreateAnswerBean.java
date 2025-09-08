@@ -3,8 +3,8 @@ package techtrek.domain.interview.service.component;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import techtrek.domain.redis.service.small.CheckRedisKeyDAO;
-import techtrek.domain.redis.service.small.SaveAnswerDAO;
+import techtrek.global.redis.service.small.CheckRedisKeyDAO;
+import techtrek.global.redis.service.small.SaveAnswerDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
