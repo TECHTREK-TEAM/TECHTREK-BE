@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS enterprise (
 );
 
 -- 기본질문 테이블 생성
-CREATE TABLE IF NOT EXISTS basic_question (
+CREATE TABLE IF NOT EXISTS interview_question (
     id INT AUTO_INCREMENT PRIMARY KEY,
     question VARCHAR(255) NOT NULL,
     correct_answer VARCHAR(255) NOT NULL,

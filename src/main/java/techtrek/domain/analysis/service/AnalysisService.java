@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.bean.*;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
 @Service
 @RequiredArgsConstructor

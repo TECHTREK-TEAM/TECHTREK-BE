@@ -3,7 +3,7 @@ INSERT IGNORE INTO enterprise (name) VALUES
 ('SAMSUNG'), ('COUPANG'), ('NAVER'), ('KAKAO'), ('BAEMIN'), ('DANGGEUN_MARKET'), ('TOSS'), ('NEXON');
 
 -- 기본 질문 데이터 삽입 (enterprise_id 사용)
-INSERT IGNORE INTO basic_question (question, correct_answer, enterprise_id, category)
+INSERT IGNORE INTO interview_question (question, correct_answer, enterprise_id, category)
 VALUES
 ('멀티 스레드와 멀티 프로세스 차이는 무엇인가요?', '스레드는 같은 메모리 공간, 경량 / 프로세스: 독립된 메모리 공간, 무거움', 1, 'OS'),
 ('Thread와 Process의 차이는 무엇인가요?', 'Thread: 실행 단위 / Process: 자원 단위, 독립 실행', 1, 'OS'),

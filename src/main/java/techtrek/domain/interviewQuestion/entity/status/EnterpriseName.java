@@ -1,4 +1,4 @@
-package techtrek.domain.basicQuestion.entity.status;
+package techtrek.domain.interviewQuestion.entity.status;
 
 // 기업 유형
 public enum EnterpriseName {

@@ -2,22 +2,33 @@ package techtrek.domain.interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.basicQuestion.entity.status.Category;
 //import techtrek.domain.basicQuestion.service.small.GetBasicQuestionDAO;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
+import techtrek.domain.interviewQuestion.repository.InterviewQuestionRepository;
+import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-
-import java.util.List;
-import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
 public class BasicQuestion {
     //private final GetBasicQuestionDAO getBasicQuestionDAO;
+    private final InterviewQuestionRepository interviewQuestionRepository;
 
     // 기본 질문 생성
-    public String exec(){
+    public String exec(Enterprise enterprise){
+
+        // 기본 질문 중 랜덤 1개 가져오기
+        InterviewQuestion question = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
+
+
+
+        
+
+
+
+        // if (question == null) throw new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND);
 
         // (ENUM) 해당 기업의 키워드 목록 불러오기
 //        List<String> keywords = enterpriseName.getKeywords();
@@ -33,6 +44,6 @@ public class BasicQuestion {
 //        String question = getBasicQuestionDAO.exec(cs);
 
         //return question;
-        return "질문";
+        return question.getQuestion();
     }
 }

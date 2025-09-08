@@ -1,4 +1,4 @@
-package techtrek.domain.basicQuestion.entity.status;
+package techtrek.domain.interviewQuestion.entity.status;
 
 // 카테고리
 public enum Category {

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import techtrek.domain.interview.entity.SessionInfo;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 import techtrek.domain.user.entity.User;
 
 import java.util.List;

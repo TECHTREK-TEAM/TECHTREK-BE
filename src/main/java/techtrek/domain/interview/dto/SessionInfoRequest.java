@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
 
 public class SessionInfoRequest {
 
@@ -15,7 +14,7 @@ public class SessionInfoRequest {
     @Schema(description = "면접 시작 요청")
     public static class Start {
         @Schema(description = "기업 이름", example = "네이버")
-        private EnterpriseName enterpriseName;
+        private String enterpriseName;
     }
 
     // 새 질문

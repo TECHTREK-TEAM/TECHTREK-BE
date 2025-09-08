@@ -10,7 +10,7 @@ import techtrek.domain.interview.service.component.*;
 @RequiredArgsConstructor
 @Builder
 @Service
-public class SessionInfoService {
+public class InterviewService {
 
     private final CreateStartInterview createStartInterviewBean;
     private final CreateNewInterviewBean createNewInterviewBean;
@@ -19,8 +19,8 @@ public class SessionInfoService {
     private final DeleteInterview deleteInterview;
 
     //면접 시작하기
-    public SessionInfoResponse.Start createInterview() {
-        return createStartInterviewBean.exec();
+    public SessionInfoResponse.Start createInterview(SessionInfoRequest.Start request) {
+        return createStartInterviewBean.exec(request.getEnterpriseName());
     }
 
     //새로운 질문 생성하기

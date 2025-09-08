@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import jakarta.persistence.Id;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 import techtrek.domain.user.entity.User;
 
 @Entity

@@ -3,7 +3,7 @@ package techtrek.domain.interview.service.small;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.interview.entity.SessionInfo;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 import techtrek.domain.interview.repository.SessionInfoRepository;
 import techtrek.domain.user.entity.User;
 

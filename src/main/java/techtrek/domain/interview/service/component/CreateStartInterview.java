@@ -3,12 +3,16 @@ package techtrek.domain.interview.service.component;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.interview.dto.SessionInfoResponse;
 import techtrek.domain.interview.service.common.BasicQuestion;
 import techtrek.domain.interview.service.small.CreateStartDTO;
 import techtrek.domain.interview.service.small.SaveSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.redis.service.small.SaveNewQuestionDAO;
 
 import java.util.*;
@@ -27,12 +31,13 @@ public class CreateStartInterview {
     private final SaveSessionInfoDAO saveSessionInfoDAO;
     private final SaveNewQuestionDAO saveNewQuestionDAO;
     private final CreateStartDTO createStartDTO;
+    private final EnterpriseRepository enterpriseRepository;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
     // 면접 시작하기
-    public SessionInfoResponse.Start exec(){
+    public SessionInfoResponse.Start exec(String enterpriseName){
         // TODO: 사용자 조회
         User user = getUserDAO.exec("1");
 
@@ -41,8 +46,13 @@ public class CreateStartInterview {
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId +":"+ fieldId;
 
+        // 기업 존재 확인
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
+                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
+
         // 기본 질문 생성
-        String question = basicQuestion.exec();
+        String question = basicQuestion.exec(enterprise);
+        System.out.println(question);
 
         // 총 질문 번호, 질문 번호
 //        String questionNumber= START_QUESTION_NUMBER;

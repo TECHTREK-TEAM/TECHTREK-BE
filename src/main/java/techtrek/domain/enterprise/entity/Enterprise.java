@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.*;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.basicQuestion.entity.BasicQuestion;
+import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Enterprise {
     private String name;
 
     @OneToMany(mappedBy = "enterprise")
-    private List<BasicQuestion> basicQuestions;
+    private List<InterviewQuestion> interviewQuestions;
 
     @OneToMany(mappedBy = "enterprise")
     private List<Analysis> analyses;

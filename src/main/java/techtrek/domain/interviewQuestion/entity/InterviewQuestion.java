@@ -1,9 +1,8 @@
-package techtrek.domain.basicQuestion.entity;
+package techtrek.domain.interviewQuestion.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techtrek.domain.basicQuestion.entity.status.Category;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.status.Category;
 import techtrek.domain.enterprise.entity.Enterprise;
 
 @Entity
@@ -11,8 +10,8 @@ import techtrek.domain.enterprise.entity.Enterprise;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="basic_question")
-public class BasicQuestion {
+@Table(name="interview_question")
+public class InterviewQuestion {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

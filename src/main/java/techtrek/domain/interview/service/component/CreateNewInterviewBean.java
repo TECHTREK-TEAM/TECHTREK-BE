@@ -9,7 +9,7 @@ import techtrek.domain.interview.service.small.CreateNewDTO;
 import techtrek.domain.interview.service.small.GetSessionInfoDAO;
 import techtrek.domain.interview.dto.SessionInfoResponse;
 import techtrek.domain.interview.entity.SessionInfo;
-import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 import techtrek.domain.interview.service.common.CreateResumeUtil;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import techtrek.domain.interview.dto.SessionInfoRequest;
 import techtrek.domain.interview.dto.SessionInfoResponse;
-import techtrek.domain.interview.service.SessionInfoService;
+import techtrek.domain.interview.service.InterviewService;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
 
@@ -18,13 +18,13 @@ import techtrek.global.common.response.CommonResponse;
 @RequestMapping("/api/interview")
 @Tag(name = "면접 세션 API", description = "면접 생성 및 질문·답변 관련 API")
 public class InterviewController {
-    private final SessionInfoService sessionInfoService;
+    private final InterviewService sessionInfoService;
 
     // 면접 시작하기
     @PostMapping("/start")
     @Operation( summary = "면접 시작", description = "면접을 시작하고 세션 정보를 생성합니다.")
-    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview() {
-        return ApiResponse.onSuccess(sessionInfoService.createInterview());
+    public ResponseEntity<CommonResponse<SessionInfoResponse.Start>> createInterview(@RequestBody SessionInfoRequest.Start request) {
+        return ApiResponse.onSuccess(sessionInfoService.createInterview(request));
     }
 
     // 새로운 질문 생성하기
