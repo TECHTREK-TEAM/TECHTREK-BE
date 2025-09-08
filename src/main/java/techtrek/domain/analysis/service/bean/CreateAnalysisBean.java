@@ -13,11 +13,11 @@ import techtrek.domain.interview.service.small.GetSessionInfoDAO;
 import techtrek.domain.analysis.service.small.SaveAnalysisDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
+import techtrek.global.gpt.prompt.Prompt;
+import techtrek.global.gpt.prompt.PromptTemplate;
 import techtrek.global.redis.service.small.GetRedisByKeyDAO;
 import techtrek.global.redis.service.common.GetRedisHashUtil;
-import techtrek.global.util.ChangeJsonReadUtil;
+import techtrek.global.gpt.prompt.JsonRead;
 
 import java.util.*;
 
@@ -26,9 +26,9 @@ import java.util.*;
 public class CreateAnalysisBean {
 
     private final GetRedisHashUtil getRedisHashUtil;
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
-    private final ChangeJsonReadUtil changeJsonReadUtil;
+    private final PromptTemplate createPromptTemplateUtil;
+    private final Prompt createPromptUtil;
+    private final JsonRead changeJsonReadUtil;
 
     private final GetUserDAO getUserDAO;
     private final GetRedisByKeyDAO getRedisByKeyDAO;

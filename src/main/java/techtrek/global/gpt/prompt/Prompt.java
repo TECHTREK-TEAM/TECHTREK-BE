@@ -1,4 +1,4 @@
-package techtrek.global.util;
+package techtrek.global.gpt.prompt;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -10,8 +10,9 @@ import techtrek.global.gpt.dto.OpenAiResponse;
 
 import java.util.List;
 
+// 프롬프트 생성
 @Component
-public class CreatePromptUtil {
+public class Prompt {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${openai.api-key}")

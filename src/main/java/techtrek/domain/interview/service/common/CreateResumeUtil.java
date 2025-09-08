@@ -5,14 +5,14 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.interview.entity.SessionInfo;
 import techtrek.domain.interview.service.small.GetSessionInfoDAO;
 import techtrek.domain.user.entity.User;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
+import techtrek.global.gpt.prompt.Prompt;
+import techtrek.global.gpt.prompt.PromptTemplate;
 
 @Component
 @RequiredArgsConstructor
 public class CreateResumeUtil {
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
+    private final PromptTemplate createPromptTemplateUtil;
+    private final Prompt createPromptUtil;
 
     private final GetSessionInfoDAO getSessionInfoDAO;
 

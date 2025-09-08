@@ -9,8 +9,8 @@ import techtrek.domain.interview.service.small.CreateTailDTO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.redis.service.small.*;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
+import techtrek.global.gpt.prompt.Prompt;
+import techtrek.global.gpt.prompt.PromptTemplate;
 
 import java.util.UUID;
 
@@ -20,8 +20,8 @@ public class CreateTailInterviewBean {
     // 상수 정의
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
+    private final PromptTemplate createPromptTemplateUtil;
+    private final Prompt createPromptUtil;
 
     private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
     private final CheckRedisKeyDAO checkRedisKeyDAO;

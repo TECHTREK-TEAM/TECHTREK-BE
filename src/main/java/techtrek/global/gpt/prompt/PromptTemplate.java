@@ -1,4 +1,4 @@
-package techtrek.global.util;
+package techtrek.global.gpt.prompt;
 
 import org.springframework.stereotype.Component;
 import techtrek.global.common.code.ErrorCode;
@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class CreatePromptTemplateUtil {
+public class PromptTemplate {
 
     // 프롬프트 템플릿 생성
     public String exec(String resourcePath) {

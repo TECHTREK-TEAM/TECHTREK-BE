@@ -12,9 +12,9 @@ import techtrek.domain.user.service.small.SaveResumeDAO;
 import techtrek.domain.user.service.small.SaveStackDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.util.ChangeJsonReadUtil;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
+import techtrek.global.gpt.prompt.JsonRead;
+import techtrek.global.gpt.prompt.Prompt;
+import techtrek.global.gpt.prompt.PromptTemplate;
 
 import java.io.IOException;
 
@@ -24,9 +24,9 @@ public class CreateResumeBean {
     //상수 정의
     private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
 
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
-    private final ChangeJsonReadUtil changeJsonReadUtil;
+    private final PromptTemplate createPromptTemplateUtil;
+    private final Prompt createPromptUtil;
+    private final JsonRead changeJsonReadUtil;
 
     private final SaveResumeDAO saveResumeDAO;
     private final SaveStackDAO saveStackDAO;

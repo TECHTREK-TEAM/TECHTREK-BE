@@ -1,4 +1,4 @@
-package techtrek.global.util;
+package techtrek.global.gpt.prompt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,7 @@ import techtrek.global.common.exception.CustomException;
 
 @Component
 @RequiredArgsConstructor
-public class ChangeJsonReadUtil {
+public class JsonRead {
     private final ObjectMapper objectMapper;
 
     // JSON → 객체(역직렬화, 파싱)
