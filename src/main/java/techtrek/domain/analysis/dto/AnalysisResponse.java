@@ -2,7 +2,7 @@ package techtrek.domain.analysis.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
+import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
 
 import java.time.LocalDateTime;
 import java.util.List;

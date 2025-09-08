@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.sessionInfo.dto.SessionParserResponse;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.interview.dto.SessionParserResponse;
+import techtrek.domain.interview.entity.SessionInfo;
 
 import java.util.ArrayList;
 import java.util.List;

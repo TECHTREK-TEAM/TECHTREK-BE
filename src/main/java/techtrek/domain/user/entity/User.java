@@ -2,8 +2,7 @@ package techtrek.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.interview.entity.SessionInfo;
 import techtrek.domain.stack.entity.Stack;
 
 import java.time.LocalDateTime;

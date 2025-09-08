@@ -2,7 +2,8 @@ package techtrek.domain.basicQuestion.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techtrek.domain.basicQuestion.entity.status.CsCategory;
+import techtrek.domain.basicQuestion.entity.status.Category;
+import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
 
 @Entity
 @Getter
@@ -12,19 +13,26 @@ import techtrek.domain.basicQuestion.entity.status.CsCategory;
 @Table(name="basic_question")
 public class BasicQuestion {
     @Id
-    @Column(name = "id", length = 36, nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "question", nullable = false)
     private String question;
 
-    @Column(name = "cs_category", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CsCategory csCategory;
+    @Column(name = "correct_answer", nullable = false)
+    private String correctAnswer;
 
-    public BasicQuestion(String question, CsCategory csCategory) {
-        this.question = question;
-        this.csCategory = csCategory;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "enterprise_name", nullable = false)
+    private EnterpriseName enterpriseName;
+
+    @Column(name = "category", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+//    public BasicQuestion(String question, Category category) {
+//        this.question = question;
+//        this.category = category;
+//    }
 }

@@ -3,7 +3,7 @@ package techtrek.domain.user.dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
+import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
 
 import java.util.List;
 

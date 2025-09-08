@@ -3,7 +3,7 @@ package techtrek.domain.user.service.bean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.service.small.GetPassCountDAO;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoCountDAO;
+import techtrek.domain.interview.service.small.GetSessionInfoCountDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.CreatePassDTO;

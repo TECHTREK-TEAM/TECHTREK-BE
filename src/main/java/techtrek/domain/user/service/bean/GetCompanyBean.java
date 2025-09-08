@@ -2,10 +2,9 @@ package techtrek.domain.user.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
+import techtrek.domain.interview.entity.SessionInfo;
+import techtrek.domain.basicQuestion.entity.status.EnterpriseName;
+import techtrek.domain.interview.service.small.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.CreateCompanyDTO;

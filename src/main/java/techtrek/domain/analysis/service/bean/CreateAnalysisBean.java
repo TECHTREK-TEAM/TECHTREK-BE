@@ -7,9 +7,9 @@ import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.service.small.CreateAnalysisDTO;
-import techtrek.domain.sessionInfo.dto.SessionParserResponse;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
+import techtrek.domain.interview.dto.SessionParserResponse;
+import techtrek.domain.interview.entity.SessionInfo;
+import techtrek.domain.interview.service.small.GetSessionInfoDAO;
 import techtrek.domain.analysis.service.small.SaveAnalysisDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
@@ -67,7 +67,8 @@ public class CreateAnalysisBean {
 
         // 프롬프트 생성 후, 분석결과 받기
         String promptTemplate = createPromptTemplateUtil.exec("prompts/analysis_prompt.txt");
-        String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), sessionInfo.getEnterpriseName().getDescription(), user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
+        //String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), sessionInfo.getEnterpriseName().getDescription(), user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
+        String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), "기업 설명", user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
         String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)
