@@ -22,7 +22,7 @@ public class SessionRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "새 질문 생성 요청")
-    public static class NewQuestion {
+    public static class Question {
         @Schema(description = "세션 ID", example = "1234", required = true)
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;

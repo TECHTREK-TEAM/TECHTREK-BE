@@ -27,11 +27,18 @@ public class SessionController {
         return ApiResponse.onSuccess(sessionInfoService.createInterview(request));
     }
 
-    // 새로운 질문 생성하기
+    // 기본 질문 생성하기
     @PostMapping("/questions/basic")
     @Operation( summary = "기본 질문 생성", description = "면접 도중 기본 질문을 생성합니다.")
-    public ResponseEntity<CommonResponse<SessionResponse.NewQuestion>> createNewInterview(@Valid @RequestBody SessionRequest.NewQuestion request) {
+    public ResponseEntity<CommonResponse<SessionResponse.Question>> createNewInterview(@Valid @RequestBody SessionRequest.Question request) {
         return ApiResponse.onSuccess(sessionInfoService.createNewInterview(request));
+    }
+
+    // 이력서 질문 생성하기
+    @PostMapping("/questions/resume")
+    @Operation( summary = "이력서 질문 생성", description = "면접 도중 이력서 질문을 생성합니다.")
+    public ResponseEntity<CommonResponse<SessionResponse.Question>> createResumeInterview(@Valid @RequestBody SessionRequest.Question request) {
+        return ApiResponse.onSuccess(sessionInfoService.createResumeInterview(request));
     }
 
     // 꼬리질문 생성하기

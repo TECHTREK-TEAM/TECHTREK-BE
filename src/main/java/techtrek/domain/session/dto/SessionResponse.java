@@ -32,7 +32,7 @@ public class SessionResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Schema(description = "새 질문 생성 응답")
-    public static class NewQuestion {
+    public static class Question {
         @Schema(description = "필드 ID", example = "2345")
         private String fieldId;
 

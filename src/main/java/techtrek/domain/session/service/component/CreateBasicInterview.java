@@ -35,7 +35,7 @@ public class CreateBasicInterview {
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
 
-    public SessionResponse.NewQuestion exec(String sessionId){
+    public SessionResponse.Question exec(String sessionId){
         // TODO: 사용자 조회
         userRepository.findById("1")
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -64,7 +64,7 @@ public class CreateBasicInterview {
         redisTemplate.opsForHash().put(basicKey, "correctAnswer", basicQuestionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(basicKey, "questionNumber", questionNumber);
 
-        return SessionResponse.NewQuestion.builder()
+        return SessionResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(basicQuestionResult.getQuestion())
                 .questionNumber(questionNumber)

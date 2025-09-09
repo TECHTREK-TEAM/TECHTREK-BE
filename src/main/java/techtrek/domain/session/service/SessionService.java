@@ -12,20 +12,26 @@ import techtrek.domain.session.service.component.*;
 @Service
 public class SessionService {
 
-    private final CreateStartInterview createStartInterviewBean;
-    private final CreateBasicInterview createBasicInterviewBean;
+    private final CreateStartInterview createStartInterview;
+    private final CreateBasicInterview createBasicInterview;
+    private final CreateResumeInterview createResumeInterview;
     private final CreateTailInterviewBean createTailInterviewBean;
     private final CreateAnswerBean createAnswerBean;
     private final DeleteInterview deleteInterview;
 
     //면접 시작하기
     public SessionResponse.Start createInterview(SessionRequest.Start request) {
-        return createStartInterviewBean.exec(request.getEnterpriseName());
+        return createStartInterview.exec(request.getEnterpriseName());
     }
 
-    //새로운 질문 생성하기
-    public SessionResponse.NewQuestion createNewInterview(SessionRequest.NewQuestion request) {
-        return createBasicInterviewBean.exec(request.getSessionId());
+    // 기본 질문 생성하기
+    public SessionResponse.Question createNewInterview(SessionRequest.Question request) {
+        return createBasicInterview.exec(request.getSessionId());
+    }
+
+    // 이력서 질문 생성하기
+    public SessionResponse.Question createResumeInterview(SessionRequest.Question request) {
+        return createResumeInterview.exec(request.getSessionId());
     }
 
     // 꼬리 질문 생성하기
