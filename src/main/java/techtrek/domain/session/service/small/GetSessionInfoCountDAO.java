@@ -1,8 +1,8 @@
-package techtrek.domain.interview.service.small;
+package techtrek.domain.session.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.repository.SessionInfoRepository;
+import techtrek.domain.session.repository.SessionInfoRepository;
 
 @Component
 @RequiredArgsConstructor

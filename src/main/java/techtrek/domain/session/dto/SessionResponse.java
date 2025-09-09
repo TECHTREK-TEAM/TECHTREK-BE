@@ -1,9 +1,9 @@
-package techtrek.domain.interview.dto;
+package techtrek.domain.session.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-public class SessionInfoResponse {
+public class SessionResponse {
 
     // 면접 시작
     @Getter

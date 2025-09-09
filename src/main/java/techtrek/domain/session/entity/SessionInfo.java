@@ -1,4 +1,4 @@
-package techtrek.domain.interview.entity;
+package techtrek.domain.session.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

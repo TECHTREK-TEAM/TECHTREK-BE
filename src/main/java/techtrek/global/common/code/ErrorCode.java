@@ -12,7 +12,7 @@ public enum ErrorCode implements ResponseCode {
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "USER409", "중복된 사용자 이름입니다."),
 
     // 사용자
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."), // ✅
 
     // 기업, 기본 질문
     ENTERPRISE_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "ENUM500", "해당 이름의 기업을 찾을 수 없습니다."), // ✅

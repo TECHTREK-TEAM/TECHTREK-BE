@@ -1,16 +1,16 @@
-package techtrek.domain.interview.service.component;
+package techtrek.domain.session.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.service.common.BasicQuestion;
-import techtrek.domain.interview.dto.SessionParserResponse;
-import techtrek.domain.interview.service.small.CreateNewDTO;
-import techtrek.domain.interview.service.small.GetSessionInfoDAO;
-import techtrek.domain.interview.dto.SessionInfoResponse;
-import techtrek.domain.interview.entity.SessionInfo;
+import techtrek.domain.session.service.common.BasicQuestion;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.service.small.CreateNewDTO;
+import techtrek.domain.session.service.small.GetSessionInfoDAO;
+import techtrek.domain.session.dto.SessionResponse;
+import techtrek.domain.session.entity.SessionInfo;
 import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
-import techtrek.domain.interview.service.common.CreateResumeUtil;
+import techtrek.domain.session.service.common.CreateResumeUtil;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.global.common.code.ErrorCode;
@@ -45,7 +45,7 @@ public class CreateNewInterviewBean {
     private String interviewPrefix;
 
     // 새로운 질문 생성하기 ( 기본질문 or 이력서기반)
-    public SessionInfoResponse.NewQuestion exec(String sessionId, String previousFieldId){
+    public SessionResponse.NewQuestion exec(String sessionId, String previousFieldId){
         // TODO: 사용자, 기업이름 조회
         User user = getUserDAO.exec("1");
         SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);

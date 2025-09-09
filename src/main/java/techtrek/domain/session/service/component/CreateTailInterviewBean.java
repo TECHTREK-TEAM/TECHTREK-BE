@@ -1,11 +1,11 @@
-package techtrek.domain.interview.service.component;
+package techtrek.domain.session.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.dto.SessionInfoResponse;
-import techtrek.domain.interview.dto.SessionParserResponse;
-import techtrek.domain.interview.service.small.CreateTailDTO;
+import techtrek.domain.session.dto.SessionResponse;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.service.small.CreateTailDTO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.redis.service.small.*;
@@ -34,7 +34,7 @@ public class CreateTailInterviewBean {
     private String interviewPrefix;
 
     // 꼬리질문 생성
-    public SessionInfoResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
+    public SessionResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;

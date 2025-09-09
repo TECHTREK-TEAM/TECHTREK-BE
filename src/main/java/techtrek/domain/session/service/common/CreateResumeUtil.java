@@ -1,9 +1,9 @@
-package techtrek.domain.interview.service.common;
+package techtrek.domain.session.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.entity.SessionInfo;
-import techtrek.domain.interview.service.small.GetSessionInfoDAO;
+import techtrek.domain.session.entity.SessionInfo;
+import techtrek.domain.session.service.small.GetSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.global.gpt.prompt.Prompt;
 import techtrek.global.gpt.prompt.PromptTemplate;

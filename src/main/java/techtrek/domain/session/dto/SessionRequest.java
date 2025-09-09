@@ -1,11 +1,11 @@
-package techtrek.domain.interview.dto;
+package techtrek.domain.session.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 
-public class SessionInfoRequest {
+public class SessionRequest {
 
     // 면접 시작
     @Getter
@@ -26,10 +26,6 @@ public class SessionInfoRequest {
         @Schema(description = "세션 ID", example = "1234", required = true)
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
-
-        @Schema(description = "이전 필드 ID", example = "2345", required = true)
-        @NotBlank(message = "이전 필드Id는 필수입니다.")
-        private String previousId;
     }
 
     // 꼬리 질문

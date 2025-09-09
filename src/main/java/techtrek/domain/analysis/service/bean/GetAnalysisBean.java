@@ -10,9 +10,9 @@ import techtrek.domain.analysis.service.small.GetAverageDurationDAO;
 import techtrek.domain.analysis.service.small.GetEnterpriseAnalysisCountDAO;
 import techtrek.global.redis.service.common.GetRedisHashUtil;
 import techtrek.global.redis.service.small.GetRedisByKeyDAO;
-import techtrek.domain.interview.dto.SessionParserResponse;
-import techtrek.domain.interview.entity.SessionInfo;
-import techtrek.domain.interview.service.small.GetSessionInfoDAO;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.entity.SessionInfo;
+import techtrek.domain.session.service.small.GetSessionInfoDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
 

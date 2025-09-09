@@ -1,17 +1,17 @@
-package techtrek.domain.interview.service.small;
+package techtrek.domain.session.service.small;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.dto.SessionInfoResponse;
+import techtrek.domain.session.dto.SessionResponse;
 
 @Component
 @RequiredArgsConstructor
 public class CreateTailDTO {
 
     // 꼬리 질문 DTO
-    public SessionInfoResponse.TailQuestion exec(String fieldId, String question, String parentQuestionNumber, String tailQuestionNumber, String totalQuestionNumber) {
+    public SessionResponse.TailQuestion exec(String fieldId, String question, String parentQuestionNumber, String tailQuestionNumber, String totalQuestionNumber) {
 
-        return SessionInfoResponse.TailQuestion.builder()
+        return SessionResponse.TailQuestion.builder()
                 .fieldId(fieldId)
                 .question(question)
                 .parentQuestionNumber(parentQuestionNumber)

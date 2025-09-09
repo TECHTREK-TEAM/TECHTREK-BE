@@ -1,15 +1,15 @@
-package techtrek.domain.interview.service.small;
+package techtrek.domain.session.service.small;
 
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.dto.SessionInfoResponse;
+import techtrek.domain.session.dto.SessionResponse;
 
 @Component
 public class CreateNewDTO {
 
     // 새로운 질문 DTO
-    public SessionInfoResponse.NewQuestion exec(String fieldId, String question, String questionNumber, String totalQuestionNumber) {
+    public SessionResponse.NewQuestion exec(String fieldId, String question, String questionNumber, String totalQuestionNumber) {
 
-        return SessionInfoResponse.NewQuestion.builder()
+        return SessionResponse.NewQuestion.builder()
                 .fieldId(fieldId)
                 .question(question)
                 .questionNumber(questionNumber)

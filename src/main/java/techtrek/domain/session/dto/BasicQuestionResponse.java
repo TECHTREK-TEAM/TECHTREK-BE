@@ -1,4 +1,4 @@
-package techtrek.domain.interview.dto;
+package techtrek.domain.session.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

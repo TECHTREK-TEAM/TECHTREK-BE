@@ -1,8 +1,8 @@
-package techtrek.domain.interview.service.common;
+package techtrek.domain.session.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.dto.BasicQuestionResponse;
+import techtrek.domain.session.dto.BasicQuestionResponse;
 import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
 import techtrek.domain.interviewQuestion.repository.InterviewQuestionRepository;
 import techtrek.domain.enterprise.entity.Enterprise;

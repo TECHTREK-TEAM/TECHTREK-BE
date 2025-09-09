@@ -1,4 +1,4 @@
-package techtrek.domain.interview.service.component;
+package techtrek.domain.session.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

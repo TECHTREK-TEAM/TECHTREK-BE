@@ -3,7 +3,7 @@ package techtrek.global.redis.service.small;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.interview.dto.SessionParserResponse;
+import techtrek.domain.session.dto.SessionParserResponse;
 
 @Component
 @RequiredArgsConstructor
