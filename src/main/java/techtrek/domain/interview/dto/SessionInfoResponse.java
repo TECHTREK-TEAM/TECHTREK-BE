@@ -24,11 +24,6 @@ public class SessionInfoResponse {
         @Schema(description = "현재 질문 번호", example = "1")
         private String questionNumber;
 
-        @Schema(description = "전체 질문 수", example = "10")
-        private String totalQuestionNumber;
-
-        @Schema(description = "면접 ID", example = "10")
-        private String sessionInfoId;
     }
 
     // 새 질문

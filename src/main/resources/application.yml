@@ -35,6 +35,7 @@ custom:
   redis:
     prefix:
       interview: "interview:session:"
+      basic: ":basic:"
 server:
   servlet:
     encoding:

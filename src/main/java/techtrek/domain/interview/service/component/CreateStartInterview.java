@@ -2,19 +2,16 @@ package techtrek.domain.interview.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.interview.dto.BasicQuestionResponse;
 import techtrek.domain.interview.dto.SessionInfoResponse;
 import techtrek.domain.interview.service.common.BasicQuestion;
-import techtrek.domain.interview.service.small.CreateStartDTO;
-import techtrek.domain.interview.service.small.SaveSessionInfoDAO;
-import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.redis.service.small.SaveNewQuestionDAO;
 
 import java.util.*;
 
@@ -22,30 +19,30 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class CreateStartInterview {
-    // 상수 정의
-    private static final String START_PHASE = "basic";
     private static final String START_QUESTION_NUMBER = "1";
 
-    private final BasicQuestion basicQuestion;
-
-    private final GetUserDAO getUserDAO;
-    private final SaveSessionInfoDAO saveSessionInfoDAO;
-    private final SaveNewQuestionDAO saveNewQuestionDAO;
-    private final CreateStartDTO createStartDTO;
+    private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final BasicQuestion basicQuestion;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
+    @Value("${custom.redis.prefix.basic}")
+    private String basicPrefix;
+
     // 면접 시작하기
     public SessionInfoResponse.Start exec(String enterpriseName){
-        // TODO: 사용자 조회
-        User user = getUserDAO.exec("1");
+        // TODO: 토큰에서 userId 꺼내고 해당 userId로 사용자 조회 (하나의 컴포넌트로 빼두기)
+        userRepository.findById("1")
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 세션 생성
         String sessionId = UUID.randomUUID().toString();
         String fieldId = UUID.randomUUID().toString();
-        String sessionKey = interviewPrefix + sessionId +":"+ fieldId;
+        String sessionKey = interviewPrefix + sessionId;
+        String basicKey = sessionKey +basicPrefix+ fieldId;
 
         // 기업 존재 확인
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
@@ -53,19 +50,18 @@ public class CreateStartInterview {
 
         // 기본 질문 생성
         BasicQuestionResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
-        System.out.println(basicQuestionResult.getQuestion());
 
-        // 총 질문 번호, 질문 번호
-//        String questionNumber= START_QUESTION_NUMBER;
-//        String totalQuestionNumber =START_QUESTION_NUMBER;
-//
-//        // redis 저장
-//        saveNewQuestionDAO.exec(fieldKey, START_PHASE, START_COUNT, question,  questionNumber, totalQuestionNumber);
-//
-//        // 세션정보 테이블에 값 저장
-//        String sessionInfoId =saveSessionInfoDAO.exec(sessionId, enterpriseName, user);
+        // redis 저장
+        redisTemplate.opsForHash().put(sessionKey, "enterpriseName", enterpriseName);
+        redisTemplate.opsForHash().put(basicKey, "question",  basicQuestionResult.getQuestion());
+        redisTemplate.opsForHash().put(basicKey, "correctAnswer", basicQuestionResult.getCorrectAnswer());
+        redisTemplate.opsForHash().put(basicKey, " questionNumber", START_QUESTION_NUMBER);
 
-        // return createStartDTO.exec(sessionId, fieldId, question, questionNumber,totalQuestionNumber,sessionInfoId);
-        return createStartDTO.exec(sessionId, fieldId, basicQuestionResult.getQuestion(), "1","1","1");
+        return SessionInfoResponse.Start.builder()
+                .sessionId(sessionId)
+                .fieldId(fieldId)
+                .question(basicQuestionResult.getQuestion())
+                .questionNumber(START_QUESTION_NUMBER)
+                .build();
     }
 }

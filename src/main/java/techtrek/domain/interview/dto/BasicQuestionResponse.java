@@ -14,7 +14,7 @@ public class BasicQuestionResponse {
     @AllArgsConstructor
     public static class BasicQuestion {
         private String question;
-        private String answer;
+        private String correctAnswer;
     }
 
     // 기본질문 반환
@@ -22,7 +22,7 @@ public class BasicQuestionResponse {
     @AllArgsConstructor
     public static class BasicQuestionResult {
         private final String question;
-        private final String answer;
+        private final String correctAnswer;
     }
 
 }

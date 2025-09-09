@@ -34,7 +34,7 @@ public class BasicQuestion {
             InterviewQuestion interviewQuestion = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
 
-            return new BasicQuestionResponse.BasicQuestionResult(interviewQuestion.getQuestion(), null);
+            return new BasicQuestionResponse.BasicQuestionResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
         } else {
             // 프롬프트 생성, GPT로 질문 생성
             String focusCS = COMPANY_CS.get(enterprise.getName());
@@ -45,7 +45,7 @@ public class BasicQuestion {
 
             // JSON → DTO
             BasicQuestionResponse.BasicQuestion questionResponse = jsonRead.exec(gptResponse, BasicQuestionResponse.BasicQuestion.class);
-            return new BasicQuestionResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getAnswer());
+            return new BasicQuestionResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
         }
     }
 
@@ -53,21 +53,6 @@ public class BasicQuestion {
     private static final Map<String, String> COMPANY_CS = Map.of(
             "SAMSUNG", "운영체제, 네트워크, 자료구조, 알고리즘"
     );
-
-        // (ENUM) 해당 기업의 키워드 목록 불러오기
-//        List<String> keywords = enterpriseName.getKeywords();
-//        if (keywords.isEmpty()) throw new CustomException(ErrorCode.ENUM_ENTERPRISE_KEYWORD_NOT_FOUND);
-//
-//        // 랜덤 키워드 불러오기
-//        String selectedKeyword = keywords.get(new Random().nextInt(keywords.size()));
-//
-//        // (ENUM) 키워드를 이용해 cs 불러오기
-//        Category cs = getCSCategoryDAO.exec(selectedKeyword);
-//
-//        // cs로 랜덤질문 불러오기
-//        String question = getBasicQuestionDAO.exec(cs);
-
-        //return question;
 
 
 }
