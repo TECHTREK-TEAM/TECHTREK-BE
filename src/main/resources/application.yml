@@ -34,7 +34,7 @@ openai:
 custom:
   redis:
     prefix:
-      interview: "interview:session:"
+      interview: "interview:"
       basic: ":basic:"
       resume: ":resume:"
 server:
