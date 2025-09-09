@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.session.entity.SessionInfo;
 import techtrek.domain.user.entity.User;
 
 import java.time.LocalDateTime;

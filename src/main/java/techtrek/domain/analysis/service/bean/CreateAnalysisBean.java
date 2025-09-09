@@ -7,17 +7,17 @@ import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.service.small.CreateAnalysisDTO;
-import techtrek.domain.sessionInfo.dto.SessionParserResponse;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.entity.SessionInfo;
+import techtrek.domain.session.service.small.GetSessionInfoDAO;
 import techtrek.domain.analysis.service.small.SaveAnalysisDAO;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.service.small.GetUserDAO;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
-import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
-import techtrek.domain.redis.service.common.GetRedisHashUtil;
-import techtrek.global.util.ChangeJsonReadUtil;
+import techtrek.global.gpt.prompt.Prompt;
+import techtrek.global.gpt.prompt.PromptTemplate;
+import techtrek.global.redis.service.small.GetRedisByKeyDAO;
+import techtrek.global.redis.service.common.GetRedisHashUtil;
+import techtrek.global.gpt.prompt.JsonRead;
 
 import java.util.*;
 
@@ -26,9 +26,9 @@ import java.util.*;
 public class CreateAnalysisBean {
 
     private final GetRedisHashUtil getRedisHashUtil;
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
-    private final ChangeJsonReadUtil changeJsonReadUtil;
+    private final PromptTemplate createPromptTemplateUtil;
+    private final Prompt createPromptUtil;
+    private final JsonRead changeJsonReadUtil;
 
     private final GetUserDAO getUserDAO;
     private final GetRedisByKeyDAO getRedisByKeyDAO;
@@ -67,7 +67,8 @@ public class CreateAnalysisBean {
 
         // 프롬프트 생성 후, 분석결과 받기
         String promptTemplate = createPromptTemplateUtil.exec("prompts/analysis_prompt.txt");
-        String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), sessionInfo.getEnterpriseName().getDescription(), user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
+        //String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), sessionInfo.getEnterpriseName().getDescription(), user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
+        String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), "기업 설명", user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
         String gptResponse = createPromptUtil.exec(prompt);
 
         // JSON 파싱 (JSON -> 객체)

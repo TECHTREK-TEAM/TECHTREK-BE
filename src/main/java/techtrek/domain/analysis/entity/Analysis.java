@@ -2,7 +2,8 @@ package techtrek.domain.analysis.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.session.entity.SessionInfo;
 
 import java.time.LocalDateTime;
 
@@ -47,6 +48,10 @@ public class Analysis {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_info_id")
     private SessionInfo sessionInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "enterprise_id", nullable = false)
+    private Enterprise enterprise;
 
 
 }

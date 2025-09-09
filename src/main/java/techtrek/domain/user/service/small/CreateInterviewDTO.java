@@ -3,7 +3,7 @@ package techtrek.domain.user.service.small;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
+import techtrek.domain.session.entity.SessionInfo;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 

@@ -17,14 +17,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
         defer-datasource-initialization: true
   sql:
     init:
-      mode: never
+      mode: always
 
 openai:
   api-key: ${OPENAI_API_KEY}
@@ -35,6 +35,8 @@ custom:
   redis:
     prefix:
       interview: "interview:session:"
+      basic: ":basic:"
+      resume: ":resume:"
 server:
   servlet:
     encoding:
