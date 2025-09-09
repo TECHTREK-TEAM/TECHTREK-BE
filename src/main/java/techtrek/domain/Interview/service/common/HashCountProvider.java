@@ -8,7 +8,7 @@ import java.util.Set;
 
 // hash 개수 계산
 @Component
-public class RedisHashCount {
+public class HashCountProvider {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;

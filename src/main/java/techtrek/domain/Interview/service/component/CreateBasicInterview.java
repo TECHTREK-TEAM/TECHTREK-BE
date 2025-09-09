@@ -9,7 +9,7 @@ import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.Interview.dto.BasicQuestionResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
 import techtrek.domain.Interview.dto.SessionResponse;
-import techtrek.domain.Interview.service.common.RedisHashCount;
+import techtrek.domain.Interview.service.common.HashCountProvider;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
@@ -24,7 +24,7 @@ public class CreateBasicInterview {
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final BasicQuestion basicQuestion;
-    private final RedisHashCount redisHashCount;
+    private final HashCountProvider hashCountProvider;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -36,18 +36,21 @@ public class CreateBasicInterview {
     private String resumePrefix;
 
     public SessionResponse.Question exec(String sessionId){
-        // TODO: 사용자 조회
-        userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        // fieldId 생성
+        // key 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
         String basicKey = sessionKey + basicPrefix+ fieldId;
 
+        // TODO: 사용자 조회
+        userRepository.findById("1")
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 세션 유효성 확인
+        Boolean hasSession = redisTemplate.hasKey(sessionKey);
+        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+
         // enterpriseName 조회 및 유효성 검증
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        System.out.println(enterpriseName);
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
@@ -55,8 +58,8 @@ public class CreateBasicInterview {
         BasicQuestionResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
 
         // basic + resume 필드 개수 세기
-        long basicCount = redisHashCount.exec(sessionKey + basicPrefix + "*");
-        long resumeCount = redisHashCount.exec(sessionKey + resumePrefix + "*");
+        long basicCount = hashCountProvider.exec(sessionKey + basicPrefix + "*");
+        long resumeCount = hashCountProvider.exec(sessionKey + resumePrefix + "*");
         String questionNumber = String.valueOf(basicCount + resumeCount + 1);
 
         // redis 저장

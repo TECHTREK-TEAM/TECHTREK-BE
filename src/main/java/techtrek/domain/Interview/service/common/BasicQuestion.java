@@ -12,7 +12,6 @@ import techtrek.global.gpt.prompt.Prompt;
 import techtrek.global.gpt.prompt.PromptTemplate;
 import techtrek.global.gpt.prompt.JsonRead;
 
-import java.util.Map;
 import java.util.Random;
 
 // 기본 질문 생성
@@ -20,6 +19,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class BasicQuestion {
     private final InterviewQuestionRepository interviewQuestionRepository;
+    private final CompanyCSProvider companyCSProvider;
     private final PromptTemplate promptTemplate;
     private final Prompt prompt;
     private final JsonRead jsonRead;
@@ -37,7 +37,7 @@ public class BasicQuestion {
             return new BasicQuestionResponse.BasicQuestionResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
         } else {
             // 프롬프트 생성, GPT로 질문 생성
-            String focusCS = COMPANY_CS.get(enterprise.getName());
+            String focusCS = companyCSProvider.exec(enterprise.getName());
 
             String template = promptTemplate.exec("prompts/basic_question_prompt.txt");
             String format = String.format(template, enterprise.getName(), focusCS);
@@ -48,11 +48,6 @@ public class BasicQuestion {
             return new BasicQuestionResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
         }
     }
-
-    // 회사별 CS 영역 Map
-    private static final Map<String, String> COMPANY_CS = Map.of(
-            "SAMSUNG", "운영체제, 네트워크, 자료구조, 알고리즘"
-    );
 
 
 }
