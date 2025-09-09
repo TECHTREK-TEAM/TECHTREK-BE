@@ -41,9 +41,6 @@ public class SessionResponse {
 
         @Schema(description = "현재 질문 번호", example = "2")
         private String questionNumber;
-
-        @Schema(description = "전체 질문 수", example = "10")
-        private String totalQuestionNumber;
     }
 
     // 꼬리 질문

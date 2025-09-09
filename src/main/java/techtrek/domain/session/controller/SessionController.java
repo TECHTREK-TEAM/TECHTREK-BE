@@ -28,7 +28,7 @@ public class SessionController {
     }
 
     // 새로운 질문 생성하기
-    @PostMapping("/questions/new")
+    @PostMapping("/questions/basic")
     @Operation( summary = "기본 질문 생성", description = "면접 도중 기본 질문을 생성합니다.")
     public ResponseEntity<CommonResponse<SessionResponse.NewQuestion>> createNewInterview(@Valid @RequestBody SessionRequest.NewQuestion request) {
         return ApiResponse.onSuccess(sessionInfoService.createNewInterview(request));

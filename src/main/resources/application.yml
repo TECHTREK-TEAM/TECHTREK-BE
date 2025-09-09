@@ -36,6 +36,7 @@ custom:
     prefix:
       interview: "interview:session:"
       basic: ":basic:"
+      resume: ":resume:"
 server:
   servlet:
     encoding:

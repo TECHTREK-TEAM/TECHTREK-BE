@@ -13,7 +13,7 @@ import techtrek.domain.session.service.component.*;
 public class SessionService {
 
     private final CreateStartInterview createStartInterviewBean;
-    private final CreateNewInterviewBean createNewInterviewBean;
+    private final CreateBasicInterview createBasicInterviewBean;
     private final CreateTailInterviewBean createTailInterviewBean;
     private final CreateAnswerBean createAnswerBean;
     private final DeleteInterview deleteInterview;
@@ -25,7 +25,7 @@ public class SessionService {
 
     //새로운 질문 생성하기
     public SessionResponse.NewQuestion createNewInterview(SessionRequest.NewQuestion request) {
-        return createNewInterviewBean.exec(request.getSessionId(), request.getPreviousId());
+        return createBasicInterviewBean.exec(request.getSessionId());
     }
 
     // 꼬리 질문 생성하기

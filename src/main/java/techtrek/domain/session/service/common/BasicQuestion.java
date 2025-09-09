@@ -15,6 +15,7 @@ import techtrek.global.gpt.prompt.JsonRead;
 import java.util.Map;
 import java.util.Random;
 
+// 기본 질문 생성
 @Component
 @RequiredArgsConstructor
 public class BasicQuestion {
@@ -23,7 +24,6 @@ public class BasicQuestion {
     private final Prompt prompt;
     private final JsonRead jsonRead;
 
-    // 기본 질문 생성
     public BasicQuestionResponse.BasicQuestionResult exec(Enterprise enterprise){
         // true GPT, false DB
         Random random = new Random();
