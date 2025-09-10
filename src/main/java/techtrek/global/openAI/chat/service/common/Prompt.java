@@ -1,4 +1,4 @@
-package techtrek.global.gpt.prompt;
+package techtrek.global.openAI.chat.service.common;
 
 import org.springframework.stereotype.Component;
 import techtrek.global.common.code.ErrorCode;
@@ -9,9 +9,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class PromptTemplate {
+public class Prompt {
 
-    // 프롬프트 템플릿 생성
+    // 프롬프트 생성
     public String exec(String resourcePath) {
         try (InputStream is = getClass().getResourceAsStream("/" + resourcePath)) {
             if (is == null) throw new CustomException(ErrorCode.PROMPT_NOT_FOUND);

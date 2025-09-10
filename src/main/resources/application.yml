@@ -28,8 +28,10 @@ spring:
 
 openai:
   api-key: ${OPENAI_API_KEY}
-  model: ${OPENAI_MODEL}
-  url: ${OPENAI_URL}
+  model: ${OPENAI_CHAT_MODEL}
+  url: ${OPENAI_CHAT_URL}
+  embedding-model: ${OPENAI_EMBEDDING_MODEL}
+  embedding-url: ${OPENAI_EMBEDDING_URL}
 
 custom:
   redis:

@@ -3,14 +3,14 @@ package techtrek.domain.Interview.service.component;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.SessionResponse;
+import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.dto.SessionParserResponse;
 import techtrek.domain.Interview.service.small.CreateTailDTO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.redis.service.small.*;
-import techtrek.global.gpt.prompt.Prompt;
-import techtrek.global.gpt.prompt.PromptTemplate;
+import techtrek.global.openAI.chat.service.component.Chat;
+import techtrek.global.openAI.chat.service.common.Prompt;
 
 import java.util.UUID;
 
@@ -20,8 +20,8 @@ public class CreateTailInterviewBean {
     // 상수 정의
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
-    private final PromptTemplate createPromptTemplateUtil;
-    private final Prompt createPromptUtil;
+    private final Prompt createPromptTemplateUtil;
+    private final Chat createPromptUtil;
 
     private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
     private final CheckRedisKeyDAO checkRedisKeyDAO;
@@ -34,7 +34,7 @@ public class CreateTailInterviewBean {
     private String interviewPrefix;
 
     // 꼬리질문 생성
-    public SessionResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
+    public InterviewResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;

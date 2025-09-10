@@ -1,18 +1,18 @@
-package techtrek.global.gpt.prompt;
+package techtrek.global.openAI.chat.service.component;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import techtrek.global.gpt.dto.OpenAiMessage;
-import techtrek.global.gpt.dto.OpenAiRequest;
-import techtrek.global.gpt.dto.OpenAiResponse;
+import techtrek.global.openAI.chat.dto.OpenAiMessage;
+import techtrek.global.openAI.chat.dto.OpenAiRequest;
+import techtrek.global.openAI.chat.dto.OpenAiResponse;
 
 import java.util.List;
 
-// 프롬프트 생성
+// GPT 요청
 @Component
-public class Prompt {
+public class Chat {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${openai.api-key}")

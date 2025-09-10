@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 
-public class SessionRequest {
+public class InterviewRequest {
 
     // 면접 시작
     @Getter
@@ -17,11 +17,11 @@ public class SessionRequest {
         private String enterpriseName;
     }
 
-    // 새 질문
+    // 기본 질문
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Schema(description = "새 질문 생성 요청")
+    @Schema(description = "기본 질문 생성 요청")
     public static class Question {
         @Schema(description = "세션 ID", example = "1234", required = true)
         @NotBlank(message = "세션Id는 필수입니다.")

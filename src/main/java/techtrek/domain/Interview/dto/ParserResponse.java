@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class BasicQuestionResponse {
+public class ParserResponse {
 
     // 기본질문 GPT
     @Getter

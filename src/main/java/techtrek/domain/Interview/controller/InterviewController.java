@@ -7,8 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import techtrek.domain.Interview.dto.SessionRequest;
-import techtrek.domain.Interview.dto.SessionResponse;
+import techtrek.domain.Interview.dto.InterviewRequest;
+import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.InterviewService;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
@@ -23,35 +23,35 @@ public class InterviewController {
     // 면접 시작하기
     @PostMapping("/start")
     @Operation( summary = "면접 시작", description = "면접을 시작하고 세션 정보를 생성합니다.")
-    public ResponseEntity<CommonResponse<SessionResponse.Start>> createInterview(@RequestBody SessionRequest.Start request) {
+    public ResponseEntity<CommonResponse<InterviewResponse.Start>> createInterview(@RequestBody InterviewRequest.Start request) {
         return ApiResponse.onSuccess(sessionInfoService.createInterview(request));
     }
 
     // 기본 질문 생성하기
     @PostMapping("/questions/basic")
     @Operation( summary = "기본 질문 생성", description = "면접 도중 기본 질문을 생성합니다.")
-    public ResponseEntity<CommonResponse<SessionResponse.Question>> createNewInterview(@Valid @RequestBody SessionRequest.Question request) {
+    public ResponseEntity<CommonResponse<InterviewResponse.Question>> createNewInterview(@Valid @RequestBody InterviewRequest.Question request) {
         return ApiResponse.onSuccess(sessionInfoService.createNewInterview(request));
     }
 
     // 이력서 질문 생성하기
     @PostMapping("/questions/resume")
     @Operation( summary = "이력서 질문 생성", description = "면접 도중 이력서 질문을 생성합니다.")
-    public ResponseEntity<CommonResponse<SessionResponse.Question>> createResumeInterview(@Valid @RequestBody SessionRequest.Question request) {
+    public ResponseEntity<CommonResponse<InterviewResponse.Question>> createResumeInterview(@Valid @RequestBody InterviewRequest.Question request) {
         return ApiResponse.onSuccess(sessionInfoService.createResumeInterview(request));
     }
 
     // 꼬리질문 생성하기
     @PostMapping("/questions/tail")
     @Operation(summary = "꼬리질문 생성", description = "이전 질문의 답변을 기반으로 꼬리질문을 생성합니다.")
-    public ResponseEntity<CommonResponse<SessionResponse.TailQuestion>> createTailInterview(@Valid @RequestBody SessionRequest.TailQuestion request) {
+    public ResponseEntity<CommonResponse<InterviewResponse.TailQuestion>> createTailInterview(@Valid @RequestBody InterviewRequest.TailQuestion request) {
         return ApiResponse.onSuccess(sessionInfoService.createTailInterview(request));
     }
 
     // 답변하기
     @PostMapping("/answers")
     @Operation(summary = "답변 등록", description = "질문에 대한 사용자의 답변을 등록합니다.")
-    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@Valid @RequestBody SessionRequest.Answer request) {
+    public ResponseEntity<CommonResponse<Boolean>> createAnswer(@Valid @RequestBody InterviewRequest.Answer request) {
         return ApiResponse.onSuccess(sessionInfoService.createAnswer(request));
     }
 

@@ -2,15 +2,15 @@ package techtrek.domain.Interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.BasicQuestionResponse;
+import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
 import techtrek.domain.interviewQuestion.repository.InterviewQuestionRepository;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.gpt.prompt.Prompt;
-import techtrek.global.gpt.prompt.PromptTemplate;
-import techtrek.global.gpt.prompt.JsonRead;
+import techtrek.global.openAI.chat.service.component.Chat;
+import techtrek.global.openAI.chat.service.common.Prompt;
+import techtrek.global.openAI.chat.service.common.JsonRead;
 
 import java.util.Random;
 
@@ -20,11 +20,11 @@ import java.util.Random;
 public class BasicQuestion {
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final CompanyCSProvider companyCSProvider;
-    private final PromptTemplate promptTemplate;
     private final Prompt prompt;
+    private final Chat chatService;
     private final JsonRead jsonRead;
 
-    public BasicQuestionResponse.BasicQuestionResult exec(Enterprise enterprise){
+    public ParserResponse.BasicQuestionResult exec(Enterprise enterprise){
         // true GPT, false DB
         Random random = new Random();
         boolean useGpt = random.nextBoolean();
@@ -34,18 +34,18 @@ public class BasicQuestion {
             InterviewQuestion interviewQuestion = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
 
-            return new BasicQuestionResponse.BasicQuestionResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
+            return new ParserResponse.BasicQuestionResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
         } else {
-            // 프롬프트 생성, GPT로 질문 생성
+            // 프롬프트, GPT gpt로 질문 생성
             String focusCS = companyCSProvider.exec(enterprise.getName());
 
-            String template = promptTemplate.exec("prompts/basic_question_prompt.txt");
+            String template = prompt.exec("prompts/basic_question_prompt.txt");
             String format = String.format(template, enterprise.getName(), focusCS);
-            String gptResponse = prompt.exec(format);
+            String chatResponse = chatService.exec(format);
 
             // JSON → DTO
-            BasicQuestionResponse.BasicQuestion questionResponse = jsonRead.exec(gptResponse, BasicQuestionResponse.BasicQuestion.class);
-            return new BasicQuestionResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
+            ParserResponse.BasicQuestion questionResponse = jsonRead.exec(chatResponse, ParserResponse.BasicQuestion.class);
+            return new ParserResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
         }
     }
 
