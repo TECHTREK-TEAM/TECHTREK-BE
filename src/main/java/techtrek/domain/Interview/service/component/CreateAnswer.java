@@ -27,7 +27,7 @@ public class CreateAnswer {
         // 해당 키 존재 확인
         boolean check = redisTemplate.hasKey(fieldKey);
         if (!check) { throw new CustomException(ErrorCode.FIELD_NOT_FOUND);}
-        
+
         // 유사도 검사
         String correctAnswer = (String) redisTemplate.opsForHash().get(fieldKey, "correctAnswer");
         List<Double> vec1 = embedding.getEmbedding(answer);

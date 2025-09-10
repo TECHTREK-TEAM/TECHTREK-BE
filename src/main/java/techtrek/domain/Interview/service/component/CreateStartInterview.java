@@ -34,10 +34,6 @@ public class CreateStartInterview {
 
     // 면접 시작하기
     public InterviewResponse.Start exec(String enterpriseName){
-        // TODO: 토큰에서 userId 꺼내고 해당 userId로 사용자 조회 (하나의 컴포넌트로 빼두기)
-        userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
         // 세션 생성
         String sessionId = UUID.randomUUID().toString();
         String fieldId = UUID.randomUUID().toString();

@@ -41,10 +41,6 @@ public class CreateBasicInterview {
         String sessionKey = interviewPrefix + sessionId;
         String basicKey = sessionKey + basicPrefix+ fieldId;
 
-        // TODO: 사용자 조회
-        userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
         // 세션 유효성 확인
         Boolean hasSession = redisTemplate.hasKey(sessionKey);
         if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
