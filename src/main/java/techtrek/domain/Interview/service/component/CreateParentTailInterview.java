@@ -52,7 +52,6 @@ public class CreateParentTailInterview {
         } else {
             throw new CustomException(ErrorCode.PARENT_FIELD_NOT_FOUND);
         }
-        System.out.println(parentQuestion + parentAnswer + parentQuestionNumber);
 
         // 연계질문 생성
         ParserResponse.ChatResult questionResult= tailQuestion.exec(parentQuestion,parentAnswer);
