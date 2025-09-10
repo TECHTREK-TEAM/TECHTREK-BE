@@ -19,8 +19,8 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class CreateBasicInterview {
-    private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private final EnterpriseRepository enterpriseRepository;
     private final BasicQuestion basicQuestion;
     private final HashCountProvider hashCountProvider;
 

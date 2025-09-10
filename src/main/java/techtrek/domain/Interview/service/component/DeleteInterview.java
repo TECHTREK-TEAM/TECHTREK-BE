@@ -2,33 +2,30 @@ package techtrek.domain.Interview.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.global.redis.service.small.DeleteRedisDAO;
-import techtrek.domain.Interview.entity.SessionInfo;
-import techtrek.domain.Interview.service.small.DeleteSessionInfoDAO;
-import techtrek.domain.Interview.service.small.GetSessionInfoDAO;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 
+import java.util.Set;
+
+// 면접 종료
 @Component
 @RequiredArgsConstructor
 public class DeleteInterview {
-    private final GetSessionInfoDAO getSessionInfoDAO;
-    private final DeleteRedisDAO deleteRedisDAO;
-    private final DeleteSessionInfoDAO deleteSessionInfoDAO;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    public Boolean exec(String sessionInfoId){
-        // 선택한 세션의 정보 조회
-        SessionInfo sessionInfo = getSessionInfoDAO.execById(sessionInfoId);
+    public Boolean exec(String sessionId){
+        // 세션 유효성 확인
+        Boolean hasSession = redisTemplate.hasKey(interviewPrefix + sessionId);
+        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // Redis 데이터 삭제
-        String sessionId = sessionInfo.getSessionId();
-        String redisKey = interviewPrefix + sessionId + "*";
-        deleteRedisDAO.exec(redisKey);
-
-        // sessionInfo 삭제
-        deleteSessionInfoDAO.exec(sessionInfo);
+        Set<String> keys = redisTemplate.keys(interviewPrefix + sessionId + "*");
+        if (keys != null && !keys.isEmpty()) redisTemplate.delete(keys);
 
         return true;
     }
