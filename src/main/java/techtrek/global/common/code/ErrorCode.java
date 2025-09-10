@@ -20,7 +20,7 @@ public enum ErrorCode implements ResponseCode {
     BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다."), // ✅
 
     // 세션, 필드
-    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다."),
+    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다."), // ✅
     FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "필드를 찾을 수 없습니다."),
     PREVIOUS_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "이전 필드를 찾을 수 없습니다."),
     PARENT_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "부모 필드를 찾을 수 없습니다."),
@@ -28,7 +28,7 @@ public enum ErrorCode implements ResponseCode {
     // 이력서
     BAD_MULTIPART(HttpStatus.BAD_REQUEST, "MULTIPART001", "파일 전송 형식이 올바르지 않습니다. multipart/form-data 형식으로 요청해주세요."),
     MISSING_FILE_PART(HttpStatus.BAD_REQUEST, "MULTIPART002", "요청에 필요한 키 이름인 'file'이 없습니다. 키 이름과 파일 첨부를 확인해주세요."),
-    RESUME_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "파일이 존재하지 않습니다."),
+    RESUME_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "이력서를 찾을 수 없습니다."),  // ✅
     RESUME_PDF_PARSING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "RESUME500", "이력서 PDF 파싱에 실패했습니다."),
 
     // GPT

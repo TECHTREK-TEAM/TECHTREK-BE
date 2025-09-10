@@ -2,7 +2,7 @@ package techtrek.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techtrek.domain.session.entity.SessionInfo;
+import techtrek.domain.Interview.entity.SessionInfo;
 import techtrek.domain.stack.entity.Stack;
 
 import java.time.LocalDateTime;
