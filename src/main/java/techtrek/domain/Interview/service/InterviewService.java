@@ -11,7 +11,6 @@ import techtrek.domain.Interview.service.component.*;
 @Builder
 @Service
 public class InterviewService {
-
     private final CreateStartInterview createStartInterview;
     private final CreateBasicInterview createBasicInterview;
     private final CreateResumeInterview createResumeInterview;

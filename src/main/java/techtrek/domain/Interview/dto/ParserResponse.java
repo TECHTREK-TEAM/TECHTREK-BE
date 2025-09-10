@@ -8,21 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParserResponse {
 
-    // 기본질문 GPT
+    // GPT 반환
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class BasicQuestion {
+    public static class ChatResult {
         private String question;
         private String correctAnswer;
-    }
-
-    // 기본질문 반환
-    @Getter
-    @AllArgsConstructor
-    public static class BasicQuestionResult {
-        private final String question;
-        private final String correctAnswer;
     }
 
 }

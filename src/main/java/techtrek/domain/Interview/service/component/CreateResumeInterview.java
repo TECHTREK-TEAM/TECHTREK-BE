@@ -60,7 +60,7 @@ public class CreateResumeInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 이력서 질문 생성
-        ParserResponse.BasicQuestionResult basicQuestionResult = resumeQuestion.exec(resume,enterprise);
+        ParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
 
         // basic + resume 필드 개수 세기
         long basicCount = hashCountProvider.exec(sessionKey + basicPrefix + "*");
@@ -68,13 +68,13 @@ public class CreateResumeInterview {
         String questionNumber = String.valueOf(basicCount + resumeCount + 1);
 
         // redis 저장
-        redisTemplate.opsForHash().put(resumeKey, "question",  basicQuestionResult.getQuestion());
-        redisTemplate.opsForHash().put(resumeKey, "correctAnswer", basicQuestionResult.getCorrectAnswer());
+        redisTemplate.opsForHash().put(resumeKey, "question",  questionResult.getQuestion());
+        redisTemplate.opsForHash().put(resumeKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(resumeKey, "questionNumber", questionNumber);
 
         return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
-                .question(basicQuestionResult.getQuestion())
+                .question(questionResult.getQuestion())
                 .questionNumber(questionNumber)
                 .build();
     }
