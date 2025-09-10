@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.global.common.code.ErrorCode;
@@ -45,10 +45,10 @@ public class CreateBasicInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 기본 질문 생성
-        ParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
+        InterviewParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
         // questionNumber, count 계산
-        ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(basicKey, "question",  questionResult.getQuestion());

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.Interview.service.common.ResumeQuestion;
@@ -56,10 +56,10 @@ public class CreateResumeInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 이력서 질문 생성
-        ParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
+        InterviewParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
 
         // questionNumber, count 계산
-        ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(resumeKey, "question",  questionResult.getQuestion());

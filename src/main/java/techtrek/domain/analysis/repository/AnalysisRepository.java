@@ -1,17 +1,17 @@
-//package techtrek.domain.analysis.repository;
-//
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Query;
-//import org.springframework.stereotype.Repository;
-//import techtrek.domain.analysis.entity.Analysis;
-//import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
-//
-//import java.time.LocalDateTime;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Repository
-//public interface AnalysisRepository extends JpaRepository<Analysis, String> {
+package techtrek.domain.analysis.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import techtrek.domain.analysis.entity.Analysis;
+import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface AnalysisRepository extends JpaRepository<Analysis, String> {
 //    // 점수가 가장 높은 면접
 //    Optional<Analysis> findTopBySessionInfoIdInOrderByResultScoreDesc(List<String> sessionIds);
 //
@@ -57,5 +57,5 @@
 //    @Query("SELECT COUNT(a) FROM Analysis a WHERE a.sessionInfo.enterpriseName = :enterpriseName AND a.resultScore < :resultScore")
 //    long countLowerScoreInEnterprise(EnterpriseName enterpriseName, double resultScore);
 //
-//
-//}
+
+}

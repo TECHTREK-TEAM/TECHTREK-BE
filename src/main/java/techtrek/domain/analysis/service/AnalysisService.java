@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
-import techtrek.domain.analysis.service.bean.*;
+import techtrek.domain.analysis.service.component.*;
 
 @Service
 @RequiredArgsConstructor

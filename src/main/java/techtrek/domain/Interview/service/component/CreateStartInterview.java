@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
 import techtrek.global.common.code.ErrorCode;
@@ -45,7 +45,7 @@ public class CreateStartInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 기본 질문 생성
-        ParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
+        InterviewParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
         // redis 저장
         redisTemplate.opsForHash().put(sessionKey, "enterpriseName", enterpriseName);

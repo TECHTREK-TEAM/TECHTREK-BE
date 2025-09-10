@@ -25,8 +25,8 @@ public class AnalysisResponse {
         @Schema(description = "일치율 점수", example = "85.5")
         private Double score;
 
-        @Schema(description = "결과 설명", example = "우수")
-        private String result;
+        @Schema(description = "피드백", example = "우수")
+        private String feedback;
 
         @Schema(description = "분석 소요 시간(분)", example = "5")
         private int duration;

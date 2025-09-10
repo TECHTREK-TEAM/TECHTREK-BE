@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ParserResponse {
+public class InterviewParserResponse {
 
     // GPT 반환
     @Getter

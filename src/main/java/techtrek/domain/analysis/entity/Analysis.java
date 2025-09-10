@@ -27,14 +27,14 @@ public class Analysis {
     @Column(name = "score", nullable = false)
     private double score;
 
-    @Column(name = "feedback", length = 255, nullable = false)
-    private String feedback;
-
     @Column(name = "keyword", length = 255, nullable = false)
     private String keyword;
 
     @Column(name = "keyword_number", length = 12, nullable = false)
     private String keywordNumber;
+
+    @Column(name = "feedback", length = 255, nullable = false)
+    private String feedback;
 
     @Column(name = "analysis_group", length = 36, nullable = false)
     private String analysisGroup;
