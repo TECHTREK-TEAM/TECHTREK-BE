@@ -2,17 +2,19 @@ package techtrek.domain.Interview.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.global.redis.service.small.CheckRedisKeyDAO;
+//import techtrek.global.redis.service.small.CheckRedisKeyDAO;
 import techtrek.global.redis.service.small.SaveAnswerDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
 @Component
 @RequiredArgsConstructor
-public class CreateAnswerBean {
+public class CreateAnswer {
+    private final RedisTemplate<String, String> redisTemplate;
     private final SaveAnswerDAO saveAnswerDAO;
-    private final CheckRedisKeyDAO checkRedisKeyDAO;
+    //private final CheckRedisKeyDAO checkRedisKeyDAO;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -23,7 +25,9 @@ public class CreateAnswerBean {
         String fieldKey = interviewPrefix + sessionId + ":" + type + ":"+ fieldId;
 
         // 해당 키 존재 확인
-        if (!checkRedisKeyDAO.exec(fieldKey)) { throw new CustomException(ErrorCode.FIELD_NOT_FOUND);}
+        boolean check = redisTemplate.hasKey(fieldKey);
+        if (!check) { throw new CustomException(ErrorCode.FIELD_NOT_FOUND);}
+
 
         // 답변 저장
         saveAnswerDAO.exec(fieldKey,answer);

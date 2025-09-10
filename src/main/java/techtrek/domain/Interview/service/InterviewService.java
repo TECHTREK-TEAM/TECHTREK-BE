@@ -16,7 +16,7 @@ public class InterviewService {
     private final CreateBasicInterview createBasicInterview;
     private final CreateResumeInterview createResumeInterview;
     private final CreateTailInterviewBean createTailInterviewBean;
-    private final CreateAnswerBean createAnswerBean;
+    private final CreateAnswer createAnswerBean;
     private final DeleteInterview deleteInterview;
 
     //면접 시작하기

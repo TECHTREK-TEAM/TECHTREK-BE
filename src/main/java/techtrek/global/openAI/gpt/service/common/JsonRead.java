@@ -1,4 +1,4 @@
-package techtrek.global.gpt.prompt;
+package techtrek.global.openAI.gpt.service.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

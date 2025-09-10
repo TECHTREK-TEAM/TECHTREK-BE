@@ -1,4 +1,4 @@
-package techtrek.global.gpt.dto;
+package techtrek.global.openAI.gpt.dto;
 
 import lombok.Data;
 
