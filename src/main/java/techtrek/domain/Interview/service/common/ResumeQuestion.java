@@ -2,7 +2,7 @@ package techtrek.domain.Interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.BasicQuestionResponse;
+import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.gpt.prompt.JsonRead;
 import techtrek.global.gpt.prompt.Prompt;
@@ -17,7 +17,7 @@ public class ResumeQuestion {
     private final Prompt prompt;
     private final JsonRead jsonRead;
 
-    public BasicQuestionResponse.BasicQuestionResult exec(String resume, Enterprise enterprise){
+    public ParserResponse.BasicQuestionResult exec(String resume, Enterprise enterprise){
         // 프롬프트 생성, GPT로 질문 생성
         String focusCS = companyCSProvider.exec(enterprise.getName());
 
@@ -26,9 +26,9 @@ public class ResumeQuestion {
         String gptResponse = prompt.exec(format);
 
         // JSON → DTO
-        BasicQuestionResponse.BasicQuestion questionResponse = jsonRead.exec(gptResponse, BasicQuestionResponse.BasicQuestion.class);
+        ParserResponse.BasicQuestion questionResponse = jsonRead.exec(gptResponse, ParserResponse.BasicQuestion.class);
 
-        return new BasicQuestionResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
+        return new ParserResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
     }
 
 }

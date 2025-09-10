@@ -6,8 +6,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.Interview.dto.BasicQuestionResponse;
-import techtrek.domain.Interview.dto.SessionResponse;
+import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
@@ -33,7 +33,7 @@ public class CreateStartInterview {
     private String basicPrefix;
 
     // 면접 시작하기
-    public SessionResponse.Start exec(String enterpriseName){
+    public InterviewResponse.Start exec(String enterpriseName){
         // TODO: 토큰에서 userId 꺼내고 해당 userId로 사용자 조회 (하나의 컴포넌트로 빼두기)
         userRepository.findById("1")
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -50,7 +50,7 @@ public class CreateStartInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 기본 질문 생성
-        BasicQuestionResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
+        ParserResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
 
         // redis 저장
         redisTemplate.opsForHash().put(sessionKey, "enterpriseName", enterpriseName);
@@ -58,7 +58,7 @@ public class CreateStartInterview {
         redisTemplate.opsForHash().put(basicKey, "correctAnswer", basicQuestionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(basicKey, " questionNumber", START_QUESTION_NUMBER);
 
-        return SessionResponse.Start.builder()
+        return InterviewResponse.Start.builder()
                 .sessionId(sessionId)
                 .fieldId(fieldId)
                 .question(basicQuestionResult.getQuestion())

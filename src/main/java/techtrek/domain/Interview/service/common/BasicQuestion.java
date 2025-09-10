@@ -2,7 +2,7 @@ package techtrek.domain.Interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.BasicQuestionResponse;
+import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
 import techtrek.domain.interviewQuestion.repository.InterviewQuestionRepository;
 import techtrek.domain.enterprise.entity.Enterprise;
@@ -24,7 +24,7 @@ public class BasicQuestion {
     private final Prompt prompt;
     private final JsonRead jsonRead;
 
-    public BasicQuestionResponse.BasicQuestionResult exec(Enterprise enterprise){
+    public ParserResponse.BasicQuestionResult exec(Enterprise enterprise){
         // true GPT, false DB
         Random random = new Random();
         boolean useGpt = random.nextBoolean();
@@ -34,7 +34,7 @@ public class BasicQuestion {
             InterviewQuestion interviewQuestion = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
 
-            return new BasicQuestionResponse.BasicQuestionResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
+            return new ParserResponse.BasicQuestionResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
         } else {
             // 프롬프트 생성, GPT로 질문 생성
             String focusCS = companyCSProvider.exec(enterprise.getName());
@@ -44,8 +44,8 @@ public class BasicQuestion {
             String gptResponse = prompt.exec(format);
 
             // JSON → DTO
-            BasicQuestionResponse.BasicQuestion questionResponse = jsonRead.exec(gptResponse, BasicQuestionResponse.BasicQuestion.class);
-            return new BasicQuestionResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
+            ParserResponse.BasicQuestion questionResponse = jsonRead.exec(gptResponse, ParserResponse.BasicQuestion.class);
+            return new ParserResponse.BasicQuestionResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
         }
     }
 

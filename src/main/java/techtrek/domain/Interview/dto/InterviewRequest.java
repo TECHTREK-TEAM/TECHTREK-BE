@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 
-public class SessionRequest {
+public class InterviewRequest {
 
     // 면접 시작
     @Getter

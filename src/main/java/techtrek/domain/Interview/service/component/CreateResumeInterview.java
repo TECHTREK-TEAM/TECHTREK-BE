@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.BasicQuestionResponse;
-import techtrek.domain.Interview.dto.SessionResponse;
+import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.HashCountProvider;
 import techtrek.domain.Interview.service.common.ResumeQuestion;
 import techtrek.domain.enterprise.entity.Enterprise;
@@ -36,7 +36,7 @@ public class CreateResumeInterview {
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
 
-    public SessionResponse.Question exec(String sessionId){
+    public InterviewResponse.Question exec(String sessionId){
         // key 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
@@ -60,7 +60,7 @@ public class CreateResumeInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 이력서 질문 생성
-        BasicQuestionResponse.BasicQuestionResult basicQuestionResult = resumeQuestion.exec(resume,enterprise);
+        ParserResponse.BasicQuestionResult basicQuestionResult = resumeQuestion.exec(resume,enterprise);
 
         // basic + resume 필드 개수 세기
         long basicCount = hashCountProvider.exec(sessionKey + basicPrefix + "*");
@@ -72,7 +72,7 @@ public class CreateResumeInterview {
         redisTemplate.opsForHash().put(resumeKey, "correctAnswer", basicQuestionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(resumeKey, "questionNumber", questionNumber);
 
-        return SessionResponse.Question.builder()
+        return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(basicQuestionResult.getQuestion())
                 .questionNumber(questionNumber)

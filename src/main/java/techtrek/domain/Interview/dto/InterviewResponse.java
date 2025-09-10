@@ -3,7 +3,7 @@ package techtrek.domain.Interview.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-public class SessionResponse {
+public class InterviewResponse {
 
     // 면접 시작
     @Getter

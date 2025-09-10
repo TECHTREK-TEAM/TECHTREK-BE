@@ -6,9 +6,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.Interview.dto.BasicQuestionResponse;
+import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
-import techtrek.domain.Interview.dto.SessionResponse;
+import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.HashCountProvider;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
@@ -35,7 +35,7 @@ public class CreateBasicInterview {
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
 
-    public SessionResponse.Question exec(String sessionId){
+    public InterviewResponse.Question exec(String sessionId){
         // key 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
@@ -55,7 +55,7 @@ public class CreateBasicInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 기본 질문 생성
-        BasicQuestionResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
+        ParserResponse.BasicQuestionResult basicQuestionResult = basicQuestion.exec(enterprise);
 
         // basic + resume 필드 개수 세기
         long basicCount = hashCountProvider.exec(sessionKey + basicPrefix + "*");
@@ -67,7 +67,7 @@ public class CreateBasicInterview {
         redisTemplate.opsForHash().put(basicKey, "correctAnswer", basicQuestionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(basicKey, "questionNumber", questionNumber);
 
-        return SessionResponse.Question.builder()
+        return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(basicQuestionResult.getQuestion())
                 .questionNumber(questionNumber)

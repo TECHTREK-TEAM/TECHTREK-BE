@@ -3,7 +3,7 @@ package techtrek.domain.Interview.service.component;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.SessionResponse;
+import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.dto.SessionParserResponse;
 import techtrek.domain.Interview.service.small.CreateTailDTO;
 import techtrek.global.common.code.ErrorCode;
@@ -34,7 +34,7 @@ public class CreateTailInterviewBean {
     private String interviewPrefix;
 
     // 꼬리질문 생성
-    public SessionResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
+    public InterviewResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
