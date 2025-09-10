@@ -62,14 +62,14 @@ public class CreateResumeInterview {
         // 이력서 질문 생성
         ParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
 
-        // questionNumber, totalQuestionNumber 계산
+        // questionNumber, count 계산
         ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(resumeKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(resumeKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(resumeKey, "questionNumber", numberCount.getQuestionNumber());
-        redisTemplate.opsForHash().put(resumeKey, "totalCount", numberCount.getTotalCount());
+        redisTemplate.opsForHash().put(resumeKey, "currentCount", numberCount.getCurrentCount());
 
         return InterviewResponse.Question.builder()
                 .fieldId(fieldId)

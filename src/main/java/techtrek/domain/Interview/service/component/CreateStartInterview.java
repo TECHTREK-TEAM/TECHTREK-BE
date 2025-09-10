@@ -19,7 +19,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CreateStartInterview {
     private static final String START_QUESTION_NUMBER = "1";
-    private static final String TOTAL_COUNT = "1";
+    private static final String CURRENT_COUNT = "1";
 
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
@@ -52,7 +52,7 @@ public class CreateStartInterview {
         redisTemplate.opsForHash().put(basicKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(basicKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(basicKey, "questionNumber", START_QUESTION_NUMBER);
-        redisTemplate.opsForHash().put(basicKey, "totalCount", TOTAL_COUNT);
+        redisTemplate.opsForHash().put(basicKey, "currentCount", CURRENT_COUNT);
 
         return InterviewResponse.Start.builder()
                 .sessionId(sessionId)

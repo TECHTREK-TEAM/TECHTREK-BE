@@ -3,6 +3,7 @@ package techtrek.domain.analysis.service.bean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
@@ -64,7 +65,9 @@ public class CreateAnalysisBean {
         User user = userRepository.findById("1")
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        // 결과 점수 계산 전체 개수 , 유사도 0.6이상 개수 추출
+        // 결과 점수 계산: 전체 개수 , 유사도 0.6이상 개수 추출
+        //ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+
         // 70% 이상일 경우 true
         // 유사도 제일 낮은 필드의 질문과 답변과 유사도와 questionNumber추출
         // gpt 돌려서 피드백 ( 단, 0.6이상이면 잘했다는 칭찬)

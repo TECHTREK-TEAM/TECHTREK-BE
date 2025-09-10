@@ -53,14 +53,14 @@ public class CreatePreviousTailInterview {
         String tailQuestionNumber= String.valueOf(tailNumber);
         String questionNumber = parentQuestionNumber + "-" + tailQuestionNumber;
 
-        // totalQuestionNumber 계산
+        // count 계산
         ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis에 저장
         redisTemplate.opsForHash().put(tailKey, "question", questionResult.getQuestion());
         redisTemplate.opsForHash().put(tailKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(tailKey, "questionNumber", questionNumber);
-        redisTemplate.opsForHash().put(tailKey, "totalCount", numberCount.getTotalCount());
+        redisTemplate.opsForHash().put(tailKey, "currentCount", numberCount.getCurrentCount());
         redisTemplate.opsForHash().put(tailKey, "parentQuestionNumber", parentQuestionNumber);
         redisTemplate.opsForHash().put(tailKey, "tailQuestionNumber", tailQuestionNumber);
 

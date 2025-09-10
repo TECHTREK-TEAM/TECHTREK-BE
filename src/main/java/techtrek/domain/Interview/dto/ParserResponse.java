@@ -23,7 +23,8 @@ public class ParserResponse {
     @AllArgsConstructor
     public static class NumberCount {
         private String questionNumber;
-        private String totalCount;
+        private String currentCount; // 총 개수 +1
+        private long totalCount;  // 총 개수
     }
 
 }

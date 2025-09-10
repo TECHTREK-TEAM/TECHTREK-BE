@@ -22,15 +22,16 @@ public class NumberCountProvider {
     @Value("${custom.redis.prefix.tail}")
     private String tailPrefix;
 
-    // questionNumber, totalQuestionNumber 계산
+    // questionNumber, count 계산
     public ParserResponse.NumberCount exec(String sessionKey){
         long basicCount = HashCount(sessionKey + basicPrefix + "*");
         long resumeCount = HashCount(sessionKey + resumePrefix + "*");
         long tailCount = HashCount(sessionKey + tailPrefix + "*");
         String questionNumber = String.valueOf(basicCount + resumeCount + 1);
-        String totalCount = String.valueOf(basicCount + resumeCount + tailCount +1);
+        String currentCount = String.valueOf(basicCount + resumeCount + tailCount +1);
+        long totalCount = basicCount + resumeCount + tailCount;
 
-        return new ParserResponse.NumberCount(questionNumber, totalCount);
+        return new ParserResponse.NumberCount(questionNumber, currentCount, totalCount);
 
     }
 

@@ -54,14 +54,14 @@ public class CreateBasicInterview {
         // 기본 질문 생성
         ParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
-        // questionNumber, totalQuestionNumber 계산
+        // questionNumber, count 계산
         ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(basicKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(basicKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(basicKey, "questionNumber", numberCount.getQuestionNumber());
-        redisTemplate.opsForHash().put(basicKey, "totalCount", numberCount.getTotalCount());
+        redisTemplate.opsForHash().put(basicKey, "currentCount", numberCount.getCurrentCount());
 
         return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
