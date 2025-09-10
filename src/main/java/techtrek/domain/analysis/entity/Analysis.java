@@ -18,14 +18,14 @@ public class Analysis {
     @Column(name = "id", length = 36, nullable = false)
     private String id;
 
+    @Column(name = "session_id", length = 255, nullable = false)
+    private String sessionId;
+
     @Column(name = "status", nullable = false)
     private boolean status;
 
     @Column(name = "result_score", nullable = false)
     private double resultScore;
-
-    @Column(name = "follow_score", nullable = false)
-    private double followScore;
 
     @Column(name = "result", length = 255, nullable = false)
     private String result;
