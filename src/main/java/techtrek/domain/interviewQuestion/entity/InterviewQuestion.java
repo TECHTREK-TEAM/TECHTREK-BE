@@ -7,8 +7,6 @@ import techtrek.domain.enterprise.entity.Enterprise;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="interview_question")
 public class InterviewQuestion {
@@ -30,6 +28,14 @@ public class InterviewQuestion {
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    public InterviewQuestion(String question, String correctAnswer, Enterprise enterprise, String category) {
+        this.question = question;
+        this.correctAnswer = correctAnswer;
+        this.enterprise = enterprise;
+        this.category = Category.valueOf(category);
+    }
+
 
 //    public BasicQuestion(String question, Category category) {
 //        this.question = question;

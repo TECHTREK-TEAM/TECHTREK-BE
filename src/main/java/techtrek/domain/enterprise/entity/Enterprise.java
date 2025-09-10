@@ -6,6 +6,7 @@ import lombok.*;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,9 +23,11 @@ public class Enterprise {
 
     private String name;
 
-    @OneToMany(mappedBy = "enterprise")
-    private List<InterviewQuestion> interviewQuestions;
+    @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<InterviewQuestion> interviewQuestions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "enterprise")
-    private List<Analysis> analyses;
+    @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Analysis> analyses = new ArrayList<>();
 }

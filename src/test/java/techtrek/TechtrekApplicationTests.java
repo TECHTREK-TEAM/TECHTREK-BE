@@ -10,7 +10,9 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"openai.api-key=dummy-key",
 		"openai.model=gpt-3.5-turbo",
-		"openai.url=https://api.openai.com/v1/chat/completions"
+		"openai.url=https://api.openai.com/v1/chat/completions",
+		"openai.embedding-model=text-embedding-3-large",
+		"openai.embedding-url=https://api.openai.com/v1/embeddings"
 })
 class TechtrekApplicationTests {
 
