@@ -2,7 +2,7 @@ package techtrek.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techtrek.domain.Interview.entity.SessionInfo;
+import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.stack.entity.Stack;
 
 import java.time.LocalDateTime;
@@ -22,24 +22,23 @@ public class User {
     @Column(name="name", length = 36, nullable = false)
     private String name;
 
-    @Column(name="user_group", length = 36, nullable = true)
+    @Column(name="user_group", length = 36)
     private String userGroup;
 
-    @Column(name="seniority", length = 36, nullable = true)
+    @Column(name="seniority", length = 36)
     private String seniority;
 
-    @Column(name="resume", length = 255, nullable = true)
+    @Column(name="resume", length = 255)
     private String resume;
 
-    @Column(name = "updated_at", nullable = true)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
-    private List<SessionInfo> sessionInfoList;
-
+    private List<Analysis> analysisList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stack> stackList;
