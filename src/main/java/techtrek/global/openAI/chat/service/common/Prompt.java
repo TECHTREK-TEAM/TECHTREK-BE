@@ -1,4 +1,4 @@
-package techtrek.global.openAI.gpt.service.common;
+package techtrek.global.openAI.chat.service.common;
 
 import org.springframework.stereotype.Component;
 import techtrek.global.common.code.ErrorCode;

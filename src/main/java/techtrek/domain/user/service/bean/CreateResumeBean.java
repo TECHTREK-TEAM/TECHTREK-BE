@@ -12,9 +12,9 @@ import techtrek.domain.user.service.small.SaveResumeDAO;
 import techtrek.domain.user.service.small.SaveStackDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.openAI.gpt.service.common.JsonRead;
-import techtrek.global.openAI.gpt.service.GptService;
-import techtrek.global.openAI.gpt.service.common.Prompt;
+import techtrek.global.openAI.chat.service.common.JsonRead;
+import techtrek.global.openAI.chat.service.ChatService;
+import techtrek.global.openAI.chat.service.common.Prompt;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class CreateResumeBean {
     private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
 
     private final Prompt createPromptTemplateUtil;
-    private final GptService createPromptUtil;
+    private final ChatService createPromptUtil;
     private final JsonRead changeJsonReadUtil;
 
     private final SaveResumeDAO saveResumeDAO;
