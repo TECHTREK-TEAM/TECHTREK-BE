@@ -50,8 +50,9 @@ public class CreateResumeInterview {
         Boolean hasSession = redisTemplate.hasKey(sessionKey);
         if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
-        // 이력서 불러오기
+        // 이력서 불러오기, 예외처리
         String resume = user.getResume();
+        if (resume == null || resume.isBlank()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
         // enterpriseName 조회 및 유효성 검증
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
