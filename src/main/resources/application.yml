@@ -39,6 +39,8 @@ custom:
       interview: "interview:"
       basic: ":basic:"
       resume: ":resume:"
+      tail: ":tail:"
+
 server:
   servlet:
     encoding:

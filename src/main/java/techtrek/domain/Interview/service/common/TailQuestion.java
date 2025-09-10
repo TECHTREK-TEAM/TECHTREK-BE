@@ -3,26 +3,22 @@ package techtrek.domain.Interview.service.common;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.ParserResponse;
-import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.openAI.chat.service.common.JsonRead;
 import techtrek.global.openAI.chat.service.component.Chat;
 import techtrek.global.openAI.chat.service.common.Prompt;
 
-// 이력서 질문 생성
+// 연계 질문 생성 (부모/이전 질문, 답변)
 @Component
 @RequiredArgsConstructor
-public class ResumeQuestion {
-    private final CompanyCSProvider companyCSProvider;
+public class TailQuestion {
     private final Prompt prompt;
     private final Chat chatService;
     private final JsonRead jsonRead;
 
-    public ParserResponse.ChatResult exec(String resume, Enterprise enterprise){
+    public ParserResponse.ChatResult exec(String question, String answer){
         // 프롬프트 생성, GPT gpt로 질문 생성
-        String focusCS = companyCSProvider.exec(enterprise.getName());
-
-        String template = prompt.exec("prompts/resume_question_prompt.txt");
-        String format = String.format(template, resume, enterprise.getName(), focusCS);
+        String template = prompt.exec("prompts/tail_question_prompt.txt");
+        String format = String.format(template, question, answer);
         String chatResponse = chatService.exec(format);
 
         // JSON → DTO

@@ -11,13 +11,13 @@ import techtrek.domain.Interview.service.component.*;
 @Builder
 @Service
 public class InterviewService {
-
     private final CreateStartInterview createStartInterview;
     private final CreateBasicInterview createBasicInterview;
     private final CreateResumeInterview createResumeInterview;
-    private final CreateTailInterviewBean createTailInterviewBean;
     private final CreateAnswer createAnswerBean;
     private final DeleteInterview deleteInterview;
+    private final CreateParentTailInterview createParentTailInterview;
+    private final CreatePreviousTailInterview createPreviousTailInterview;
 
     //면접 시작하기
     public InterviewResponse.Start createInterview(InterviewRequest.Start request) {
@@ -34,9 +34,12 @@ public class InterviewService {
         return createResumeInterview.exec(request.getSessionId());
     }
 
-    // 꼬리 질문 생성하기
+    // 연계 질문 생성하기
     public InterviewResponse.TailQuestion createTailInterview(InterviewRequest.TailQuestion request) {
-       return createTailInterviewBean.exec(request.getSessionId(),request.getParentId(),request.getPreviousId());
+        // 첫번째 연계질문
+        if (request.getPreviousId() == null || request.getPreviousId().isBlank()) return createParentTailInterview.exec(request.getSessionId(), request.getParentId());
+        // 그 이후 연계질문
+        else return createPreviousTailInterview.exec(request.getSessionId(), request.getPreviousId());
     }
 
     //답변하기
@@ -45,8 +48,8 @@ public class InterviewService {
     }
 
     // 종료하기
-    public Boolean deleteInterview(String sessionInfoId){
-        return deleteInterview.exec(sessionInfoId);
+    public Boolean deleteInterview(String sessionId){
+        return deleteInterview.exec(sessionId);
     }
 }
 
