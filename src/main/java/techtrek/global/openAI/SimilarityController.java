@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import techtrek.global.openAI.Embedding.service.EmbeddingService;
+import techtrek.global.openAI.Embedding.service.component.Embedding;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import java.util.List;
 @RequestMapping("/similarity")
 public class SimilarityController {
 
-    private final EmbeddingService embeddingService;
+    private final Embedding embeddingService;
 
-    public SimilarityController(EmbeddingService embeddingService) {
+    public SimilarityController(Embedding embeddingService) {
         this.embeddingService = embeddingService;
     }
 

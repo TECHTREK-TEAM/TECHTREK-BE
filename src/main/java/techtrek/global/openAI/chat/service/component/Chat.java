@@ -1,4 +1,4 @@
-package techtrek.global.openAI.chat.service;
+package techtrek.global.openAI.chat.service.component;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 // GPT 요청
 @Component
-public class ChatService {
+public class Chat {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${openai.api-key}")

@@ -1,4 +1,4 @@
-package techtrek.global.openAI.Embedding.service;
+package techtrek.global.openAI.Embedding.service.component;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 // 벡터 변환, 유사도 계산
 @Component
-public class EmbeddingService {
+public class Embedding {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${openai.api-key}")

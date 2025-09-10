@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.openAI.chat.service.common.JsonRead;
-import techtrek.global.openAI.chat.service.ChatService;
+import techtrek.global.openAI.chat.service.component.Chat;
 import techtrek.global.openAI.chat.service.common.Prompt;
 
 // 이력서 질문 생성
@@ -14,7 +14,7 @@ import techtrek.global.openAI.chat.service.common.Prompt;
 public class ResumeQuestion {
     private final CompanyCSProvider companyCSProvider;
     private final Prompt prompt;
-    private final ChatService chatService;
+    private final Chat chatService;
     private final JsonRead jsonRead;
 
     public ParserResponse.BasicQuestionResult exec(String resume, Enterprise enterprise){

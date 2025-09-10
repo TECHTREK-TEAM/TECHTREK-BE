@@ -9,7 +9,7 @@ import techtrek.domain.Interview.service.small.CreateTailDTO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.redis.service.small.*;
-import techtrek.global.openAI.chat.service.ChatService;
+import techtrek.global.openAI.chat.service.component.Chat;
 import techtrek.global.openAI.chat.service.common.Prompt;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class CreateTailInterviewBean {
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
     private final Prompt createPromptTemplateUtil;
-    private final ChatService createPromptUtil;
+    private final Chat createPromptUtil;
 
     private final GetRedisTotalKeyCountDAO getRedisTotalKeyCountDAO;
     private final CheckRedisKeyDAO checkRedisKeyDAO;

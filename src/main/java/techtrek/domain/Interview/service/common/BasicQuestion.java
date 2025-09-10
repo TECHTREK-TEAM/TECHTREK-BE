@@ -8,7 +8,7 @@ import techtrek.domain.interviewQuestion.repository.InterviewQuestionRepository;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.openAI.chat.service.ChatService;
+import techtrek.global.openAI.chat.service.component.Chat;
 import techtrek.global.openAI.chat.service.common.Prompt;
 import techtrek.global.openAI.chat.service.common.JsonRead;
 
@@ -21,7 +21,7 @@ public class BasicQuestion {
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final CompanyCSProvider companyCSProvider;
     private final Prompt prompt;
-    private final ChatService chatService;
+    private final Chat chatService;
     private final JsonRead jsonRead;
 
     public ParserResponse.BasicQuestionResult exec(Enterprise enterprise){
