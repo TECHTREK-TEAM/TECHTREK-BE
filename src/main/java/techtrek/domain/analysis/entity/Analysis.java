@@ -21,14 +21,14 @@ public class Analysis {
     @Column(name = "session_id", length = 255, nullable = false)
     private String sessionId;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "is_pass", nullable = false)
+    private boolean isPass;
 
-    @Column(name = "result_score", nullable = false)
-    private double resultScore;
+    @Column(name = "score", nullable = false)
+    private double score;
 
-    @Column(name = "result", length = 255, nullable = false)
-    private String result;
+    @Column(name = "feedback", length = 255, nullable = false)
+    private String feedback;
 
     @Column(name = "keyword", length = 255, nullable = false)
     private String keyword;

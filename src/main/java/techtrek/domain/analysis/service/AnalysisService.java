@@ -5,12 +5,11 @@ import org.springframework.stereotype.Service;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.bean.*;
-import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
 @Service
 @RequiredArgsConstructor
 public class AnalysisService {
-    private final CreateAnalysisBean createAnalysisBean;
+    private final CreateAnalysis createAnalysisBean;
 //    private final GetAnalysisRecentBean getAnalysisRecentBean;
 //    private final GetAnalysisListBean getAnalysisListBean;
 //    private final GetAnalysisBean getAnalysisBean;

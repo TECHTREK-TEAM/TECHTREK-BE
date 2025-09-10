@@ -2,11 +2,11 @@ package techtrek.domain.analysis.service.bean;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.ParserResponse;
-import techtrek.domain.analysis.dto.AnalysisParserResponse;
+import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.analysis.dto.AnalysisResponse;
-import techtrek.domain.analysis.entity.Analysis;
 //import techtrek.domain.analysis.service.small.CreateAnalysisDTO;
 //import techtrek.domain.Interview.dto.SessionParserResponse;
 //import techtrek.domain.Interview.entity.SessionInfo;
@@ -24,12 +24,14 @@ import techtrek.global.redis.service.common.GetRedisHashUtil;
 import techtrek.global.openAI.chat.service.common.JsonRead;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
-public class CreateAnalysisBean {
-
+public class CreateAnalysis {
+    private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
+    private final NumberCountProvider numberCountProvider;
 
     private final GetRedisHashUtil getRedisHashUtil;
     private final Prompt createPromptTemplateUtil;
@@ -57,18 +59,28 @@ public class CreateAnalysisBean {
     // 분석하기
     public AnalysisResponse.Analysis exec(String sessionId, int duration){
         // key 생성
-        String basicKey = interviewPrefix + sessionId + basicPrefix;
-        String resumeKey = interviewPrefix + sessionId + resumePrefix;
-        String tailKey = interviewPrefix + sessionId + tailPrefix;
+        String sessionKey = interviewPrefix + sessionId;
+        String basicKey = sessionKey + basicPrefix;
+        String resumeKey = sessionKey + resumePrefix;
+        String tailKey = sessionKey + tailPrefix;
 
         // TODO: 사용자 조회
         User user = userRepository.findById("1")
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        // 결과 점수 계산: 전체 개수 , 유사도 0.6이상 개수 추출
-        //ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        // 세션 유효성 확인
+        Boolean hasSession = redisTemplate.hasKey(sessionKey);
+        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
-        // 70% 이상일 경우 true
+        // 결과 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
+        ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        long highCount = Stream.of(basicKey+"*", resumeKey+"*", tailKey+"*")
+                .mapToLong(this::countHighSimilarity)
+                .sum();
+
+        double score = numberCount.getTotalCount() > 0 ? (highCount * 100.0 / numberCount.getTotalCount()) : 0.0;
+        boolean isPass = score >= 70.0;
+
         // 유사도 제일 낮은 필드의 질문과 답변과 유사도와 questionNumber추출
         // gpt 돌려서 피드백 ( 단, 0.6이상이면 잘했다는 칭찬)
         // return
@@ -111,12 +123,35 @@ public class CreateAnalysisBean {
         // 반환
         return AnalysisResponse.Analysis.builder()
                 .analysisId("1")
-                .status(true)
-                .resultScore(1.3)
+                .isPass(isPass)
+                .score(score)
                 .result("dd")
-                .duration(3)
+                .duration(duration)
                 .keyword("3")
                 .build();
+    }
+
+
+    // similarity >= 0.6인 필드 개수 계산
+    public long countHighSimilarity(String pattern) {
+        Set<String> keys = redisTemplate.keys(pattern);
+        if (keys == null || keys.isEmpty()) return 0;
+
+        long count = 0;
+
+        for (String key : keys) {
+            Object value = redisTemplate.opsForHash().get(key, "similarity");
+            if (value != null) {
+                try {
+                    double sim = Double.parseDouble(value.toString());
+                    if (sim >= 0.6) count++;
+                } catch (NumberFormatException e) {
+                    // 무시
+                }
+            }
+        }
+
+        return count;
     }
 
 }

@@ -30,9 +30,6 @@ public class CreateResumeInterview {
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    @Value("${custom.redis.prefix.basic}")
-    private String basicPrefix;
-
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
 

@@ -20,10 +20,10 @@ public class AnalysisResponse {
         private String analysisId;
 
         @Schema(description = "합격 여부", example = "true")
-        private Boolean status;
+        private Boolean isPass;
 
         @Schema(description = "일치율 점수", example = "85.5")
-        private Double resultScore;
+        private Double score;
 
         @Schema(description = "결과 설명", example = "우수")
         private String result;

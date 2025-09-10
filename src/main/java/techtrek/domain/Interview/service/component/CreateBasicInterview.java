@@ -30,12 +30,6 @@ public class CreateBasicInterview {
     @Value("${custom.redis.prefix.basic}")
     private String basicPrefix;
 
-    @Value("${custom.redis.prefix.resume}")
-    private String resumePrefix;
-
-    @Value("${custom.redis.prefix.tail}")
-    private String tailPrefix;
-
     public InterviewResponse.Question exec(String sessionId){
         // key 생성
         String fieldId = UUID.randomUUID().toString();
