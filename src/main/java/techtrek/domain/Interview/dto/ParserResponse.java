@@ -17,4 +17,13 @@ public class ParserResponse {
         private String correctAnswer;
     }
 
+    // NumberCount 반환
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NumberCount {
+        private String questionNumber;
+        private String totalCount;
+    }
+
 }

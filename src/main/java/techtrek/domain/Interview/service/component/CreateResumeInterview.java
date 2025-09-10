@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.ParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
-import techtrek.domain.Interview.service.common.HashCountProvider;
+import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.Interview.service.common.ResumeQuestion;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
@@ -25,7 +25,7 @@ public class CreateResumeInterview {
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final ResumeQuestion resumeQuestion;
-    private final HashCountProvider hashCountProvider;
+    private final NumberCountProvider numberCountProvider;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -62,20 +62,19 @@ public class CreateResumeInterview {
         // 이력서 질문 생성
         ParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
 
-        // basic + resume 필드 개수 세기
-        long basicCount = hashCountProvider.exec(sessionKey + basicPrefix + "*");
-        long resumeCount = hashCountProvider.exec(sessionKey + resumePrefix + "*");
-        String questionNumber = String.valueOf(basicCount + resumeCount + 1);
+        // questionNumber, totalQuestionNumber 계산
+        ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(resumeKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(resumeKey, "correctAnswer", questionResult.getCorrectAnswer());
-        redisTemplate.opsForHash().put(resumeKey, "questionNumber", questionNumber);
+        redisTemplate.opsForHash().put(resumeKey, "questionNumber", numberCount.getQuestionNumber());
+        redisTemplate.opsForHash().put(resumeKey, "totalCount", numberCount.getTotalCount());
 
         return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(questionResult.getQuestion())
-                .questionNumber(questionNumber)
+                .questionNumber(numberCount.getQuestionNumber())
                 .build();
     }
 
