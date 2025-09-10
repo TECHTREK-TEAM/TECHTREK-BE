@@ -38,8 +38,7 @@ public class InterviewRequest {
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
 
-        @Schema(description = "부모 질문 ID", example = "2345", required = true)
-        @NotBlank(message = "부모Id는 필수입니다.")
+        @Schema(description = "부모 질문 ID", example = "2345")
         private String parentId;
 
         @Schema(description = "이전 필드 ID", example = "5678")

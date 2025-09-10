@@ -16,7 +16,6 @@ public class CreateTailDTO {
                 .question(question)
                 .parentQuestionNumber(parentQuestionNumber)
                 .tailQuestionNumber(tailQuestionNumber)
-                .totalQuestionNumber(totalQuestionNumber)
                 .build();
 
     }

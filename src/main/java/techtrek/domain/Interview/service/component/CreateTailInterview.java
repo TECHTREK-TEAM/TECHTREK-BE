@@ -2,6 +2,7 @@ package techtrek.domain.Interview.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.dto.SessionParserResponse;
@@ -16,10 +17,11 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class CreateTailInterviewBean {
+public class CreateTailInterview {
     // 상수 정의
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
+    private final RedisTemplate<String, String> redisTemplate;
     private final Prompt createPromptTemplateUtil;
     private final Chat createPromptUtil;
 
@@ -33,18 +35,27 @@ public class CreateTailInterviewBean {
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
+    @Value("${custom.redis.prefix.basic}")
+    private String basicPrefix;
+
+    @Value("${custom.redis.prefix.resume}")
+    private String resumePrefix;
+
+    @Value("${custom.redis.prefix.tail}")
+    private String tailPrefix;
+
     // 꼬리질문 생성
     public InterviewResponse.TailQuestion exec(String sessionId, String parentId, String previousFieldId) {
         // 키 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
-        String fieldKey =  sessionKey + ":tail:" + fieldId;
+        String fieldKey =  sessionKey + tailPrefix + fieldId;
 
         // parentId 키, previousFieldId 키 존재 확인
-        if (!checkRedisKeyDAO.exec(sessionKey + ":new:"+ parentId)) { throw new CustomException(ErrorCode.PARENT_FIELD_NOT_FOUND);}
-        //if (!checkRedisKeyDAO.exec(sessionKey + ":tail:"+ previousFieldId)) { throw new CustomException(ErrorCode.PREVIOUS_FIELD_NOT_FOUND);}
+        if (!redisTemplate.hasKey(sessionKey + basicPrefix + parentId) && !redisTemplate.hasKey(sessionKey + resumePrefix + parentId)) throw new CustomException(ErrorCode.PARENT_FIELD_NOT_FOUND);
+        if (!redisTemplate.hasKey(sessionKey + tailPrefix + previousFieldId)) { throw new CustomException(ErrorCode.PREVIOUS_FIELD_NOT_FOUND);}
 
-        // 부모 질문 조회
+        // 부모 필드 조회
         SessionParserResponse.FieldData parentData = getRedisDAO.exec(sessionKey + ":new:"+ parentId);
         String parentQuestionNumber = parentData.getQuestionNumber();
 

@@ -61,9 +61,6 @@ public class InterviewResponse {
 
         @Schema(description = "꼬리 질문 번호", example = "2-1")
         private String tailQuestionNumber;
-
-        @Schema(description = "전체 질문 수", example = "10")
-        private String totalQuestionNumber;
     }
 
 
