@@ -69,10 +69,9 @@ public class CreateAnalysis {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 세션 유효성 확인
-        Boolean hasSession = redisTemplate.hasKey(sessionKey);
-        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
-        // 결과 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
+        // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
         ParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
         long highCount = Stream.of(basicKey+"*", resumeKey+"*", tailKey+"*")
                 .mapToLong(this::countHighSimilarity)
@@ -80,7 +79,7 @@ public class CreateAnalysis {
 
         double score = numberCount.getTotalCount() > 0 ? (highCount * 100.0 / numberCount.getTotalCount()) : 0.0;
         boolean isPass = score >= 70.0;
-        
+
         // 유사도 제일 낮은 필드의 질문과 답변과 유사도와 questionNumber추출
         // gpt 돌려서 피드백 ( 단, 0.6이상이면 잘했다는 칭찬)
         // return

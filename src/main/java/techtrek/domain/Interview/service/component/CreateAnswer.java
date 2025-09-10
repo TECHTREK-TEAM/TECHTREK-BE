@@ -25,8 +25,7 @@ public class CreateAnswer {
         String fieldKey = interviewPrefix + sessionId + ":" + type + ":"+ fieldId;
 
         // 해당 키 존재 확인
-        boolean check = redisTemplate.hasKey(fieldKey);
-        if (!check) { throw new CustomException(ErrorCode.FIELD_NOT_FOUND);}
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(fieldKey))) throw new CustomException(ErrorCode.FIELD_NOT_FOUND);
 
         // 유사도 검사
         String correctAnswer = (String) redisTemplate.opsForHash().get(fieldKey, "correctAnswer");

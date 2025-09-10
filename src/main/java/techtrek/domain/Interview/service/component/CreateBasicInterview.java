@@ -37,8 +37,7 @@ public class CreateBasicInterview {
         String basicKey = sessionKey + basicPrefix+ fieldId;
 
         // 세션 유효성 확인
-        Boolean hasSession = redisTemplate.hasKey(sessionKey);
-        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // enterpriseName 조회 및 유효성 검증
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
