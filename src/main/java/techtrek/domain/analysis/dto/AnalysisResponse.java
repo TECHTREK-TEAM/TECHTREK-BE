@@ -25,9 +25,6 @@ public class AnalysisResponse {
         @Schema(description = "일치율 점수", example = "85.5")
         private Double resultScore;
 
-        @Schema(description = "팔로우 점수", example = "90.0")
-        private Double followScore;
-
         @Schema(description = "결과 설명", example = "우수")
         private String result;
 
