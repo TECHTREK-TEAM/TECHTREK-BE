@@ -32,7 +32,7 @@ public class CreateAnswer {
         String correctAnswer = (String) redisTemplate.opsForHash().get(fieldKey, "correctAnswer");
         List<Double> vec1 = embedding.getEmbedding(answer);
         List<Double> vec2 = embedding.getEmbedding(correctAnswer);
-        int similarity = embedding.cosineSimilarity(vec1, vec2);
+        double similarity = embedding.cosineSimilarity(vec1, vec2);
 
         // 답변, 유사도 저장
         redisTemplate.opsForHash().put(fieldKey, "answer", answer);
