@@ -3,7 +3,7 @@ package techtrek.domain.user.dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
+//import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
 import java.util.List;
 
@@ -38,29 +38,29 @@ public class UserResponse {
         }
     }
 
-    // 관심 기업
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Schema(description = "관심 기업 리스트 응답")
-    public static class CompanyList {
-        @Schema(description = "관심 기업 목록")
-        private List<Company> companies;
-
-        @Getter
-        @Builder
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Schema(description = "관심 기업 정보")
-        public static class Company {
-            @Schema(description = "기업 이름", example = "카카오")
-            private EnterpriseName companyName;
-
-            @Schema(description = "해당 기업의 면접 일치율(%)", example = "87.5")
-            private Double companyPercent;
-        }
-    }
+//    // 관심 기업
+//    @Getter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    @Schema(description = "관심 기업 리스트 응답")
+//    public static class CompanyList {
+//        @Schema(description = "관심 기업 목록")
+//        private List<Company> companies;
+//
+//        @Getter
+//        @Builder
+//        @NoArgsConstructor
+//        @AllArgsConstructor
+//        @Schema(description = "관심 기업 정보")
+//        public static class Company {
+//            @Schema(description = "기업 이름", example = "카카오")
+//            private EnterpriseName companyName;
+//
+//            @Schema(description = "해당 기업의 면접 일치율(%)", example = "87.5")
+//            private Double companyPercent;
+//        }
+//    }
 
 
     // 합격률
@@ -96,50 +96,50 @@ public class UserResponse {
     }
 
     // 면접
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Schema(description = "면접 정보 응답")
-    public static class Interview {
-        @Schema(description = "가장 높은 점수를 받은 면접 정보")
-        private InterviewData highestScore;
-
-        @Schema(description = "최근에 본 면접 정보")
-        private InterviewData recentInterview;
-
-        @Schema(description = "이력서 업로드 여부")
-        private Resume resume;
-
-        @Getter
-        @Builder
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Schema(description = "면접 데이터")
-        public static class InterviewData {
-            @Schema(description = "면접 합격 여부", example = "true")
-            private boolean status;
-
-            @Schema(description = "기업 이름", example = "네이버")
-            private EnterpriseName enterpriseName;
-
-            @Schema(description = "면접 일치 점수", example = "88.2")
-            private Double resultScore;
-
-            @Schema(description = "분석된 직군 정보", example = "Backend Developer")
-            private String analysisGroup;
-        }
-
-        @Getter
-        @Builder
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Schema(description = "이력서 상태")
-        public static class Resume {
-            @Schema(description = "이력서 존재 여부", example = "true")
-            private boolean status;
-        }
-    }
+//    @Getter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    @Schema(description = "면접 정보 응답")
+//    public static class Interview {
+//        @Schema(description = "가장 높은 점수를 받은 면접 정보")
+//        private InterviewData highestScore;
+//
+//        @Schema(description = "최근에 본 면접 정보")
+//        private InterviewData recentInterview;
+//
+//        @Schema(description = "이력서 업로드 여부")
+//        private Resume resume;
+//
+//        @Getter
+//        @Builder
+//        @NoArgsConstructor
+//        @AllArgsConstructor
+//        @Schema(description = "면접 데이터")
+//        public static class InterviewData {
+//            @Schema(description = "면접 합격 여부", example = "true")
+//            private boolean status;
+//
+//            @Schema(description = "기업 이름", example = "네이버")
+//            private EnterpriseName enterpriseName;
+//
+//            @Schema(description = "면접 일치 점수", example = "88.2")
+//            private Double resultScore;
+//
+//            @Schema(description = "분석된 직군 정보", example = "Backend Developer")
+//            private String analysisGroup;
+//        }
+//
+//        @Getter
+//        @Builder
+//        @NoArgsConstructor
+//        @AllArgsConstructor
+//        @Schema(description = "이력서 상태")
+//        public static class Resume {
+//            @Schema(description = "이력서 존재 여부", example = "true")
+//            private boolean status;
+//        }
+//    }
 
 
     // 이력서

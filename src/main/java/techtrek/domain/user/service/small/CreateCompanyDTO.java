@@ -8,8 +8,8 @@ import java.util.List;
 @Component
 public class CreateCompanyDTO {
 
-    // 기업 to3 DTO
-    public UserResponse.CompanyList exec(List<UserResponse.CompanyList.Company> top3Companies) {
-        return new UserResponse.CompanyList(top3Companies);
-    }
+//    // 기업 to3 DTO
+//    public UserResponse.CompanyList exec(List<UserResponse.CompanyList.Company> top3Companies) {
+//        return new UserResponse.CompanyList(top3Companies);
+//    }
 }

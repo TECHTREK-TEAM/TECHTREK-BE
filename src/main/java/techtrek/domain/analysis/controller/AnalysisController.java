@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.AnalysisService;
-import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
+//import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
 
@@ -28,7 +28,7 @@ public class AnalysisController {
         return ApiResponse.onSuccess(analysisService.createAnalysis(request));
     }
 
-//    // 현재 세션 불러오기
+    // 현재 세션 불러오기
 //    @GetMapping("/recent/{enterpriseName}")
 //    @Operation(summary = "최근 분석 조회", description = "해당 기업의 최근 분석 세션을 조회합니다.")
 //    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@Parameter(description = "기업 이름", required = true) @PathVariable EnterpriseName enterpriseName){
