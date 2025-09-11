@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.InterviewResponse;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
+import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.Interview.service.common.TailQuestion;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class CreatePreviousTailInterview {
     private final RedisTemplate<String, String> redisTemplate;
     private final TailQuestion tailQuestion;
+    private final NumberCountProvider numberCountProvider;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -43,7 +45,7 @@ public class CreatePreviousTailInterview {
         }
 
         // 연계질문 생성
-        ParserResponse.ChatResult questionResult= tailQuestion.exec(parentQuestion,parentAnswer);
+        InterviewParserResponse.ChatResult questionResult= tailQuestion.exec(parentQuestion,parentAnswer);
 
         // 꼬리 질문, 질문 번호
         String tailCountKey = sessionKey + ":count:" + parentQuestionNumber;
@@ -51,10 +53,14 @@ public class CreatePreviousTailInterview {
         String tailQuestionNumber= String.valueOf(tailNumber);
         String questionNumber = parentQuestionNumber + "-" + tailQuestionNumber;
 
+        // count 계산
+        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+
         // redis에 저장
         redisTemplate.opsForHash().put(tailKey, "question", questionResult.getQuestion());
         redisTemplate.opsForHash().put(tailKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(tailKey, "questionNumber", questionNumber);
+        redisTemplate.opsForHash().put(tailKey, "currentCount", numberCount.getCurrentCount());
         redisTemplate.opsForHash().put(tailKey, "parentQuestionNumber", parentQuestionNumber);
         redisTemplate.opsForHash().put(tailKey, "tailQuestionNumber", tailQuestionNumber);
 

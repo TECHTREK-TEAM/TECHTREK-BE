@@ -18,23 +18,23 @@ public class Analysis {
     @Column(name = "id", length = 36, nullable = false)
     private String id;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "session_id", length = 255, nullable = false)
+    private String sessionId;
 
-    @Column(name = "result_score", nullable = false)
-    private double resultScore;
+    @Column(name = "is_pass", nullable = false)
+    private boolean isPass;
 
-    @Column(name = "follow_score", nullable = false)
-    private double followScore;
-
-    @Column(name = "result", length = 255, nullable = false)
-    private String result;
+    @Column(name = "score", nullable = false)
+    private double score;
 
     @Column(name = "keyword", length = 255, nullable = false)
     private String keyword;
 
     @Column(name = "keyword_number", length = 12, nullable = false)
     private String keywordNumber;
+
+    @Column(name = "feedback", length = 255, nullable = false)
+    private String feedback;
 
     @Column(name = "analysis_group", length = 36, nullable = false)
     private String analysisGroup;

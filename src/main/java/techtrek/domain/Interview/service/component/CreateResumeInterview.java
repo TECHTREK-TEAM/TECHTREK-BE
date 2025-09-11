@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
-import techtrek.domain.Interview.service.common.HashCountProvider;
+import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.Interview.service.common.ResumeQuestion;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
@@ -25,13 +25,10 @@ public class CreateResumeInterview {
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final ResumeQuestion resumeQuestion;
-    private final HashCountProvider hashCountProvider;
+    private final NumberCountProvider numberCountProvider;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
-
-    @Value("${custom.redis.prefix.basic}")
-    private String basicPrefix;
 
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
@@ -47,8 +44,7 @@ public class CreateResumeInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 세션 유효성 확인
-        Boolean hasSession = redisTemplate.hasKey(sessionKey);
-        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // 이력서 불러오기, 예외처리
         String resume = user.getResume();
@@ -60,22 +56,21 @@ public class CreateResumeInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 이력서 질문 생성
-        ParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
+        InterviewParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
 
-        // basic + resume 필드 개수 세기
-        long basicCount = hashCountProvider.exec(sessionKey + basicPrefix + "*");
-        long resumeCount = hashCountProvider.exec(sessionKey + resumePrefix + "*");
-        String questionNumber = String.valueOf(basicCount + resumeCount + 1);
+        // questionNumber, count 계산
+        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(resumeKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(resumeKey, "correctAnswer", questionResult.getCorrectAnswer());
-        redisTemplate.opsForHash().put(resumeKey, "questionNumber", questionNumber);
+        redisTemplate.opsForHash().put(resumeKey, "questionNumber", numberCount.getQuestionNumber());
+        redisTemplate.opsForHash().put(resumeKey, "currentCount", numberCount.getCurrentCount());
 
         return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(questionResult.getQuestion())
-                .questionNumber(questionNumber)
+                .questionNumber(numberCount.getQuestionNumber())
                 .build();
     }
 

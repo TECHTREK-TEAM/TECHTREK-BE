@@ -43,7 +43,7 @@ public class Embedding {
     }
 
     // Cosine similarity 계산
-    public int cosineSimilarity(List<Double> vec1, List<Double> vec2) {
+    public double cosineSimilarity(List<Double> vec1, List<Double> vec2) {
         double dot = 0.0, normA = 0.0, normB = 0.0;
         for (int i = 0; i < vec1.size(); i++) {
             dot += vec1.get(i) * vec2.get(i);
@@ -51,6 +51,6 @@ public class Embedding {
             normB += Math.pow(vec2.get(i), 2);
         }
         double similarity = dot / (Math.sqrt(normA) * Math.sqrt(normB));
-        return similarity >= 0.6 ? 1 : 0;
+        return Math.round(similarity * 10.0) / 10.0;  // 소수 첫째 자리까지 반올림
     }
 }

@@ -9,18 +9,18 @@ import lombok.NoArgsConstructor;
 public class SessionParserResponse {
 
     // 필드 형태로 데이터 파싱
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class FieldData {
-        private String phase;
-        private String count;
-        private String question;
-        private String answer;
-        private String questionNumber;
-        private String totalQuestionNumber;
-    }
+//    @Getter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    public static class FieldData {
+//        private String phase;
+//        private String count;
+//        private String question;
+//        private String answer;
+//        private String questionNumber;
+//        private String totalQuestionNumber;
+//    }
 
     // 리스트 형태로 데이터 파싱
     @Getter

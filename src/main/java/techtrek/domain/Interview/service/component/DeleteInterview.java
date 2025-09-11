@@ -20,8 +20,7 @@ public class DeleteInterview {
 
     public Boolean exec(String sessionId){
         // 세션 유효성 확인
-        Boolean hasSession = redisTemplate.hasKey(interviewPrefix + sessionId);
-        if (hasSession == null || !hasSession) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(interviewPrefix + sessionId))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // Redis 데이터 삭제
         Set<String> keys = redisTemplate.keys(interviewPrefix + sessionId + "*");

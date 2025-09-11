@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
 import techtrek.global.common.code.ErrorCode;
@@ -19,6 +19,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CreateStartInterview {
     private static final String START_QUESTION_NUMBER = "1";
+    private static final String CURRENT_COUNT = "1";
 
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
@@ -44,13 +45,14 @@ public class CreateStartInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
 
         // 기본 질문 생성
-        ParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
+        InterviewParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
         // redis 저장
         redisTemplate.opsForHash().put(sessionKey, "enterpriseName", enterpriseName);
         redisTemplate.opsForHash().put(basicKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(basicKey, "correctAnswer", questionResult.getCorrectAnswer());
         redisTemplate.opsForHash().put(basicKey, "questionNumber", START_QUESTION_NUMBER);
+        redisTemplate.opsForHash().put(basicKey, "currentCount", CURRENT_COUNT);
 
         return InterviewResponse.Start.builder()
                 .sessionId(sessionId)

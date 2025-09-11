@@ -2,7 +2,7 @@ package techtrek.domain.Interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
 import techtrek.domain.interviewQuestion.repository.InterviewQuestionRepository;
 import techtrek.domain.enterprise.entity.Enterprise;
@@ -24,7 +24,7 @@ public class BasicQuestion {
     private final Chat chatService;
     private final JsonRead jsonRead;
 
-    public ParserResponse.ChatResult exec(Enterprise enterprise){
+    public InterviewParserResponse.ChatResult exec(Enterprise enterprise){
         // true GPT, false DB
         Random random = new Random();
         boolean useGpt = random.nextBoolean();
@@ -34,7 +34,7 @@ public class BasicQuestion {
             InterviewQuestion interviewQuestion = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
 
-            return new ParserResponse.ChatResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
+            return new InterviewParserResponse.ChatResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
         } else {
             // 프롬프트, GPT gpt로 질문 생성
             String focusCS = companyCSProvider.exec(enterprise.getName());
@@ -44,8 +44,8 @@ public class BasicQuestion {
             String chatResponse = chatService.exec(format);
 
             // JSON → DTO
-            ParserResponse.ChatResult questionResponse = jsonRead.exec(chatResponse, ParserResponse.ChatResult.class);
-            return new ParserResponse.ChatResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
+            InterviewParserResponse.ChatResult questionResponse = jsonRead.exec(chatResponse, InterviewParserResponse.ChatResult.class);
+            return new InterviewParserResponse.ChatResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
         }
     }
 

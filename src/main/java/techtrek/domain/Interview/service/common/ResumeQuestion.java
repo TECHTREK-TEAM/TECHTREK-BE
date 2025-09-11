@@ -2,7 +2,7 @@ package techtrek.domain.Interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.ParserResponse;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.global.openAI.chat.service.common.JsonRead;
 import techtrek.global.openAI.chat.service.component.Chat;
@@ -17,7 +17,7 @@ public class ResumeQuestion {
     private final Chat chatService;
     private final JsonRead jsonRead;
 
-    public ParserResponse.ChatResult exec(String resume, Enterprise enterprise){
+    public InterviewParserResponse.ChatResult exec(String resume, Enterprise enterprise){
         // 프롬프트 생성, GPT gpt로 질문 생성
         String focusCS = companyCSProvider.exec(enterprise.getName());
 
@@ -26,9 +26,9 @@ public class ResumeQuestion {
         String chatResponse = chatService.exec(format);
 
         // JSON → DTO
-        ParserResponse.ChatResult questionResponse = jsonRead.exec(chatResponse, ParserResponse.ChatResult.class);
+        InterviewParserResponse.ChatResult questionResponse = jsonRead.exec(chatResponse, InterviewParserResponse.ChatResult.class);
 
-        return new ParserResponse.ChatResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
+        return new InterviewParserResponse.ChatResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
     }
 
 }
