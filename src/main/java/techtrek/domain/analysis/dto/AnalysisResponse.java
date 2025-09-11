@@ -43,8 +43,8 @@ public class AnalysisResponse {
     @AllArgsConstructor
     @Schema(description = "분석 세션 상세 정보 응답")
     public static class Detail{
-        @Schema(description = "세션 정보 ID", example = "1234")
-        private String sessionInfoId;
+        @Schema(description = "분석 정보 ID", example = "1234")
+        private String analysisId;
 
         @Schema(description = "분석 결과")
         private Analysis analysis;
@@ -61,16 +61,10 @@ public class AnalysisResponse {
         @AllArgsConstructor
         public static class Analysis {
             @Schema(description = "합격 여부", example = "true")
-            private boolean status;
+            private boolean isPass;
 
-            @Schema(description = "팔로우 점수", example = "75.0")
-            private double followScore;
-
-            @Schema(description = "평균대비 증가 비율", example = "80.5")
-            private double averageFollowPercent;
-
-            @Schema(description = "일치율 점수", example = "85.0")
-            private double resultScore;
+            @Schema(description = "일치율", example = "75.0")
+            private double score;
 
             @Schema(description = "분석 소요 시간(분)", example = "5")
             private int duration;
@@ -108,8 +102,8 @@ public class AnalysisResponse {
             @Schema(description = "키워드 번호", example = "1")
             private String keywordNumber;
 
-            @Schema(description = "설명", example = "우수")
-            private String result;
+            @Schema(description = "피드백", example = "우수")
+            private String feedback;
         }
     }
 

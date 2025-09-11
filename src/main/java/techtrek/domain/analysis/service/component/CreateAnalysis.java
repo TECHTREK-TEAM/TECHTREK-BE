@@ -68,7 +68,7 @@ public class CreateAnalysis {
         // 기업불러오기
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
         InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);

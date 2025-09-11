@@ -29,11 +29,11 @@ public class AnalysisController {
     }
 
     // 현재 세션 불러오기
-//    @GetMapping("/recent/{enterpriseName}")
-//    @Operation(summary = "최근 분석 조회", description = "해당 기업의 최근 분석 세션을 조회합니다.")
-//    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@Parameter(description = "기업 이름", required = true) @PathVariable EnterpriseName enterpriseName){
-//        return ApiResponse.onSuccess(analysisService.getAnalysisRecent(enterpriseName));
-//    }
+    @GetMapping("/recent/{enterpriseName}")
+    @Operation(summary = "최근 분석 조회", description = "해당 기업의 최근 분석 세션을 조회합니다.")
+    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@Parameter(description = "기업 이름", required = true) @PathVariable String enterpriseName){
+        return ApiResponse.onSuccess(analysisService.getAnalysisRecent(enterpriseName));
+    }
 //
 //    // 세션 리스트 불러오기
 //    @GetMapping("/sessions/{enterpriseName}")

@@ -25,6 +25,25 @@ public class AnalysisParserResponse {
         private String feedback;
     }
 
+    // DB 분석 계산 반환
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DBAnalysisResult {
+        private String analysisId;
+        private Boolean isPass;
+        private double score;
+        private int duration;
+        private double averageDurationPercent;
+        private double topScore;
+        private String keyword;
+        private String keywordNumber;
+        private String feedback;
+    }
+
+
+
     @Getter
     @Builder
     @NoArgsConstructor

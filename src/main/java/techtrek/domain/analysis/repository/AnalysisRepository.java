@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import techtrek.domain.analysis.entity.Analysis;
+import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.user.entity.User;
 //import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,15 @@ import java.util.Optional;
 
 @Repository
 public interface AnalysisRepository extends JpaRepository<Analysis, String> {
+    // 사용자와 기업 객체 기준으로 최신 분석 데이터 조회
+    Optional<Analysis> findTopByUserAndEnterpriseOrderByCreatedAtDesc(User user, Enterprise enterprise);
+
+    // 특정 사용자와 특정 기업의 모든 분석 결과 조회
+    List<Analysis> findAllByUserAndEnterprise(User user, Enterprise enterprise);
+
+    // 특정 Enterprise에 속한 모든 분석 결과 조회
+    List<Analysis> findAllByEnterprise(Enterprise enterprise);
+
 //    // 점수가 가장 높은 면접
 //    Optional<Analysis> findTopBySessionInfoIdInOrderByResultScoreDesc(List<String> sessionIds);
 //
