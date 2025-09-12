@@ -63,7 +63,6 @@ public class CreateResume {
         List<Stack> newStacks = result.getStacks().stream()
                 .map(dto -> {
                     Stack stack = new Stack();
-                    stack.setId(UUID.randomUUID().toString());
                     stack.setStackName(dto.getStackName());
                     stack.setUser(user);
                     return stack;

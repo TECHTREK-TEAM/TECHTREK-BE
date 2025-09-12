@@ -15,8 +15,9 @@ import java.time.LocalDateTime;
 @Table(name="analysis")
 public class Analysis {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 36, nullable = false)
-    private String id;
+    private Long id;
 
     @Column(name = "session_id", length = 255, nullable = false)
     private String sessionId;

@@ -20,7 +20,7 @@ public class DeleteAnalysis {
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    public Boolean exec(String analysisId){
+    public Boolean exec(Long analysisId){
         // Analysis 조회
         Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
 

@@ -116,6 +116,9 @@ public class UserResponse {
         @AllArgsConstructor
         @Schema(description = "면접 데이터")
         public static class InterviewData {
+            @Schema(description = "분석 ID", example = "true")
+            private Long analysisId;
+
             @Schema(description = "면접 합격 여부", example = "true")
             private boolean isPass;
 

@@ -16,7 +16,7 @@ public class AnalysisResponse {
     @Schema(description = "분석 데이터 응답")
     public static class Analysis {
         @Schema(description = "분석 ID", example = "5678")
-        private String analysisId;
+        private Long analysisId;
 
         @Schema(description = "합격 여부", example = "true")
         private Boolean isPass;
@@ -43,7 +43,7 @@ public class AnalysisResponse {
     @Schema(description = "분석 세션 상세 정보 응답")
     public static class Detail{
         @Schema(description = "분석 정보 ID", example = "1234")
-        private String analysisId;
+        private Long analysisId;
 
         @Schema(description = "분석 결과")
         private Analysis analysis;
@@ -122,7 +122,7 @@ public class AnalysisResponse {
         @NoArgsConstructor
         public static class Data {
             @Schema(description = "분석 ID", example = "1234")
-            private String analysisId;
+            private Long analysisId;
 
             @Schema(description = "기업명", example = "네이버")
             private String enterpriseName;

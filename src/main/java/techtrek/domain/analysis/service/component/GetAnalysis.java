@@ -24,7 +24,7 @@ public class GetAnalysis {
     private final RedisAnalysisCalc redisAnalysisCalc;
 
     // 선택한 세션 불러오기
-    public AnalysisResponse.Detail exec(String analysisId){
+    public AnalysisResponse.Detail exec(Long analysisId){
         // TODO: 사용자 조회
         User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 

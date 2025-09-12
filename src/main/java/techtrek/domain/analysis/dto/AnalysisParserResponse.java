@@ -31,7 +31,7 @@ public class AnalysisParserResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DBAnalysisResult {
-        private String analysisId;
+        private Long analysisId;
         private String sessionId;
         private Boolean isPass;
         private double score;

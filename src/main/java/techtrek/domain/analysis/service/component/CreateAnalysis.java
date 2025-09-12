@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.service.common.CompanyCSProvider;
 import techtrek.domain.Interview.service.common.NumberCountProvider;
@@ -51,6 +52,7 @@ public class CreateAnalysis {
     private String tailPrefix;
 
     // 분석하기
+    @Transactional
     public AnalysisResponse.Analysis exec(String sessionId, int duration){
         // key 생성
         String sessionKey = interviewPrefix + sessionId;
@@ -90,7 +92,6 @@ public class CreateAnalysis {
 
         // 분석 테이블 생성
         Analysis analysis = Analysis.builder()
-                .id(UUID.randomUUID().toString())
                 .sessionId(sessionId)
                 .isPass(isPass)
                 .score(score)
@@ -103,6 +104,7 @@ public class CreateAnalysis {
                 .user(user)
                 .enterprise(enterprise)
                 .build();
+
         analysisRepository.save(analysis);
 
         // 반환

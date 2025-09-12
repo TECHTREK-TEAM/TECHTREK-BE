@@ -23,7 +23,7 @@ public class DBAnalysisCalc {
         allEnterpriseAnalyses.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));
         int rank = 1;
         for (Analysis a : allEnterpriseAnalyses) {
-            if (a.getId().equals(selectAnalysis.getId())) break;
+            if (a.getId() == selectAnalysis.getId()) break;
             rank++;
         }
         double topScore = ((double) rank / allEnterpriseAnalyses.size()) * 100;

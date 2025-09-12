@@ -34,7 +34,6 @@ public class UpdateUser {
             user.getStackList().clear();
             for (UserRequest.Info.Stack stackDto : newStacks) {
                 Stack stack = new Stack();
-                stack.setId(UUID.randomUUID().toString());
                 stack.setStackName(stackDto.getStackName());
                 stack.setUser(user);
                 user.getStackList().add(stack);

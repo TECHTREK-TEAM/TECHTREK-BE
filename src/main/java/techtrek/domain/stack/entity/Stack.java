@@ -15,8 +15,9 @@ import techtrek.domain.user.entity.User;
 @Table(name="stack")
 public class Stack {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", length = 36, nullable = false)
-    private String id;
+    private Long id;
 
     @Column(name="stack_name", length = 12, nullable = true)
     private String stackName;

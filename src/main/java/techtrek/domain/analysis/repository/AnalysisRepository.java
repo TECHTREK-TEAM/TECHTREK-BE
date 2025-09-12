@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AnalysisRepository extends JpaRepository<Analysis, String> {
+public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
     // 사용자와 기업 객체 기준으로 분석 데이터 조회
     List<Analysis> findByUserAndEnterpriseOrderByCreatedAtDesc(User user, Enterprise enterprise);
 

@@ -32,6 +32,7 @@ public class GetInterview {
 
         return UserResponse.Interview.builder()
                 .highestScore(highest != null ? UserResponse.Interview.InterviewData.builder()
+                        .analysisId(highest.getId())
                         .isPass(highest.isPass())
                         .enterpriseName(highest.getEnterprise().getName())
                         .score(highest.getScore())
@@ -39,6 +40,7 @@ public class GetInterview {
                         .build()
                         : null) // 없으면 null
                 .recentInterview(recent != null ? UserResponse.Interview.InterviewData.builder()
+                        .analysisId(recent.getId())
                         .isPass(recent.isPass())
                         .enterpriseName(recent.getEnterprise().getName())
                         .score(recent.getScore())
