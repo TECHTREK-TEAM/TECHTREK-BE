@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.AnalysisService;
-//import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
 
@@ -34,13 +33,13 @@ public class AnalysisController {
     public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@Parameter(description = "기업 이름", required = true) @PathVariable String enterpriseName){
         return ApiResponse.onSuccess(analysisService.getAnalysisRecent(enterpriseName));
     }
-//
-//    // 세션 리스트 불러오기
-//    @GetMapping("/sessions/{enterpriseName}")
-//    @Operation(summary = "분석 세션 리스트 조회", description = "해당 기업의 모든 분석 세션 리스트를 조회합니다.")
-//    public ResponseEntity<CommonResponse<AnalysisResponse.SessionList>> getAnalysisList(@Parameter(description = "기업 이름", required = true) @PathVariable EnterpriseName enterpriseName){
-//        return ApiResponse.onSuccess(analysisService.getAnalysisList(enterpriseName));
-//    }
+
+    // 세션 리스트 불러오기
+    @GetMapping("/sessions/{enterpriseName}")
+    @Operation(summary = "분석 세션 리스트 조회", description = "해당 기업의 모든 분석 세션 리스트를 조회합니다.")
+    public ResponseEntity<CommonResponse<AnalysisResponse.AnalysisList>> getAnalysisList(@Parameter(description = "기업 이름", required = true) @PathVariable String enterpriseName){
+        return ApiResponse.onSuccess(analysisService.getAnalysisList(enterpriseName));
+    }
 //
 //    // 선택한 세션 불러오기
 //    @GetMapping("/{sessionInfoId}")

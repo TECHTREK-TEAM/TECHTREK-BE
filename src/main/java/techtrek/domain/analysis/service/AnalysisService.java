@@ -11,7 +11,7 @@ import techtrek.domain.analysis.service.component.*;
 public class AnalysisService {
     private final CreateAnalysis createAnalysis;
     private final GetAnalysisRecent getAnalysisRecent;
-//    private final GetAnalysisListBean getAnalysisListBean;
+    private final GetAnalysisList getAnalysisList;
 //    private final GetAnalysisBean getAnalysisBean;
 //    private final DeleteAnalysisBean deleteAnalysisBean;
 
@@ -24,11 +24,11 @@ public class AnalysisService {
     public AnalysisResponse.Detail getAnalysisRecent(String enterpriseName){
         return getAnalysisRecent.exec(enterpriseName);
     }
-//
-//    // 세션 리스트 불러오기
-//    public AnalysisResponse.SessionList getAnalysisList(EnterpriseName enterpriseName){
-//        return getAnalysisListBean.exec(enterpriseName);
-//    }
+
+    // 세션 리스트 불러오기
+    public AnalysisResponse.AnalysisList getAnalysisList(String enterpriseName){
+        return getAnalysisList.exec(enterpriseName);
+    }
 //
 //    // 선택한 세션 불러오기
 //    public AnalysisResponse.Detail getAnalysis(String sessionInfoId){

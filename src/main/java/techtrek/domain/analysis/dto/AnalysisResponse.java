@@ -2,7 +2,6 @@ package techtrek.domain.analysis.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-// import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -107,29 +106,29 @@ public class AnalysisResponse {
         }
     }
 
-    // 세션 리스트 불러오기
-//    @Getter
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @Schema(description = "분석 세션 리스트")
-//    public static class SessionList {
-//        @Schema(description = "세션 리스트")
-//        private List<SessionData> session;
-//    }
+    // 분석 리스트 불러오기
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "분석 세션 리스트")
+    public static class AnalysisList {
+        @Schema(description = "세션 리스트")
+        private List<Data> sessions;
 
-//    @Getter
-//    @Builder
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class SessionData {
-//        @Schema(description = "세션 정보 ID", example = "1234")
-//        private String sessionInfoId;
-//
-//        @Schema(description = "기업명", example = "네이버")
-//        private EnterpriseName enterpriseName;
-//
-//        @Schema(description = "생성일자", example = "2025-06-30 10:15:30")
-//        private LocalDateTime createdAt;
-//    }
+        @Getter
+        @Builder
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class Data {
+            @Schema(description = "세션 ID", example = "1234")
+            private String sessionId;
+
+            @Schema(description = "기업명", example = "네이버")
+            private String enterpriseName;
+
+            @Schema(description = "생성일자", example = "2025-06-30 10:15:30")
+            private LocalDateTime createdAt;
+        }
+    }
 }
