@@ -141,7 +141,6 @@ public class UserResponse {
 //        }
 //    }
 
-
     // 이력서
     @Getter
     @Builder
@@ -150,7 +149,7 @@ public class UserResponse {
     @Schema(description = "사용자의 이력서 정보 응답")
     public static class Resume {
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String group;
+        private String role;
 
         @Schema(description = "연차 정보", example = "지망생")
         private String seniority;

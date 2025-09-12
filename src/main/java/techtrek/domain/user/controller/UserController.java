@@ -63,11 +63,11 @@ public class UserController {
 //        return ApiResponse.onSuccess(userService.getInterview());
 //    }
 //
-//    // 이력서 셍성
-//    @PostMapping(value ="/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @Operation(summary = "이력서 생성", description = "이력서 PDF 파일을 업로드하여 정보를 생성합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.Resume>> createResume(@RequestPart("file") MultipartFile file){
-//        return ApiResponse.onSuccess(userService.createResume(file));
-//    }
+    // 이력서 셍성
+    @PostMapping(value ="/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "이력서 생성", description = "이력서 PDF 파일을 업로드하여 정보를 생성합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.Resume>> createResume(@RequestPart("file") MultipartFile file){
+        return ApiResponse.onSuccess(userService.createResume(file));
+    }
 
 }
