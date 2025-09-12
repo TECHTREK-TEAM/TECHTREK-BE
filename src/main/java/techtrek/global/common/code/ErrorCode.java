@@ -17,13 +17,13 @@ public enum ErrorCode implements ResponseCode {
     // 세션, 필드
     SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다."), // ✅
     FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "필드를 찾을 수 없습니다."), // ✅
-    PARENT_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "부모 필드를 찾을 수 없습니다."),
-    PREVIOUS_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "이전 필드를 찾을 수 없습니다."),
+    PARENT_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "부모 필드를 찾을 수 없습니다."), // ✅
+    PREVIOUS_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "이전 필드를 찾을 수 없습니다."), // ✅
 
     // 질문
-    ENTERPRISE_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "ENUM500", "해당 이름의 기업을 찾을 수 없습니다."), // ✅
+    ENTERPRISE_NOT_FOUND(HttpStatus.NOT_FOUND, "ENUM500", "해당 이름의 기업을 찾을 수 없습니다."), // ✅
     BASIC_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION500", "기본 질문을 찾을 수 없습니다."), // ✅
-    ENUM_CS_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM CS 키워드를 찾을 수 없습니다."),
+    // ENUM_CS_KEYWORD_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "ENUM500", "ENUM CS 키워드를 찾을 수 없습니다."),
 
     // 이력서
     RESUME_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "이력서를 찾을 수 없습니다."),  // ✅
@@ -36,6 +36,7 @@ public enum ErrorCode implements ResponseCode {
     JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다."), // ✅
 
     // 분석
+    ANALYSIS_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "분석 정보를 찾을 수 없습니다."), // ✅
     ANALYSIS_DUPLICATE(HttpStatus.CONFLICT, "DB409", "해당 세션에 이미 분석 데이터가 존재합니다. 중복 생성할 수 없습니다.");
 
 

@@ -42,7 +42,7 @@ public class CreateStartInterview {
 
         // enterpriseName 유효성 검증
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 기본 질문 생성
         InterviewParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);

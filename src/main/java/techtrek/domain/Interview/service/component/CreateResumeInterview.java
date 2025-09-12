@@ -53,7 +53,7 @@ public class CreateResumeInterview {
         // enterpriseName 조회 및 유효성 검증
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 이력서 질문 생성
         InterviewParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);

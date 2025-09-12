@@ -68,7 +68,7 @@ public class CreateAnalysis {
         // 기업불러오기
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NAME_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
         InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
@@ -76,7 +76,7 @@ public class CreateAnalysis {
                 .mapToLong(this::countHighSimilarity)
                 .sum();
 
-        double score = numberCount.getTotalCount() > 0 ? (highCount * 100.0 / numberCount.getTotalCount()) : 0.0;
+        double score = numberCount.getTotalCount() > 0 ? Math.round((highCount * 100.0 / numberCount.getTotalCount()) * 10) / 10.0 : 0.0;
         boolean isPass = score >= 70.0;
 
         // 유사도 낮은 필드 조회

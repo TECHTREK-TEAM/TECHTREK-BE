@@ -1,5 +1,5 @@
-package techtrek.global.redis.service.common;
-
+//package techtrek.domain.analysis.service.common;
+//
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.data.redis.connection.RedisConnection;
 //import org.springframework.data.redis.core.Cursor;
@@ -12,7 +12,7 @@ package techtrek.global.redis.service.common;
 //
 //@Component
 //@RequiredArgsConstructor
-//public class GetRedisHashUtil {
+//public class HashKey {
 //    private final RedisTemplate<String, String> redisTemplate;
 //
 //    // 키를 이용하여 해시 데이터 조회
@@ -34,3 +34,4 @@ package techtrek.global.redis.service.common;
 //        });
 //    }
 //}
+//

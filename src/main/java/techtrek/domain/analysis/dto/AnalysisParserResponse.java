@@ -25,6 +25,38 @@ public class AnalysisParserResponse {
         private String feedback;
     }
 
+    // DB 분석 계산 반환
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DBAnalysisResult {
+        private String analysisId;
+        private String sessionId;
+        private Boolean isPass;
+        private double score;
+        private int duration;
+        private double averageDurationPercent;
+        private double topScore;
+        private String keyword;
+        private String keywordNumber;
+        private String feedback;
+    }
+
+    // redis 면접 데이터 반환
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RedisAnalysisResult {
+        private String question;
+        private String answer;
+        private String questionNumber;
+        private int currentCount;
+    }
+
+
+
     @Getter
     @Builder
     @NoArgsConstructor
