@@ -6,13 +6,14 @@ import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.service.component.GetUser;
+import techtrek.domain.user.service.component.UpdateUser;
 //import techtrek.domain.user.service.bean.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final GetUser getUser;
-//    private final UpdateUserBean updateUserBean;
+    private final UpdateUser updateUser;
 //    //private final GetCompanyBean getCompanyBean;
 //    private final GetPassBean getPassBean;
 //    private final GetScoreBean getScoreBean;
@@ -24,10 +25,10 @@ public class UserService {
         return getUser.exec();
     }
 
-//    // 사용자 정보 수정
-//    public UserResponse.Info updateUser(UserRequest.Info request){
-//        return updateUserBean.exec(request.getName(), request.getUserGroup(), request.getSeniority(), request.getStacks());
-//    }
+    // 사용자 정보 수정
+    public UserResponse.Info updateUser(UserRequest.Info request){
+        return updateUser.exec(request.getName(), request.getRole(), request.getSeniority(), request.getStacks());
+    }
 //
 //    // 관심 기업 조회
 ////    public UserResponse.CompanyList getCompany(){

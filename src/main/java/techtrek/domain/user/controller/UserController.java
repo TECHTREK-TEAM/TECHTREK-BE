@@ -28,12 +28,12 @@ public class UserController {
         return ApiResponse.onSuccess(userService.getUser());
     }
 
-//    // 사용자 정보 수정
-//    @PatchMapping("/info")
-//    @Operation(summary = "사용자 정보 수정", description = "사용자의 프로필 정보를 수정합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.Info>> updateUser(@RequestBody UserRequest.Info request){
-//        return ApiResponse.onSuccess(userService.updateUser(request));
-//    }
+    // 사용자 정보 수정
+    @PatchMapping("/info")
+    @Operation(summary = "사용자 정보 수정", description = "사용자의 프로필 정보를 수정합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.Info>> updateUser(@RequestBody UserRequest.Info request){
+        return ApiResponse.onSuccess(userService.updateUser(request));
+    }
 //
 //    // 관심기업 조회
 //    @GetMapping("/companies")
