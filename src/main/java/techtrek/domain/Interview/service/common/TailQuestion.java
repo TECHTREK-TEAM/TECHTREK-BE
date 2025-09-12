@@ -3,9 +3,7 @@ package techtrek.domain.Interview.service.common;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.InterviewParserResponse;
-import techtrek.global.openAI.chat.service.common.JsonRead;
-import techtrek.global.openAI.chat.service.component.Chat;
-import techtrek.global.openAI.chat.service.common.Prompt;
+import techtrek.global.openAI.chat.service.common.Gpt;
 
 // 연계 질문 생성 (부모/이전 질문, 답변)
 @Component
@@ -13,20 +11,17 @@ import techtrek.global.openAI.chat.service.common.Prompt;
 public class TailQuestion {
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
-    private final Prompt prompt;
-    private final Chat chatService;
-    private final JsonRead jsonRead;
+    private final Gpt createGpt;
 
     public InterviewParserResponse.ChatResult exec(String question, String answer){
-        // 프롬프트 생성, GPT gpt로 질문 생성
-        String template = prompt.exec(PROMPT_PATH_TAIL);
-        String format = String.format(template, question, answer);
-        String chatResponse = chatService.exec(format);
+        // gpt 질문 생성
+        InterviewParserResponse.ChatResult result = createGpt.exec(
+                PROMPT_PATH_TAIL,
+                new Object[]{question, answer},
+                InterviewParserResponse.ChatResult.class
+        );
 
-        // JSON → DTO
-        InterviewParserResponse.ChatResult questionResponse = jsonRead.exec(chatResponse, InterviewParserResponse.ChatResult.class);
-
-        return new InterviewParserResponse.ChatResult(questionResponse.getQuestion(), questionResponse.getCorrectAnswer());
+        return new InterviewParserResponse.ChatResult(result.getQuestion(), result.getCorrectAnswer());
     }
 
 }

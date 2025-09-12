@@ -1,4 +1,4 @@
-package techtrek.global.openAI.chat.service.component;
+package techtrek.global.openAI.chat.service.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -10,9 +10,8 @@ import techtrek.global.openAI.chat.dto.OpenAiResponse;
 
 import java.util.List;
 
-// GPT 요청
 @Component
-public class Chat {
+public class GptApi {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${openai.api-key}")
@@ -24,6 +23,7 @@ public class Chat {
     @Value("${openai.url}")
     private String apiUrl;
 
+    // GPT 요청 후 JSON 반환
     public String exec(String prompt){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

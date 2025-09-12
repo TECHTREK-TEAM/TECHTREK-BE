@@ -18,9 +18,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.openAI.chat.service.component.Chat;
-import techtrek.global.openAI.chat.service.common.Prompt;
-import techtrek.global.openAI.chat.service.common.JsonRead;
+import techtrek.global.openAI.chat.service.common.Gpt;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -38,9 +36,7 @@ public class CreateAnalysis {
     private final LowestSimilarity lowestSimilarity;
     private final NumberCountProvider numberCountProvider;
     private final CompanyCSProvider companyCSProvider;
-    private final Prompt prompt;
-    private final Chat chatService;
-    private final JsonRead jsonRead;
+    private final Gpt createGpt;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -82,14 +78,15 @@ public class CreateAnalysis {
         // 유사도 낮은 필드 조회
         AnalysisParserResponse.LowestSimilarity low = lowestSimilarity.exec(sessionKey);
 
-        // 피드백
+        // 기업별 중점 CS
         String focusCS = companyCSProvider.exec(enterprise.getName());
-        String template = prompt.exec(PROMPT_PATH_FEEDBACK);
-        String format = String.format(template, enterprise.getName(), focusCS, low.getQuestion(), low.getAnswer(),low.getSimilarity());
-        String chatResponse = chatService.exec(format);
 
-        // JSON → DTO
-        AnalysisParserResponse.feedbackResult feedbackResult= jsonRead.exec(chatResponse, AnalysisParserResponse.feedbackResult.class);
+        // gpt 피드백 생성
+        AnalysisParserResponse.feedbackResult result = createGpt.exec(
+                PROMPT_PATH_FEEDBACK,
+                new Object[]{enterprise.getName(), focusCS,low.getQuestion(), low.getAnswer(),low.getSimilarity() },
+                AnalysisParserResponse.feedbackResult.class
+        );
 
         // 분석 테이블 생성
         Analysis analysis = Analysis.builder()
@@ -97,9 +94,9 @@ public class CreateAnalysis {
                 .sessionId(sessionId)
                 .isPass(isPass)
                 .score(score)
-                .keyword(feedbackResult.getKeyword())
+                .keyword(result.getKeyword())
                 .keywordNumber(low.getQuestionNumber())
-                .feedback(feedbackResult.getFeedback())
+                .feedback(result.getFeedback())
                 .analysisRole(user.getRole())
                 .duration(duration)
                 .createdAt(LocalDateTime.now().withNano(0))
@@ -113,9 +110,9 @@ public class CreateAnalysis {
                 .analysisId(analysis.getId())
                 .isPass(isPass)
                 .score(score)
-                .feedback(feedbackResult.getFeedback())
+                .feedback(result.getFeedback())
                 .duration(duration)
-                .keyword(feedbackResult.getKeyword())
+                .keyword(result.getKeyword())
                 .build();
     }
 

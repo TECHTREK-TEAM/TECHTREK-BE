@@ -12,9 +12,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.openAI.chat.service.common.JsonRead;
-import techtrek.global.openAI.chat.service.component.Chat;
-import techtrek.global.openAI.chat.service.common.Prompt;
+import techtrek.global.openAI.chat.service.common.Gpt;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,9 +26,7 @@ public class CreateResume {
 
     private final UserRepository userRepository;
     private final StackRepository stackRepository;
-    private final Prompt Prompt;
-    private final Chat chat;
-    private final JsonRead jsonRead;
+    private final Gpt createGpt;
 
     // 이력서 추출
     public UserResponse.Resume exec(MultipartFile file) {
@@ -49,22 +45,21 @@ public class CreateResume {
             throw new CustomException(ErrorCode.RESUME_PDF_PARSING_FAILED);
         }
 
-        // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = Prompt.exec(PROMPT_PATH_CREATE_RESUME);
-        String prompt = String.format(promptTemplate, extractedText);
-        String gptResponse = chat.exec(prompt);
-
-        // JSON 파싱 (JSON -> 객체)
-        UserResponse.Resume resumeResult = jsonRead.exec(gptResponse, UserResponse.Resume.class);
+        // gpt 이략서 요약
+        UserResponse.Resume result = createGpt.exec(
+                PROMPT_PATH_CREATE_RESUME,
+                new Object[]{extractedText},
+                UserResponse.Resume.class
+        );
 
         // 이력서, 스택 등 값 저장
-        if (user.getRole() != null) user.setRole(resumeResult.getRole());
-        if (user.getSeniority() != null) user.setSeniority(resumeResult.getSeniority());
-        if (user.getResume() != null) user.setResume(resumeResult.getResume());
+        if (user.getRole() != null) user.setRole(result.getRole());
+        if (user.getSeniority() != null) user.setSeniority(result.getSeniority());
+        if (user.getResume() != null) user.setResume(result.getResume());
         userRepository.save(user);
 
         // 새로운 스택 리스트 생성
-        List<Stack> newStacks = resumeResult.getStacks().stream()
+        List<Stack> newStacks = result.getStacks().stream()
                 .map(dto -> Stack.builder()
                         .id(UUID.randomUUID().toString())
                         .stackName(dto.getStackName())
@@ -73,6 +68,6 @@ public class CreateResume {
                 .toList();
         stackRepository.saveAll(newStacks);
 
-        return resumeResult;
+        return result;
     }
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.global.openAI.Embedding.service.component.Embedding;
+import techtrek.global.openAI.Embedding.service.common.Embedding;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
