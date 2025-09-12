@@ -121,8 +121,8 @@ public class AnalysisResponse {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class Data {
-            @Schema(description = "세션 ID", example = "1234")
-            private String sessionId;
+            @Schema(description = "분석 ID", example = "1234")
+            private String analysisId;
 
             @Schema(description = "기업명", example = "네이버")
             private String enterpriseName;

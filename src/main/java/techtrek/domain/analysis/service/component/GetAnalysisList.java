@@ -38,7 +38,7 @@ public class GetAnalysisList {
         // DTO 변환
         List<AnalysisResponse.AnalysisList.Data> sessionInfos = analyses.stream()
                 .map(analysis -> AnalysisResponse.AnalysisList.Data.builder()
-                        .sessionId(analysis.getSessionId())
+                        .analysisId(analysis.getId())
                         .enterpriseName(analysis.getEnterprise().getName())
                         .createdAt(analysis.getCreatedAt())
                         .build())
