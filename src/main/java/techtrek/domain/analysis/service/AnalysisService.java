@@ -12,7 +12,7 @@ public class AnalysisService {
     private final CreateAnalysis createAnalysis;
     private final GetAnalysisRecent getAnalysisRecent;
     private final GetAnalysisList getAnalysisList;
-//    private final GetAnalysisBean getAnalysisBean;
+    private final GetAnalysis getAnalysis;
 //    private final DeleteAnalysisBean deleteAnalysisBean;
 
     // 분석하기
@@ -29,11 +29,11 @@ public class AnalysisService {
     public AnalysisResponse.AnalysisList getAnalysisList(String enterpriseName){
         return getAnalysisList.exec(enterpriseName);
     }
-//
-//    // 선택한 세션 불러오기
-//    public AnalysisResponse.Detail getAnalysis(String sessionInfoId){
-//        return getAnalysisBean.exec(sessionInfoId);
-//    }
+
+    // 선택한 세션 불러오기
+    public AnalysisResponse.Detail getAnalysis(String analysisId){
+        return getAnalysis.exec(analysisId);
+    }
 //
 //    // 선택한 세션 삭제하기
 //    public Boolean deleteAnalysis(String sessionInfoId){

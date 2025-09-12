@@ -36,6 +36,7 @@ public enum ErrorCode implements ResponseCode {
     JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다."), // ✅
 
     // 분석
+    ANALYSIS_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "분석 정보를 찾을 수 없습니다."), // ✅
     ANALYSIS_DUPLICATE(HttpStatus.CONFLICT, "DB409", "해당 세션에 이미 분석 데이터가 존재합니다. 중복 생성할 수 없습니다.");
 
 
