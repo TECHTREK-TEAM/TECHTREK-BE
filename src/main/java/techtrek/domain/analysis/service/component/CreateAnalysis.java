@@ -76,7 +76,7 @@ public class CreateAnalysis {
                 .mapToLong(this::countHighSimilarity)
                 .sum();
 
-        double score = numberCount.getTotalCount() > 0 ? (highCount * 100.0 / numberCount.getTotalCount()) : 0.0;
+        double score = numberCount.getTotalCount() > 0 ? Math.round((highCount * 100.0 / numberCount.getTotalCount()) * 10) / 10.0 : 0.0;
         boolean isPass = score >= 70.0;
 
         // 유사도 낮은 필드 조회

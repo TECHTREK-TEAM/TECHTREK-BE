@@ -43,6 +43,7 @@ public class DBAnalysisCalc {
 
         return AnalysisParserResponse.DBAnalysisResult.builder()
                 .analysisId(selectAnalysis.getId())
+                .sessionId(selectAnalysis.getSessionId())
                 .isPass(selectAnalysis.isPass())
                 .score(selectAnalysis.getScore())
                 .duration(selectAnalysis.getDuration())

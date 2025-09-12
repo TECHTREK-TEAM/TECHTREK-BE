@@ -31,7 +31,6 @@ public class SessionParserResponse {
         private String question;
         private String answer;
         private String questionNumber;
-        private String totalQuestionNumber;
-        private String tailQuestionMessage;
+        private String totalCount;
     }
 }

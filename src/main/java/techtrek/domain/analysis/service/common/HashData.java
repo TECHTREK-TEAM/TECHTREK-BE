@@ -1,4 +1,4 @@
-//package techtrek.global.redis.service.small;
+//package techtrek.domain.analysis.service.common;
 //
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.data.redis.core.RedisTemplate;
@@ -9,7 +9,7 @@
 //
 //@Component
 //@RequiredArgsConstructor
-//public class GetRedisByKeyDAO {
+//public class HashData {
 //    private final RedisTemplate<String, String> redisTemplate;
 //
 //    // key로 데이터 조회
