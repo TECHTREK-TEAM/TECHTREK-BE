@@ -22,8 +22,7 @@ public class DeleteAnalysis {
 
     public Boolean exec(String analysisId){
         // Analysis 조회
-        Analysis analysis = analysisRepository.findById(analysisId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
+        Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
 
         // redis 삭제
         Set<String> keys = redisTemplate.keys(interviewPrefix + analysis.getSessionId() + "*");

@@ -36,8 +36,8 @@ public class Analysis {
     @Column(name = "feedback", length = 255, nullable = false)
     private String feedback;
 
-    @Column(name = "analysis_group", length = 36, nullable = false)
-    private String analysisGroup;
+    @Column(name = "analysis_role", length = 36, nullable = false)
+    private String analysisRole;
 
     @Column(name = "duration", nullable = false)
     private int duration;

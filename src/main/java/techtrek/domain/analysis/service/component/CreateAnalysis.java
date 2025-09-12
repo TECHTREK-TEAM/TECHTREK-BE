@@ -18,9 +18,7 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.global.openAI.chat.service.component.Chat;
-import techtrek.global.openAI.chat.service.common.Prompt;
-import techtrek.global.openAI.chat.service.common.JsonRead;
+import techtrek.global.openAI.chat.service.common.Gpt;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -29,6 +27,8 @@ import java.util.stream.Stream;
 @Component
 @RequiredArgsConstructor
 public class CreateAnalysis {
+    private static final String PROMPT_PATH_FEEDBACK = "prompts/feedback_prompt.txt";
+
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
@@ -36,9 +36,7 @@ public class CreateAnalysis {
     private final LowestSimilarity lowestSimilarity;
     private final NumberCountProvider numberCountProvider;
     private final CompanyCSProvider companyCSProvider;
-    private final Prompt prompt;
-    private final Chat chatService;
-    private final JsonRead jsonRead;
+    private final Gpt createGpt;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -61,14 +59,12 @@ public class CreateAnalysis {
         String tailKey = sessionKey + tailPrefix;
 
         // TODO: 사용자 조회, 유효성 확인
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // 기업불러오기
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
         InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
@@ -82,14 +78,15 @@ public class CreateAnalysis {
         // 유사도 낮은 필드 조회
         AnalysisParserResponse.LowestSimilarity low = lowestSimilarity.exec(sessionKey);
 
-        // 피드백
+        // 기업별 중점 CS
         String focusCS = companyCSProvider.exec(enterprise.getName());
-        String template = prompt.exec("prompts/feedback_prompt.txt");
-        String format = String.format(template, enterprise.getName(), focusCS, low.getQuestion(), low.getAnswer(),low.getSimilarity());
-        String chatResponse = chatService.exec(format);
 
-        // JSON → DTO
-        AnalysisParserResponse.feedbackResult feedbackResult= jsonRead.exec(chatResponse, AnalysisParserResponse.feedbackResult.class);
+        // gpt 피드백 생성
+        AnalysisParserResponse.feedbackResult result = createGpt.exec(
+                PROMPT_PATH_FEEDBACK,
+                new Object[]{enterprise.getName(), focusCS,low.getQuestion(), low.getAnswer(),low.getSimilarity() },
+                AnalysisParserResponse.feedbackResult.class
+        );
 
         // 분석 테이블 생성
         Analysis analysis = Analysis.builder()
@@ -97,10 +94,10 @@ public class CreateAnalysis {
                 .sessionId(sessionId)
                 .isPass(isPass)
                 .score(score)
-                .keyword(feedbackResult.getKeyword())
+                .keyword(result.getKeyword())
                 .keywordNumber(low.getQuestionNumber())
-                .feedback(feedbackResult.getFeedback())
-                .analysisGroup(user.getUserGroup())
+                .feedback(result.getFeedback())
+                .analysisRole(user.getRole())
                 .duration(duration)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .user(user)
@@ -113,9 +110,9 @@ public class CreateAnalysis {
                 .analysisId(analysis.getId())
                 .isPass(isPass)
                 .score(score)
-                .feedback(feedbackResult.getFeedback())
+                .feedback(result.getFeedback())
                 .duration(duration)
-                .keyword(feedbackResult.getKeyword())
+                .keyword(result.getKeyword())
                 .build();
     }
 

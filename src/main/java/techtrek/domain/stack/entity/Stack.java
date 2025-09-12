@@ -8,9 +8,10 @@ import techtrek.domain.user.entity.User;
 
 @Entity
 @Getter
+@Setter
 @Builder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name="stack")
 public class Stack {
     @Id

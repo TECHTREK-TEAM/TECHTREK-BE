@@ -1,4 +1,4 @@
-package techtrek.global.openAI.Embedding.service.component;
+package techtrek.global.openAI.Embedding.service.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

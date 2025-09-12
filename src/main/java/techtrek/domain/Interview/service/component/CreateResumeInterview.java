@@ -6,14 +6,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
+import techtrek.domain.Interview.service.common.CompanyCSProvider;
 import techtrek.domain.Interview.service.common.NumberCountProvider;
-import techtrek.domain.Interview.service.common.ResumeQuestion;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.openAI.chat.service.common.Gpt;
 
 import java.util.UUID;
 
@@ -21,11 +22,14 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class CreateResumeInterview {
+    private static final String PROMPT_PATH_RESUME = "prompts/resume_question_prompt.txt";
+
     private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
-    private final ResumeQuestion resumeQuestion;
+    private final CompanyCSProvider companyCSProvider;
     private final NumberCountProvider numberCountProvider;
+    private final Gpt gpt;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -40,8 +44,7 @@ public class CreateResumeInterview {
         String resumeKey = sessionKey + resumePrefix+ fieldId;
 
         // TODO: 사용자 조회
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 세션 유효성 확인
         if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
@@ -52,24 +55,26 @@ public class CreateResumeInterview {
 
         // enterpriseName 조회 및 유효성 검증
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
-        // 이력서 질문 생성
-        InterviewParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);
+        // 기업뱔 중요 CS
+        String focusCS = companyCSProvider.exec(enterprise.getName());
+
+        // gpt 질문 생성
+        InterviewParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_RESUME, new Object[]{resume,enterprise.getName(), focusCS}, InterviewParserResponse.ChatResult.class);
 
         // questionNumber, count 계산
         InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
-        redisTemplate.opsForHash().put(resumeKey, "question",  questionResult.getQuestion());
-        redisTemplate.opsForHash().put(resumeKey, "correctAnswer", questionResult.getCorrectAnswer());
+        redisTemplate.opsForHash().put(resumeKey, "question",  result.getQuestion());
+        redisTemplate.opsForHash().put(resumeKey, "correctAnswer", result.getCorrectAnswer());
         redisTemplate.opsForHash().put(resumeKey, "questionNumber", numberCount.getQuestionNumber());
         redisTemplate.opsForHash().put(resumeKey, "currentCount", numberCount.getCurrentCount());
 
         return InterviewResponse.Question.builder()
                 .fieldId(fieldId)
-                .question(questionResult.getQuestion())
+                .question(result.getQuestion())
                 .questionNumber(numberCount.getQuestionNumber())
                 .build();
     }

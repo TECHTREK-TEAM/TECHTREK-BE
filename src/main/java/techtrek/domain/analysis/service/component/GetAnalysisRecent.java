@@ -29,12 +29,10 @@ public class GetAnalysisRecent {
     // 최근 세션 불러오기
     public AnalysisResponse.Detail exec(String enterpriseName){
         // TODO: 사용자 조회
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 기업 조회
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 최신 분석 데이터 조회
         Analysis latestAnalysis = analysisRepository.findTopByUserAndEnterpriseOrderByCreatedAtDesc(
@@ -51,7 +49,7 @@ public class GetAnalysisRecent {
         }
 
         // DB에서 분석 정보 계산
-        AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(user, enterprise, latestAnalysis );
+        AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(enterprise, latestAnalysis );
 
         // redis에서 면접 내용 조회
         List<AnalysisParserResponse.RedisAnalysisResult> RedisResult = redisAnalysisCalc.exec(DBResult.getSessionId());

@@ -36,9 +36,4 @@ public class InterviewQuestion {
         this.category = Category.valueOf(category);
     }
 
-
-//    public BasicQuestion(String question, Category category) {
-//        this.question = question;
-//        this.category = category;
-//    }
 }
