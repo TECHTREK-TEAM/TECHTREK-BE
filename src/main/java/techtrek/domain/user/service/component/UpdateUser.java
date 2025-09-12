@@ -12,6 +12,7 @@ import techtrek.global.common.exception.CustomException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class UpdateUser {
             user.getStackList().clear();
             for (UserRequest.Info.Stack stackDto : newStacks) {
                 Stack stack = new Stack();
+                stack.setId(UUID.randomUUID().toString());
                 stack.setStackName(stackDto.getStackName());
                 stack.setUser(user);
                 user.getStackList().add(stack);
@@ -47,6 +49,8 @@ public class UpdateUser {
                     .build();
             stackDTOs.add(dto);
         }
+
+        userRepository.save(user);
 
         // dto 반환
         return UserResponse.Info.builder()

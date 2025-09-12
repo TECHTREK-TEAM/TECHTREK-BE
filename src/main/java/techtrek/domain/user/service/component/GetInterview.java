@@ -27,24 +27,24 @@ public class GetInterview {
         Pageable one = PageRequest.of(0, 1);
         Analysis highest = analysisRepository.findTopByUserOrderByScoreDesc(user.getId(), one)
                 .stream().findFirst().orElse(null);
-
-        // 최근 Analysis
         Analysis recent = analysisRepository.findTopByUserOrderByCreatedAtDesc(user.getId(), one)
                 .stream().findFirst().orElse(null);
 
         return UserResponse.Interview.builder()
-                .highestScore(UserResponse.Interview.InterviewData.builder()
+                .highestScore(highest != null ? UserResponse.Interview.InterviewData.builder()
                         .isPass(highest.isPass())
                         .enterpriseName(highest.getEnterprise().getName())
                         .score(highest.getScore())
                         .analysisRole(highest.getAnalysisRole())
-                        .build())
-                .recentInterview(UserResponse.Interview.InterviewData.builder()
+                        .build()
+                        : null) // 없으면 null
+                .recentInterview(recent != null ? UserResponse.Interview.InterviewData.builder()
                         .isPass(recent.isPass())
                         .enterpriseName(recent.getEnterprise().getName())
                         .score(recent.getScore())
                         .analysisRole(recent.getAnalysisRole())
-                        .build())
+                        .build()
+                        : null)
                 .resume(UserResponse.Interview.Resume.builder()
                         .status(user.getResume() != null)
                         .resumeName(user.getResumeName())
