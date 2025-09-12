@@ -20,7 +20,7 @@ public class BasicQuestion {
 
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final CompanyCSProvider companyCSProvider;
-    private final Gpt createGpt;
+    private final Gpt gpt;
 
     public InterviewParserResponse.ChatResult exec(Enterprise enterprise){
         // true GPT, false DB
@@ -37,7 +37,7 @@ public class BasicQuestion {
             String focusCS = companyCSProvider.exec(enterprise.getName());
 
             // gpt 질문 생성
-            InterviewParserResponse.ChatResult result = createGpt.exec(
+            InterviewParserResponse.ChatResult result = gpt.exec(
                     PROMPT_PATH_BASIC,
                     new Object[]{enterprise.getName(), focusCS},
                     InterviewParserResponse.ChatResult.class

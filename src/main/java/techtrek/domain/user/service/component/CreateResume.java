@@ -26,7 +26,7 @@ public class CreateResume {
 
     private final UserRepository userRepository;
     private final StackRepository stackRepository;
-    private final Gpt createGpt;
+    private final Gpt gpt;
 
     // 이력서 추출
     public UserResponse.Resume exec(MultipartFile file) {
@@ -46,11 +46,7 @@ public class CreateResume {
         }
 
         // gpt 이략서 요약
-        UserResponse.Resume result = createGpt.exec(
-                PROMPT_PATH_CREATE_RESUME,
-                new Object[]{extractedText},
-                UserResponse.Resume.class
-        );
+        UserResponse.Resume result = gpt.exec(PROMPT_PATH_CREATE_RESUME, new Object[]{extractedText}, UserResponse.Resume.class);
 
         // 이력서, 스택 등 값 저장
         if (user.getRole() != null) user.setRole(result.getRole());
