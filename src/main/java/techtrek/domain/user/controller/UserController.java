@@ -41,13 +41,13 @@ public class UserController {
     public ResponseEntity<CommonResponse<UserResponse.CompanyList>> getCompany(){
         return ApiResponse.onSuccess(userService.getCompany());
     }
-//
-//    // 합격률 조회
-//    @GetMapping("/pass")
-//    @Operation(summary = "합격률 조회", description = "사용자의 전체 면접 합격률을 조회합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.Pass>> getPass(){
-//        return ApiResponse.onSuccess(userService.getPass());
-//    }
+
+    // 합격률 조회
+    @GetMapping("/pass")
+    @Operation(summary = "합격률 조회", description = "사용자의 전체 면접 합격률을 조회합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.Pass>> getPass(){
+        return ApiResponse.onSuccess(userService.getPass());
+    }
 //
 //    // 일치율 조회
 //    @GetMapping("/score")

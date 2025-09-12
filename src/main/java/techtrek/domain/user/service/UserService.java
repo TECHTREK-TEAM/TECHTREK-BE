@@ -5,11 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
-import techtrek.domain.user.service.component.CreateResume;
-import techtrek.domain.user.service.component.GetCompany;
-import techtrek.domain.user.service.component.GetUser;
-import techtrek.domain.user.service.component.UpdateUser;
-//import techtrek.domain.user.service.bean.*;
+import techtrek.domain.user.service.component.*;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +13,7 @@ public class UserService {
     private final GetUser getUser;
     private final UpdateUser updateUser;
     private final GetCompany getCompany;
-//    private final GetPassBean getPassBean;
+    private final GetPass getPass;
 //    private final GetScoreBean getScoreBean;
 //    private final GetInterviewBean getInterviewBean;
     private final CreateResume createResume;
@@ -36,11 +32,11 @@ public class UserService {
     public UserResponse.CompanyList getCompany(){
         return getCompany.exec();
     }
-//
-//    // 합격률 조회
-//    public UserResponse.Pass getPass(){
-//        return getPassBean.exec();
-//    }
+
+    // 합격률 조회
+    public UserResponse.Pass getPass(){
+        return getPass.exec();
+    }
 //
 //    // 일치율 조회
 //    public UserResponse.Score getScore(){

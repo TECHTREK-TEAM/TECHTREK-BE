@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.user.entity.User;
-//import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +35,14 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
         ORDER BY COUNT(a) DESC
     """)
     List<TopCompany> findTopEnterprisesByUser(User user, Pageable pageable);
+
+    // 전체 면접 수
+    @Query("SELECT COUNT(s) FROM Analysis s WHERE s.user.id = :userid")
+    int countAllAnalysis(String userid);
+
+    // 합격 면접 수
+    @Query("SELECT COUNT(a) FROM Analysis a WHERE a.user.id = :userId AND a.isPass = true")
+    int countPassedAnalysis(String userId);
 
 
 //    // 점수가 가장 높은 면접
