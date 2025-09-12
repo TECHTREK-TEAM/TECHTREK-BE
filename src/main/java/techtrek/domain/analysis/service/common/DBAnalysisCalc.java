@@ -6,7 +6,6 @@ import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.enterprise.entity.Enterprise;
-import techtrek.domain.user.entity.User;
 
 import java.util.List;
 
@@ -16,10 +15,8 @@ public class DBAnalysisCalc {
     private final AnalysisRepository analysisRepository;
 
     // DB 분석 계산
-    public AnalysisParserResponse.DBAnalysisResult exec(User user, Enterprise enterprise,Analysis selectAnalysis){
-        // user 기준 평균
-        List<Analysis> allAnalyses = analysisRepository.findAllByUserAndEnterprise(user,enterprise);
-        // 전체 사용자 기준 평균
+    public AnalysisParserResponse.DBAnalysisResult exec(Enterprise enterprise,Analysis selectAnalysis){
+        // 특정 기업에 속한 모든 분석 결과 조회
         List<Analysis> allEnterpriseAnalyses = analysisRepository.findAllByEnterprise(enterprise);
 
         // 상위 퍼센트 계산 (전체 가준)
@@ -33,7 +30,7 @@ public class DBAnalysisCalc {
         topScore = Math.round(topScore * 10) / 10.0;
 
         // 소요시간 평균 계산 (user 기준)
-        double avgDuration = allAnalyses.stream()
+        double avgDuration = allEnterpriseAnalyses.stream()
                 .mapToInt(Analysis::getDuration)
                 .average()
                 .orElse(0.0);

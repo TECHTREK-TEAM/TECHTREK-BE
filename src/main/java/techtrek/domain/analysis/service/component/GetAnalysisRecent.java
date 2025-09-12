@@ -49,7 +49,7 @@ public class GetAnalysisRecent {
         }
 
         // DB에서 분석 정보 계산
-        AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(user, enterprise, latestAnalysis );
+        AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(enterprise, latestAnalysis );
 
         // redis에서 면접 내용 조회
         List<AnalysisParserResponse.RedisAnalysisResult> RedisResult = redisAnalysisCalc.exec(DBResult.getSessionId());

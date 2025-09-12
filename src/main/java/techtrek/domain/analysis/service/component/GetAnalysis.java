@@ -32,7 +32,7 @@ public class GetAnalysis {
         Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
 
         // DB에서 분석 정보 계산
-        AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(user, analysis.getEnterprise(), analysis );
+        AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(analysis.getEnterprise(), analysis );
 
         // redis에서 면접 내용 조회
         List<AnalysisParserResponse.RedisAnalysisResult> RedisResult = redisAnalysisCalc.exec(DBResult.getSessionId());

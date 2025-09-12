@@ -21,7 +21,7 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
     Optional<Analysis> findTopByUserAndEnterpriseOrderByCreatedAtDesc(User user, Enterprise enterprise);
 
     // 특정 사용자와 특정 기업의 모든 분석 결과 조회
-    List<Analysis> findAllByUserAndEnterprise(User user, Enterprise enterprise);
+    //List<Analysis> findAllByUserAndEnterprise(User user, Enterprise enterprise);
 
     // 특정 Enterprise에 속한 모든 분석 결과 조회
     List<Analysis> findAllByEnterprise(Enterprise enterprise);
