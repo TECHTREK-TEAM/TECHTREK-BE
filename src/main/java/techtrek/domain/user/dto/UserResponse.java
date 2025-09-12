@@ -95,50 +95,50 @@ public class UserResponse {
     }
 
     // 면접
-//    @Getter
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @Schema(description = "면접 정보 응답")
-//    public static class Interview {
-//        @Schema(description = "가장 높은 점수를 받은 면접 정보")
-//        private InterviewData highestScore;
-//
-//        @Schema(description = "최근에 본 면접 정보")
-//        private InterviewData recentInterview;
-//
-//        @Schema(description = "이력서 업로드 여부")
-//        private Resume resume;
-//
-//        @Getter
-//        @Builder
-//        @NoArgsConstructor
-//        @AllArgsConstructor
-//        @Schema(description = "면접 데이터")
-//        public static class InterviewData {
-//            @Schema(description = "면접 합격 여부", example = "true")
-//            private boolean status;
-//
-//            @Schema(description = "기업 이름", example = "네이버")
-//            private EnterpriseName enterpriseName;
-//
-//            @Schema(description = "면접 일치 점수", example = "88.2")
-//            private Double resultScore;
-//
-//            @Schema(description = "분석된 직군 정보", example = "Backend Developer")
-//            private String analysisGroup;
-//        }
-//
-//        @Getter
-//        @Builder
-//        @NoArgsConstructor
-//        @AllArgsConstructor
-//        @Schema(description = "이력서 상태")
-//        public static class Resume {
-//            @Schema(description = "이력서 존재 여부", example = "true")
-//            private boolean status;
-//        }
-//    }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "면접 정보 응답")
+    public static class Interview {
+        @Schema(description = "가장 높은 점수를 받은 면접 정보")
+        private InterviewData highestScore;
+
+        @Schema(description = "최근에 본 면접 정보")
+        private InterviewData recentInterview;
+
+        @Schema(description = "이력서 업로드 여부")
+        private Resume resume;
+
+        @Getter
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @Schema(description = "면접 데이터")
+        public static class InterviewData {
+            @Schema(description = "면접 합격 여부", example = "true")
+            private boolean isPass;
+
+            @Schema(description = "기업 이름", example = "네이버")
+            private String enterpriseName;
+
+            @Schema(description = "면접 일치 점수", example = "88.2")
+            private Double score;
+
+            @Schema(description = "분석된 직군 정보", example = "Backend Developer")
+            private String analysisRole;
+        }
+
+        @Getter
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @Schema(description = "이력서 상태")
+        public static class Resume {
+            @Schema(description = "이력서 존재 여부", example = "true")
+            private boolean status;
+        }
+    }
 
     // 이력서
     @Getter

@@ -55,14 +55,14 @@ public class UserController {
     public ResponseEntity<CommonResponse<UserResponse.Score>> getScore(){
         return ApiResponse.onSuccess(userService.getScore());
     }
-//
-//    // 면접 정보 조회
-//    @GetMapping("/interviews")
-//    @Operation(summary = "면접 정보 조회", description = "가장 높은 점수를 받은 면접과 가장 최근에 본 면접 정보를 조회합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.Interview>> getInterview(){
-//        return ApiResponse.onSuccess(userService.getInterview());
-//    }
-//
+
+    // 면접 정보 조회
+    @GetMapping("/interviews")
+    @Operation(summary = "면접 정보 조회", description = "가장 높은 점수를 받은 면접과 가장 최근에 본 면접 정보를 조회합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.Interview>> getInterview(){
+        return ApiResponse.onSuccess(userService.getInterview());
+    }
+
     // 이력서 셍성
     @PostMapping(value ="/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "이력서 생성", description = "이력서 PDF 파일을 업로드하여 정보를 생성합니다.")

@@ -9,7 +9,6 @@ import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
-//import techtrek.domain.user.service.small.CreateScoreDTO;
 import techtrek.domain.user.service.small.GetUserDAO;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;

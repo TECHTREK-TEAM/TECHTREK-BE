@@ -59,6 +59,24 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
     """)
     Double findAvgScoreByUserAndMonth(String userId, int year, int month);
 
+    // 점수 최고 분석
+    @Query("""
+        SELECT a 
+        FROM Analysis a 
+        WHERE a.user.id = :userId 
+        ORDER BY a.score DESC
+    """)
+    List<Analysis> findTopByUserOrderByScoreDesc(String userId, Pageable pageable);
+
+    // 최근 분석
+    @Query("""
+        SELECT a 
+        FROM Analysis a 
+        WHERE a.user.id = :userId 
+        ORDER BY a.createdAt DESC
+    """)
+    List<Analysis> findTopByUserOrderByCreatedAtDesc( String userId, Pageable pageable);
+
 
 
 //    // 점수가 가장 높은 면접

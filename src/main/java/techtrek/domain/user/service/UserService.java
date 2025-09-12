@@ -15,7 +15,7 @@ public class UserService {
     private final GetCompany getCompany;
     private final GetPass getPass;
     private final GetScore getScore;
-//    private final GetInterviewBean getInterviewBean;
+    private final GetInterview getInterviewBean;
     private final CreateResume createResume;
 
     // 사용자 정보 조회
@@ -42,12 +42,12 @@ public class UserService {
     public UserResponse.Score getScore(){
         return getScore.exec();
     }
-//
-//    // 면접 정보 조회
-//    public UserResponse.Interview getInterview(){
-//        return getInterviewBean.exec();
-//    }
-//
+
+    // 면접 정보 조회
+    public UserResponse.Interview getInterview(){
+        return getInterviewBean.exec();
+    }
+
     // 이력서 생성
     public UserResponse.Resume createResume(MultipartFile file){
         return createResume.exec(file);
