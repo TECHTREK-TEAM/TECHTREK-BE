@@ -1,33 +1,33 @@
-//package techtrek.domain.user.controller;
-//
-//import io.swagger.v3.oas.annotations.Operation;
-//import io.swagger.v3.oas.annotations.tags.Tag;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.MediaType;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.multipart.MultipartFile;
-//import techtrek.domain.user.dto.UserRequest;
-//import techtrek.domain.user.dto.UserResponse;
-//import techtrek.domain.user.service.UserService;
-//import techtrek.global.common.response.ApiResponse;
-//import techtrek.global.common.response.CommonResponse;
-//
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("/api/users")
-//@Tag(name = "사용자 API", description = "사용자 관련 API")
-//public class UserController {
-//
-//    private final UserService userService;
-//
-//    // 사용자 정보 조회
-//    @GetMapping("/info")
-//    @Operation(summary = "사용자 정보 조회", description = "현재 로그인한 사용자의 기본 정보를 조회합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.Info>> getUser(){
-//        return ApiResponse.onSuccess(userService.getUser());
-//    }
-//
+package techtrek.domain.user.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import techtrek.domain.user.dto.UserRequest;
+import techtrek.domain.user.dto.UserResponse;
+import techtrek.domain.user.service.UserService;
+import techtrek.global.common.response.ApiResponse;
+import techtrek.global.common.response.CommonResponse;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/users")
+@Tag(name = "사용자 API", description = "사용자 관련 API")
+public class UserController {
+
+    private final UserService userService;
+
+    // 사용자 정보 조회
+    @GetMapping("/info")
+    @Operation(summary = "사용자 정보 조회", description = "현재 로그인한 사용자의 기본 정보를 조회합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.Info>> getUser(){
+        return ApiResponse.onSuccess(userService.getUser());
+    }
+
 //    // 사용자 정보 수정
 //    @PatchMapping("/info")
 //    @Operation(summary = "사용자 정보 수정", description = "사용자의 프로필 정보를 수정합니다.")
@@ -69,5 +69,5 @@
 //    public ResponseEntity<CommonResponse<UserResponse.Resume>> createResume(@RequestPart("file") MultipartFile file){
 //        return ApiResponse.onSuccess(userService.createResume(file));
 //    }
-//
-//}
+
+}

@@ -1,28 +1,29 @@
-//package techtrek.domain.user.service;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.multipart.MultipartFile;
-//import techtrek.domain.user.dto.UserRequest;
-//import techtrek.domain.user.dto.UserResponse;
+package techtrek.domain.user.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import techtrek.domain.user.dto.UserRequest;
+import techtrek.domain.user.dto.UserResponse;
+import techtrek.domain.user.service.component.GetUser;
 //import techtrek.domain.user.service.bean.*;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class UserService {
-//    private final GetUserBean getUserBean;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final GetUser getUser;
 //    private final UpdateUserBean updateUserBean;
 //    //private final GetCompanyBean getCompanyBean;
 //    private final GetPassBean getPassBean;
 //    private final GetScoreBean getScoreBean;
 //    private final GetInterviewBean getInterviewBean;
 //    private final CreateResumeBean createResumeBean;
-//
-//    // 사용자 정보 조회
-//    public UserResponse.Info getUser(){
-//        return getUserBean.exec();
-//    }
-//
+
+    // 사용자 정보 조회
+    public UserResponse.Info getUser(){
+        return getUser.exec();
+    }
+
 //    // 사용자 정보 수정
 //    public UserResponse.Info updateUser(UserRequest.Info request){
 //        return updateUserBean.exec(request.getName(), request.getUserGroup(), request.getSeniority(), request.getStacks());
@@ -50,4 +51,4 @@
 //
 //    // 이력서 생성
 //    public UserResponse.Resume createResume(MultipartFile file){ return createResumeBean.exec(file); }
-//}
+}

@@ -1,4 +1,4 @@
-//package techtrek.domain.user.service.bean;
+//package techtrek.domain.user.service.component;
 //
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Component;
