@@ -34,13 +34,13 @@ public class UserController {
     public ResponseEntity<CommonResponse<UserResponse.Info>> updateUser(@RequestBody UserRequest.Info request){
         return ApiResponse.onSuccess(userService.updateUser(request));
     }
-//
-//    // 관심기업 조회
-//    @GetMapping("/companies")
-//    @Operation(summary = "관심 기업 조회", description = "가장 많이 면접을 본 상위 3개 기업을 조회합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.CompanyList>> getCompany(){
-//        return ApiResponse.onSuccess(userService.getCompany());
-//    }
+
+    // 관심기업 조회
+    @GetMapping("/companies")
+    @Operation(summary = "관심 기업 조회", description = "가장 많이 면접을 본 상위 3개 기업을 조회합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.CompanyList>> getCompany(){
+        return ApiResponse.onSuccess(userService.getCompany());
+    }
 //
 //    // 합격률 조회
 //    @GetMapping("/pass")

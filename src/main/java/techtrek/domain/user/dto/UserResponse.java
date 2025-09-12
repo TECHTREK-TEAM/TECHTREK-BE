@@ -3,7 +3,6 @@ package techtrek.domain.user.dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-//import techtrek.domain.interviewQuestion.entity.status.EnterpriseName;
 
 import java.util.List;
 
@@ -38,29 +37,29 @@ public class UserResponse {
         }
     }
 
-//    // 관심 기업
-//    @Getter
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @Schema(description = "관심 기업 리스트 응답")
-//    public static class CompanyList {
-//        @Schema(description = "관심 기업 목록")
-//        private List<Company> companies;
-//
-//        @Getter
-//        @Builder
-//        @NoArgsConstructor
-//        @AllArgsConstructor
-//        @Schema(description = "관심 기업 정보")
-//        public static class Company {
-//            @Schema(description = "기업 이름", example = "카카오")
-//            private EnterpriseName companyName;
-//
-//            @Schema(description = "해당 기업의 면접 일치율(%)", example = "87.5")
-//            private Double companyPercent;
-//        }
-//    }
+    // 관심 기업
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "관심 기업 리스트 응답")
+    public static class CompanyList {
+        @Schema(description = "관심 기업 목록")
+        private List<Company> companies;
+
+        @Getter
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @Schema(description = "관심 기업 정보")
+        public static class Company {
+            @Schema(description = "기업 이름", example = "카카오")
+            private String companyName;
+
+            @Schema(description = "해당 기업의 면접 일치율(%) 평균", example = "87.5")
+            private Double avgScore;
+        }
+    }
 
 
     // 합격률

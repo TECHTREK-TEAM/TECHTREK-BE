@@ -1,5 +1,6 @@
 package techtrek.domain.analysis.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,18 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
 
     // 특정 Enterprise에 속한 모든 분석 결과 조회
     List<Analysis> findAllByEnterprise(Enterprise enterprise);
+
+    // 관심 기업 3
+    @Query("""
+        SELECT a.enterprise.name AS name,
+               AVG(a.score) AS avgScore
+        FROM Analysis a
+        WHERE a.user = :user
+        GROUP BY a.enterprise
+        ORDER BY COUNT(a) DESC
+    """)
+    List<TopCompany> findTopEnterprisesByUser(User user, Pageable pageable);
+
 
 //    // 점수가 가장 높은 면접
 //    Optional<Analysis> findTopBySessionInfoIdInOrderByResultScoreDesc(List<String> sessionIds);
