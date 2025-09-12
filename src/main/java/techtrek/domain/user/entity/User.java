@@ -32,6 +32,9 @@ public class User {
     @Column(name="resume", length = 255)
     private String resume;
 
+    @Column(name="resume_name", length = 255)
+    private String resumeName;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

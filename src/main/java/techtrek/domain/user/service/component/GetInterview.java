@@ -47,6 +47,7 @@ public class GetInterview {
                         .build())
                 .resume(UserResponse.Interview.Resume.builder()
                         .status(user.getResume() != null)
+                        .resumeName(user.getResumeName())
                         .build())
                 .build();
     }

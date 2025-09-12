@@ -38,6 +38,7 @@ public class CreateResume {
 
         // 이력서 추출
         String extractedText;
+        String fileName = file.getOriginalFilename();
         try (PDDocument document = PDDocument.load(file.getInputStream())) {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             extractedText = pdfStripper.getText(document);
@@ -52,6 +53,7 @@ public class CreateResume {
         if (user.getRole() != null) user.setRole(result.getRole());
         if (user.getSeniority() != null) user.setSeniority(result.getSeniority());
         if (user.getResume() != null) user.setResume(result.getResume());
+        if (user.getResumeName() != null) user.setResumeName(fileName);
         userRepository.save(user);
 
         // 기존 스택 삭제

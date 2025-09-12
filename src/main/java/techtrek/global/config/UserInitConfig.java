@@ -31,6 +31,7 @@ public class UserInitConfig {
                 .role("Frontend Developer")
                 .seniority("지망생")
                 .resume("Java와 Spring Boot...")
+                .resumeName("예시 이력서.pdf")
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
 

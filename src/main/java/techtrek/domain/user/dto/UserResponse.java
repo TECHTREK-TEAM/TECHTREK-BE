@@ -137,6 +137,9 @@ public class UserResponse {
         public static class Resume {
             @Schema(description = "이력서 존재 여부", example = "true")
             private boolean status;
+
+            @Schema(description = "이력서 이름", example = "테크트랙 이력서.pdf")
+            private String resumeName;
         }
     }
 
