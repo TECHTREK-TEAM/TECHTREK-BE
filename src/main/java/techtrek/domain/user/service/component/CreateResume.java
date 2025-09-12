@@ -54,13 +54,18 @@ public class CreateResume {
         if (user.getResume() != null) user.setResume(result.getResume());
         userRepository.save(user);
 
+        // 기존 스택 삭제
+        user.getStackList().clear();
+
         // 새로운 스택 리스트 생성
         List<Stack> newStacks = result.getStacks().stream()
-                .map(dto -> Stack.builder()
-                        .id(UUID.randomUUID().toString())
-                        .stackName(dto.getStackName())
-                        .user(user)
-                        .build())
+                .map(dto -> {
+                    Stack stack = new Stack();
+                    stack.setId(UUID.randomUUID().toString());
+                    stack.setStackName(dto.getStackName());
+                    stack.setUser(user);
+                    return stack;
+                })
                 .toList();
         stackRepository.saveAll(newStacks);
 
