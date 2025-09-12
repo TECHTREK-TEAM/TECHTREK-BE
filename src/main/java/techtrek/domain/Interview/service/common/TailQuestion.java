@@ -11,13 +11,15 @@ import techtrek.global.openAI.chat.service.common.Prompt;
 @Component
 @RequiredArgsConstructor
 public class TailQuestion {
+    private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
+
     private final Prompt prompt;
     private final Chat chatService;
     private final JsonRead jsonRead;
 
     public InterviewParserResponse.ChatResult exec(String question, String answer){
         // 프롬프트 생성, GPT gpt로 질문 생성
-        String template = prompt.exec("prompts/tail_question_prompt.txt");
+        String template = prompt.exec(PROMPT_PATH_TAIL);
         String format = String.format(template, question, answer);
         String chatResponse = chatService.exec(format);
 

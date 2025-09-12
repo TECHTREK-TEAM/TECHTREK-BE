@@ -29,6 +29,8 @@ import java.util.stream.Stream;
 @Component
 @RequiredArgsConstructor
 public class CreateAnalysis {
+    private static final String PROMPT_PATH_FEEDBACK = "prompts/feedback_prompt.txt";
+
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
@@ -82,7 +84,7 @@ public class CreateAnalysis {
 
         // 피드백
         String focusCS = companyCSProvider.exec(enterprise.getName());
-        String template = prompt.exec("prompts/feedback_prompt.txt");
+        String template = prompt.exec(PROMPT_PATH_FEEDBACK);
         String format = String.format(template, enterprise.getName(), focusCS, low.getQuestion(), low.getAnswer(),low.getSimilarity());
         String chatResponse = chatService.exec(format);
 

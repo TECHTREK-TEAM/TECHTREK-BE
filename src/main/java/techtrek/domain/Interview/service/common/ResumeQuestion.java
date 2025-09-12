@@ -12,6 +12,8 @@ import techtrek.global.openAI.chat.service.common.Prompt;
 @Component
 @RequiredArgsConstructor
 public class ResumeQuestion {
+    private static final String PROMPT_PATH_RESUME = "prompts/resume_question_prompt.txt";
+
     private final CompanyCSProvider companyCSProvider;
     private final Prompt prompt;
     private final Chat chatService;
@@ -21,7 +23,7 @@ public class ResumeQuestion {
         // 프롬프트 생성, GPT gpt로 질문 생성
         String focusCS = companyCSProvider.exec(enterprise.getName());
 
-        String template = prompt.exec("prompts/resume_question_prompt.txt");
+        String template = prompt.exec(PROMPT_PATH_RESUME);
         String format = String.format(template, resume, enterprise.getName(), focusCS);
         String chatResponse = chatService.exec(format);
 

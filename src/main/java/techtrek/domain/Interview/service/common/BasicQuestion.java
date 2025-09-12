@@ -18,6 +18,8 @@ import java.util.Random;
 @Component
 @RequiredArgsConstructor
 public class BasicQuestion {
+    private static final String PROMPT_PATH_BASIC = "prompts/basic_question_prompt.txt";
+
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final CompanyCSProvider companyCSProvider;
     private final Prompt prompt;
@@ -38,7 +40,7 @@ public class BasicQuestion {
             // 프롬프트, GPT gpt로 질문 생성
             String focusCS = companyCSProvider.exec(enterprise.getName());
 
-            String template = prompt.exec("prompts/basic_question_prompt.txt");
+            String template = prompt.exec(PROMPT_PATH_BASIC);
             String format = String.format(template, enterprise.getName(), focusCS);
             String chatResponse = chatService.exec(format);
 

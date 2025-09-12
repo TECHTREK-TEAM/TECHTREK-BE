@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CreateResume {
     //상수 정의
-    private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
+    private static final String PROMPT_PATH_CREATE_RESUME = "prompts/resume_summary_prompt.txt";
 
     private final UserRepository userRepository;
     private final StackRepository stackRepository;
@@ -50,7 +50,7 @@ public class CreateResume {
         }
 
         // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = Prompt.exec(PROMPT_PATH_RESUME);
+        String promptTemplate = Prompt.exec(PROMPT_PATH_CREATE_RESUME);
         String prompt = String.format(promptTemplate, extractedText);
         String gptResponse = chat.exec(prompt);
 
