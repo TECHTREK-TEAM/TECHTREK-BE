@@ -8,6 +8,7 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.user.entity.User;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,21 @@ public interface AnalysisRepository extends JpaRepository<Analysis, String> {
     // 합격 면접 수
     @Query("SELECT COUNT(a) FROM Analysis a WHERE a.user.id = :userId AND a.isPass = true")
     int countPassedAnalysis(String userId);
+
+    // 전체 일치율 평균
+    @Query("SELECT AVG(a.score) FROM Analysis a WHERE a.user.id = :userId")
+    Double findAvgScoreByUser(String userId);
+
+    // 이번 달, 저번 달 평균
+    @Query("""
+    SELECT AVG(a.score)
+    FROM Analysis a
+    WHERE a.user.id = :userId
+      AND YEAR(a.createdAt) = :year
+      AND MONTH(a.createdAt) = :month
+    """)
+    Double findAvgScoreByUserAndMonth(String userId, int year, int month);
+
 
 
 //    // 점수가 가장 높은 면접

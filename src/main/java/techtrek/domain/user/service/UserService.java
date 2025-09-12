@@ -14,7 +14,7 @@ public class UserService {
     private final UpdateUser updateUser;
     private final GetCompany getCompany;
     private final GetPass getPass;
-//    private final GetScoreBean getScoreBean;
+    private final GetScore getScore;
 //    private final GetInterviewBean getInterviewBean;
     private final CreateResume createResume;
 
@@ -37,11 +37,11 @@ public class UserService {
     public UserResponse.Pass getPass(){
         return getPass.exec();
     }
-//
-//    // 일치율 조회
-//    public UserResponse.Score getScore(){
-//        return getScoreBean.exec();
-//    }
+
+    // 일치율 조회
+    public UserResponse.Score getScore(){
+        return getScore.exec();
+    }
 //
 //    // 면접 정보 조회
 //    public UserResponse.Interview getInterview(){

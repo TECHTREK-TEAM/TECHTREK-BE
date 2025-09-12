@@ -88,7 +88,7 @@ public class UserResponse {
     @Schema(description = "면접 결과 기반의 평균 일치율 정보 응답")
     public static class Score {
         @Schema(description = "면접 결과 점수 평균", example = "75.4")
-        private Double averageResultScore;
+        private Double totalAvgScore;
 
         @Schema(description = "이전보다 향상된 점수 비율 (%)", example = "12.5")
         private Double enhancedPercent;

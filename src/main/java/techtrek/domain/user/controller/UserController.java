@@ -48,13 +48,13 @@ public class UserController {
     public ResponseEntity<CommonResponse<UserResponse.Pass>> getPass(){
         return ApiResponse.onSuccess(userService.getPass());
     }
-//
-//    // 일치율 조회
-//    @GetMapping("/score")
-//    @Operation(summary = "일치율 조회", description = "전체 면접 결과의 일치율 평균 점수를 조회합니다.")
-//    public ResponseEntity<CommonResponse<UserResponse.Score>> getScore(){
-//        return ApiResponse.onSuccess(userService.getScore());
-//    }
+
+    // 일치율 조회
+    @GetMapping("/score")
+    @Operation(summary = "일치율 조회", description = "전체 면접 결과의 일치율 평균 점수를 조회합니다.")
+    public ResponseEntity<CommonResponse<UserResponse.Score>> getScore(){
+        return ApiResponse.onSuccess(userService.getScore());
+    }
 //
 //    // 면접 정보 조회
 //    @GetMapping("/interviews")
