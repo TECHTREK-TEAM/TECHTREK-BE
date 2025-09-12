@@ -61,14 +61,12 @@ public class CreateAnalysis {
         String tailKey = sessionKey + tailPrefix;
 
         // TODO: 사용자 조회, 유효성 확인
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // 기업불러오기
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
         InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
@@ -100,7 +98,7 @@ public class CreateAnalysis {
                 .keyword(feedbackResult.getKeyword())
                 .keywordNumber(low.getQuestionNumber())
                 .feedback(feedbackResult.getFeedback())
-                .analysisGroup(user.getUserGroup())
+                .analysisRole(user.getRole())
                 .duration(duration)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .user(user)

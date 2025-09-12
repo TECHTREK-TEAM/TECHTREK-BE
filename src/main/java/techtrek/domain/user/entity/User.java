@@ -22,8 +22,8 @@ public class User {
     @Column(name="name", length = 36, nullable = false)
     private String name;
 
-    @Column(name="user_group", length = 36)
-    private String userGroup;
+    @Column(name="role", length = 36)
+    private String role;
 
     @Column(name="seniority", length = 36)
     private String seniority;
@@ -50,8 +50,8 @@ public class User {
         this.name = name;
     }
 
-    public void changeUserGroup(String userGroup) {
-        this.userGroup = userGroup;
+    public void changeRole(String role) {
+        this.role = role;
     }
 
     public void changeSeniority(String seniority) {

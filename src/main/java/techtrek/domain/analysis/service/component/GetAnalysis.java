@@ -26,12 +26,10 @@ public class GetAnalysis {
     // 선택한 세션 불러오기
     public AnalysisResponse.Detail exec(String analysisId){
         // TODO: 사용자 조회
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // Analysis 조회
-        Analysis analysis = analysisRepository.findById(analysisId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
+        Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
 
         // DB에서 분석 정보 계산
         AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(user, analysis.getEnterprise(), analysis );

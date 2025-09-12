@@ -31,8 +31,7 @@ public class BasicQuestion {
 
         if (!useGpt) {
             // 기본 질문 중 랜덤 1개 가져오기
-            InterviewQuestion interviewQuestion = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
+            InterviewQuestion interviewQuestion = interviewQuestionRepository.findRandomQuestionByEnterpriseId(enterprise.getId()).orElseThrow(() -> new CustomException(ErrorCode.BASIC_QUESTION_NOT_FOUND));
 
             return new InterviewParserResponse.ChatResult(interviewQuestion.getQuestion(), interviewQuestion.getCorrectAnswer());
         } else {

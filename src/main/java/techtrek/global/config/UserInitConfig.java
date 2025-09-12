@@ -28,7 +28,7 @@ public class UserInitConfig {
         User user = User.builder()
                 .id("1")
                 .name("홍길동")
-                .userGroup("Frontend Developer")
+                .role("Frontend Developer")
                 .seniority("지망생")
                 .resume("Java와 Spring Boot...")
                 .createdAt(LocalDateTime.now().withNano(0))

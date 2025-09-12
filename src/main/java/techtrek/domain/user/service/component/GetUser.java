@@ -17,10 +17,10 @@ import java.util.List;
 public class GetUser {
     private final UserRepository userRepository;
 
+    // 사용자 정보 조회
     public UserResponse.Info exec() {
         // TODO:사용자 조회
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 스택을 list형태로 불러오기
         List<UserResponse.Info.Stack> stackDTOs = new ArrayList<>();

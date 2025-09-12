@@ -29,12 +29,10 @@ public class GetAnalysisRecent {
     // 최근 세션 불러오기
     public AnalysisResponse.Detail exec(String enterpriseName){
         // TODO: 사용자 조회
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 기업 조회
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 최신 분석 데이터 조회
         Analysis latestAnalysis = analysisRepository.findTopByUserAndEnterpriseOrderByCreatedAtDesc(

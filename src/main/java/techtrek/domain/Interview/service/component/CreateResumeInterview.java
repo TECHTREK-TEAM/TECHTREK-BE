@@ -40,8 +40,7 @@ public class CreateResumeInterview {
         String resumeKey = sessionKey + resumePrefix+ fieldId;
 
         // TODO: 사용자 조회
-        User user = userRepository.findById("1")
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 세션 유효성 확인
         if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
@@ -52,8 +51,7 @@ public class CreateResumeInterview {
 
         // enterpriseName 조회 및 유효성 검증
         String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 이력서 질문 생성
         InterviewParserResponse.ChatResult questionResult = resumeQuestion.exec(resume,enterprise);

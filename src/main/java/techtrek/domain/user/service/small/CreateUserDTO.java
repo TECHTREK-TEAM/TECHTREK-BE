@@ -26,7 +26,7 @@ public class CreateUserDTO {
         // dto 생성
         return UserResponse.Info.builder()
                 .name(user.getName())
-                .userGroup(user.getUserGroup())
+                .role(user.getRole())
                 .seniority(user.getSeniority())
                 .stacks(stackDTOs)
                 .build();

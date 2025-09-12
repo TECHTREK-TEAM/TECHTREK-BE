@@ -41,8 +41,7 @@ public class CreateStartInterview {
         String basicKey = sessionKey + basicPrefix+ fieldId;
 
         // enterpriseName 유효성 검증
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 기본 질문 생성
         InterviewParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);

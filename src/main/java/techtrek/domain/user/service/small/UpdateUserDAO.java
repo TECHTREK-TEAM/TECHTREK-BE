@@ -16,10 +16,10 @@ public class UpdateUserDAO {
     private final UserRepository userRepository;
 
     // 사용자 정보 수정
-    public void exec(User user, String newName, String newSeniority, String newUserGroup, List<UserRequest.Info.Stack> newStacks){
+    public void exec(User user, String newName, String newSeniority, String newRole, List<UserRequest.Info.Stack> newStacks){
         // 이름, 그룹, 시니어리티 변경
         if (newName != null) user.changeUsername(newName);
-        if (newUserGroup != null) user.changeUserGroup(newUserGroup);
+        if (newRole != null) user.changeRole(newRole);
         if (newSeniority != null) user.changeSeniority(newSeniority);
 
         // 타임스탬프 갱신
