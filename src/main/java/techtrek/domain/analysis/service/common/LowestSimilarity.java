@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -46,7 +49,9 @@ public class LowestSimilarity {
 
                     allFields.add(new AnalysisParserResponse.LowestSimilarity(question, answer, sim, questionNumber));
                 } catch (NumberFormatException e) {
-                    // 무시
+                    throw new CustomException(ErrorCode.INVALID_SIMILARITY_VALUE);
+                } catch (Exception e) {
+                    throw new CustomException(ErrorCode.REDIS_HASH_ACCESS_FAIL);
                 }
             }
         }
@@ -56,7 +61,7 @@ public class LowestSimilarity {
         double minSim = allFields.stream().mapToDouble(AnalysisParserResponse.LowestSimilarity::getSimilarity).min().orElse(0.0);
         List<AnalysisParserResponse.LowestSimilarity> minSimFields = allFields.stream()
                 .filter(f -> f.getSimilarity() == minSim)
-                .toList();
+                .collect(Collectors.toList());
 
         Collections.shuffle(minSimFields);
         return minSimFields.get(0);

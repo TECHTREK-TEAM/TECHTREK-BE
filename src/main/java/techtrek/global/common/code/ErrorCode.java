@@ -35,7 +35,10 @@ public enum ErrorCode implements ResponseCode {
     JSON_READ_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "PROMPT500", "JSON에서 객체로 변환하는데 실패하였습니다."), // ✅
 
     // 분석
-    ANALYSIS_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "분석 정보를 찾을 수 없습니다."); // ✅
+    ANALYSIS_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "분석 정보를 찾을 수 없습니다."), // ✅
+    INVALID_SIMILARITY_VALUE(HttpStatus.BAD_REQUEST, "ANALYSIS401", "유효하지 않은 similarity 값입니다."),  // ✅
+    REDIS_HASH_ACCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "Redis 해시 조회 중 오류가 발생했습니다.");  // ✅
+
 
 
     private final HttpStatus httpStatus;
