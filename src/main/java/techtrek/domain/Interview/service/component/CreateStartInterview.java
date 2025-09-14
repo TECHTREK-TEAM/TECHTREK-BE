@@ -9,6 +9,8 @@ import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.Interview.dto.InterviewParserResponse;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.domain.Interview.service.common.BasicQuestion;
+import techtrek.domain.user.entity.User;
+import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
@@ -21,6 +23,7 @@ public class CreateStartInterview {
     private static final String START_QUESTION_NUMBER = "1";
     private static final String CURRENT_COUNT = "1";
 
+    private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final BasicQuestion basicQuestion;
@@ -33,6 +36,9 @@ public class CreateStartInterview {
 
     // 면접 시작하기
     public InterviewResponse.Start exec(String enterpriseName){
+        // TODO: 사용자 조회
+        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
         // 세션 생성
         String sessionId = UUID.randomUUID().toString();
         String fieldId = UUID.randomUUID().toString();
@@ -58,6 +64,7 @@ public class CreateStartInterview {
                 .fieldId(fieldId)
                 .question(questionResult.getQuestion())
                 .questionNumber(START_QUESTION_NUMBER)
+                .resumeStatus(user.getResume() != null)
                 .build();
     }
 }

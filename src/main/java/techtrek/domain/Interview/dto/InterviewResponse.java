@@ -24,6 +24,9 @@ public class InterviewResponse {
         @Schema(description = "현재 질문 번호", example = "1")
         private String questionNumber;
 
+        @Schema(description = "이력서 존재 여부", example = "true")
+        private boolean resumeStatus;
+
     }
 
     // 새 질문
