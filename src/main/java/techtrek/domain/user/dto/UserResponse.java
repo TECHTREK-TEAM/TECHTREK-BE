@@ -19,7 +19,7 @@ public class UserResponse {
         private String name;
 
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String role;
+        private String position;
 
         @Schema(description = "연차 정보", example = "3년차")
         private String seniority;
@@ -129,7 +129,7 @@ public class UserResponse {
             private Double score;
 
             @Schema(description = "분석된 직군 정보", example = "Backend Developer")
-            private String analysisRole;
+            private String analysisPosition;
         }
 
         @Getter
@@ -154,7 +154,7 @@ public class UserResponse {
     @Schema(description = "사용자의 이력서 정보 응답")
     public static class Resume {
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String role;
+        private String position;
 
         @Schema(description = "연차 정보", example = "지망생")
         private String seniority;

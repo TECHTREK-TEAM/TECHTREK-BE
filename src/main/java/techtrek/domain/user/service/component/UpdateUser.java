@@ -20,13 +20,13 @@ public class UpdateUser {
     private final UserRepository userRepository;
 
     // 사용자 정보 수정
-    public UserResponse.Info exec (String newName, String newRole, String newSeniority, List<UserRequest.Info.Stack> newStacks) {
+    public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.Info.Stack> newStacks) {
         // TODO:사용자 조회
         User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 사용자 정보 수정 저장
         if (newName != null && !newName.isBlank()) user.setName(newName);
-        if (newRole != null) user.setRole(newRole);
+        if (newPosition != null) user.setPosition(newPosition);
         if (newSeniority != null) user.setSeniority(newSeniority);
 
         // 스택 리스트 교체
@@ -54,7 +54,7 @@ public class UpdateUser {
         // dto 반환
         return UserResponse.Info.builder()
                 .name(user.getName())
-                .role(user.getRole())
+                .position(user.getPosition())
                 .seniority(user.getSeniority())
                 .stacks(stackDTOs)
                 .build();

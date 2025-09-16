@@ -23,8 +23,8 @@ public class User {
     @Column(name="name", length = 36, nullable = false)
     private String name;
 
-    @Column(name="role", length = 36)
-    private String role;
+    @Column(name="position", length = 36)
+    private String position;
 
     @Column(name="seniority", length = 36)
     private String seniority;

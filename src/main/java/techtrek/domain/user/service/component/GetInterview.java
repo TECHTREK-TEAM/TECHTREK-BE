@@ -36,7 +36,7 @@ public class GetInterview {
                         .isPass(highest.isPass())
                         .enterpriseName(highest.getEnterprise().getName())
                         .score(highest.getScore())
-                        .analysisRole(highest.getAnalysisRole())
+                        .analysisPosition(highest.getAnalysisPosition())
                         .build()
                         : null) // 없으면 null
                 .recentInterview(recent != null ? UserResponse.Interview.InterviewData.builder()
@@ -44,7 +44,7 @@ public class GetInterview {
                         .isPass(recent.isPass())
                         .enterpriseName(recent.getEnterprise().getName())
                         .score(recent.getScore())
-                        .analysisRole(recent.getAnalysisRole())
+                        .analysisPosition(recent.getAnalysisPosition())
                         .build()
                         : null)
                 .resume(UserResponse.Interview.Resume.builder()

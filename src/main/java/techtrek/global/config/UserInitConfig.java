@@ -28,7 +28,7 @@ public class UserInitConfig {
         User user = User.builder()
                 .id("1")
                 .name("홍길동")
-                .role("Frontend Developer")
+                .position("Frontend Developer")
                 .seniority("지망생")
                 .resume("Java와 Spring Boot...")
                 .resumeName("예시 이력서.pdf")

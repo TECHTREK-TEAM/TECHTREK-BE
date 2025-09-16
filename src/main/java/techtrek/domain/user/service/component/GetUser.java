@@ -34,7 +34,7 @@ public class GetUser {
         // dto 생성
         return UserResponse.Info.builder()
                 .name(user.getName())
-                .role(user.getRole())
+                .position(user.getPosition())
                 .seniority(user.getSeniority())
                 .stacks(stackDTOs)
                 .build();

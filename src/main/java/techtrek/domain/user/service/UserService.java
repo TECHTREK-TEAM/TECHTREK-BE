@@ -25,7 +25,7 @@ public class UserService {
 
     // 사용자 정보 수정
     public UserResponse.Info updateUser(UserRequest.Info request){
-        return updateUser.exec(request.getName(), request.getRole(), request.getSeniority(), request.getStacks());
+        return updateUser.exec(request.getName(), request.getPosition(), request.getSeniority(), request.getStacks());
     }
 
     // 관심 기업 조회

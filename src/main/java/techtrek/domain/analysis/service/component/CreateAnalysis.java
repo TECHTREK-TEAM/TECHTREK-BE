@@ -98,7 +98,7 @@ public class CreateAnalysis {
                 .keyword(result.getKeyword())
                 .keywordNumber(low.getQuestionNumber())
                 .feedback(result.getFeedback())
-                .analysisRole(user.getRole())
+                .analysisPosition(user.getPosition())
                 .duration(duration)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .user(user)
