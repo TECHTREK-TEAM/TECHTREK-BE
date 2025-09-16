@@ -35,7 +35,7 @@ public class LoginOAuth {
 
         // 신규 사용자면 저장
         if (user == null) {
-           User.builder()
+            user = User.builder()
                     .id(provider + "_" + accessToken)
                     .name(userInfo.getName())
                     .email(email)
@@ -43,16 +43,21 @@ public class LoginOAuth {
                     .role(Role.USER)
                     .createdAt(LocalDateTime.now().withNano(0))
                     .build();
+
+            user = userRepository.save(user); // 이제 user는 null이 아님
         }
         // 기존 사용자인데 provider가 다르면 예외
         else if (!user.getProvider().equals(provider)) {
-            throw new CustomException(ErrorCode.LOGIN_ALREADY_EXISTS);
+            return String.format(
+                    "http://localhost:5173/social-login/callback?message=%s",
+                    java.net.URLEncoder.encode("이미 다른 로그인 방식으로 가입된 회원입니다.", java.nio.charset.StandardCharsets.UTF_8)
+            );
         }
         // JWT 생성
         String jwt = jwtProvider.createToken(user.getId());
 
         return String.format(
-                "http://localhost:5173",
+                "http://localhost:5173/social-login/callback?token=%s&name=%s",
                 jwt,
                 java.net.URLEncoder.encode(user.getName(), java.nio.charset.StandardCharsets.UTF_8)
         );

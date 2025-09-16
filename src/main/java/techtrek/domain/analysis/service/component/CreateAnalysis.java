@@ -21,6 +21,7 @@ import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
 import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,7 +33,7 @@ public class CreateAnalysis {
     private static final String PROMPT_PATH_FEEDBACK = "prompts/feedback_prompt.txt";
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final UserRepository userRepository;
+    private final UserValidator userValidator;
     private final EnterpriseRepository enterpriseRepository;
     private final AnalysisRepository analysisRepository;
     private final LowestSimilarity lowestSimilarity;
@@ -61,8 +62,8 @@ public class CreateAnalysis {
         String resumeKey = sessionKey + resumePrefix;
         String tailKey = sessionKey + tailPrefix;
 
-        // TODO: 사용자 조회, 유효성 확인
-        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회, 유효성 확인
+        User user = userValidator.validateAndGetUser(userDetails.getId());
         if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
         // 기업불러오기

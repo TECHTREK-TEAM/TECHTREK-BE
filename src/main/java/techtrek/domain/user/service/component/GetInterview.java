@@ -12,17 +12,19 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 @Component
 @RequiredArgsConstructor
 public class GetInterview {
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
     private final AnalysisRepository analysisRepository;
 
     // 면접 정보(높은점수, 최근) 조회
     public UserResponse.Interview exec(CustomUserDetails userDetails) {
-        // TODO:사용자 조회
-        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 최고 점수 Analysis
         Pageable one = PageRequest.of(0, 1);

@@ -12,19 +12,21 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 public class GetCompany {
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
     private final AnalysisRepository analysisRepository;
 
     // 관심기업 Top 3 조회
     public UserResponse.CompanyList exec(CustomUserDetails userDetails){
-        // TODO:사용자 조회
-        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 상위 3개 기업 조회
         Pageable topThree = PageRequest.of(0, 3);

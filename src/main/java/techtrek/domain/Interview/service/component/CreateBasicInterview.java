@@ -12,6 +12,8 @@ import techtrek.domain.Interview.service.common.BasicQuestion;
 import techtrek.domain.Interview.dto.InterviewResponse;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.*;
 
@@ -20,6 +22,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CreateBasicInterview {
     private final RedisTemplate<String, String> redisTemplate;
+    private final UserValidator userValidator;
     private final EnterpriseRepository enterpriseRepository;
     private final BasicQuestion basicQuestion;
     private final NumberCountProvider numberCountProvider;
@@ -30,7 +33,10 @@ public class CreateBasicInterview {
     @Value("${custom.redis.prefix.basic}")
     private String basicPrefix;
 
-    public InterviewResponse.Question exec(String sessionId){
+    public InterviewResponse.Question exec(String sessionId, CustomUserDetails userDetails){
+        // 사용자 조회
+        userValidator.validateAndGetUser(userDetails.getId());
+
         // key 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;

@@ -9,6 +9,7 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,13 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GetUser {
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
 
     // 사용자 정보 조회
     public UserResponse.Info exec(CustomUserDetails userDetails) {
-        // TODO:사용자 조회
-        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 스택을 list형태로 불러오기
         List<UserResponse.Info.Stack> stackDTOs = new ArrayList<>();

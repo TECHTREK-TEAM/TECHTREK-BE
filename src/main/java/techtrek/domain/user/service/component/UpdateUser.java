@@ -10,6 +10,7 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,13 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class UpdateUser {
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
 
     // 사용자 정보 수정
     public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.Info.Stack> newStacks, CustomUserDetails userDetails) {
-        // TODO:사용자 조회
-        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 사용자 정보 수정 저장
         if (newName != null && !newName.isBlank()) user.setName(newName);
