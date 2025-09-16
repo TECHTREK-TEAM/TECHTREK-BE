@@ -1,4 +1,4 @@
-package techtrek.domain.analysis.service.bean;
+package techtrek.domain.analysis.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class CreateAnalysisBean {
+public class CreateAnalysis {
 
     private final GetRedisHashUtil getRedisHashUtil;
     private final CreatePromptTemplateUtil createPromptTemplateUtil;

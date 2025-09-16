@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.bean;
+package techtrek.domain.sessionInfo.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class CreateNewInterviewBean {
+public class CreateBasicInterview {
     // 상수 정의
     private static final String PHASE_BASIC = "basic";
     private static final String PHASE_RESUME = "resume";

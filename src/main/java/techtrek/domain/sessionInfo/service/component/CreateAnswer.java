@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.bean;
+package techtrek.domain.sessionInfo.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +13,7 @@ import techtrek.global.securty.service.CustomUserDetails;
 
 @Component
 @RequiredArgsConstructor
-public class CreateAnswerBean {
+public class CreateAnswer {
     private final SaveAnswerDAO saveAnswerDAO;
     private final CheckRedisKeyDAO checkRedisKeyDAO;
     private final GetSessionInfoDAO getSessionInfoDAO;

@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.bean;
+package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -21,7 +21,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class CreateResumeBean {
+public class CreateResume {
     //상수 정의
     private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
 

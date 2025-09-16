@@ -1,10 +1,9 @@
-package techtrek.domain.user.service.bean;
+package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.service.small.GetAverageResultScoreDAO;
 import techtrek.domain.analysis.service.small.GetAverageTotalResultScoreDAO;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
@@ -18,7 +17,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetScoreBean {
+public class GetScore {
     private final GetUserDAO getUserDAO;
     private final GetSessionInfoListDAO getSessionInfoListDAO;
     private final GetAverageTotalResultScoreDAO getAverageTotalResultScoreDAO;

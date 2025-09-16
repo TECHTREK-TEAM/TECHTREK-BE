@@ -1,10 +1,9 @@
-package techtrek.domain.user.service.bean;
+package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.sessionInfo.entity.SessionInfo;
 import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
 import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class GetCompanyBean {
+public class GetCompany {
 
     private final GetUserDAO getUserDAO;
     private final GetSessionInfoListDAO getSessionInfoListDAO;

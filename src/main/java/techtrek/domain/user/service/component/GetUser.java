@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.bean;
+package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import techtrek.global.securty.service.CustomUserDetails;
 
 @Component
 @RequiredArgsConstructor
-public class GetUserBean {
+public class GetUser {
 
     private final GetUserDAO getUserDAO;
     private final CreateUserDTO createUserDTO;

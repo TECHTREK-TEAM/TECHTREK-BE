@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.bean;
+package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetInterviewBean {
+public class GetInterview {
 
     private final GetUserDAO getUserDAO;
     private final GetSessionInfoListDAO getSessionInfoListDAO;

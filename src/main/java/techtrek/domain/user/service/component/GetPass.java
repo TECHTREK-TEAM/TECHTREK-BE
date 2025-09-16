@@ -1,4 +1,4 @@
-package techtrek.domain.user.service.bean;
+package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import techtrek.global.securty.service.CustomUserDetails;
 
 @Component
 @RequiredArgsConstructor
-public class GetPassBean {
+public class GetPass {
     private final GetUserDAO getUserDAO;
     private final GetSessionInfoCountDAO getSessionInfoCountDAO;
     private final GetPassCountDAO getPassCountDAO;

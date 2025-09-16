@@ -1,4 +1,4 @@
-package techtrek.domain.sessionInfo.service.bean;
+package techtrek.domain.sessionInfo.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class CreateTailInterviewBean {
+public class CreateTailInterview {
     // 상수 정의
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
