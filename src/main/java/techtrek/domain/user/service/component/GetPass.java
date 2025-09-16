@@ -2,37 +2,37 @@ package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import techtrek.domain.analysis.service.small.GetPassCountDAO;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoCountDAO;
+import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.CreatePassDTO;
-import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.repository.UserRepository;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 
 @Component
 @RequiredArgsConstructor
 public class GetPass {
-    private final GetUserDAO getUserDAO;
-    private final GetSessionInfoCountDAO getSessionInfoCountDAO;
-    private final GetPassCountDAO getPassCountDAO;
-    private final CreatePassDTO createPassDTO;
+    private final UserRepository userRepository;
+    private final AnalysisRepository analysisRepository;
 
     // 전체 합격률 조회
     public UserResponse.Pass exec(CustomUserDetails userDetails) {
-        // 사용자 조회
-        User user = getUserDAO.exec(userDetails.getId());
+        // TODO:사용자 조회
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 전체 면접 수, 합격 면접 수 조회
-        int interviewTotal = getSessionInfoCountDAO.exec(user.getId());
-        int interviewPass = getPassCountDAO.exec(user.getId());
+        int interviewTotal = analysisRepository.countAllAnalysis(user.getId());
+        int interviewPass = analysisRepository.countPassedAnalysis(user.getId());
 
         // 합격룰 계산
         double interviewPercent = 0.0;
-        if (interviewTotal > 0) {
-            interviewPercent = Math.round(((double) interviewPass / interviewTotal) * 1000) / 10.0;
-        }
+        if (interviewTotal > 0) interviewPercent = Math.round(((double) interviewPass / interviewTotal) * 1000) / 10.0;
 
-        return createPassDTO.exec(interviewTotal, interviewPass, interviewPercent);
+        return UserResponse.Pass.builder()
+                .interviewTotal(interviewTotal)
+                .interviewPass(interviewPass)
+                .interviewPercent(interviewPercent)
+                .build();
     }
 }

@@ -3,7 +3,6 @@ package techtrek.domain.user.dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class UserResponse {
         private String name;
 
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String userGroup;
+        private String position;
 
         @Schema(description = "연차 정보", example = "3년차")
         private String seniority;
@@ -55,10 +54,10 @@ public class UserResponse {
         @Schema(description = "관심 기업 정보")
         public static class Company {
             @Schema(description = "기업 이름", example = "카카오")
-            private EnterpriseName companyName;
+            private String companyName;
 
-            @Schema(description = "해당 기업의 면접 일치율(%)", example = "87.5")
-            private Double companyPercent;
+            @Schema(description = "해당 기업의 면접 일치율(%) 평균", example = "87.5")
+            private Double avgScore;
         }
     }
 
@@ -89,7 +88,7 @@ public class UserResponse {
     @Schema(description = "면접 결과 기반의 평균 일치율 정보 응답")
     public static class Score {
         @Schema(description = "면접 결과 점수 평균", example = "75.4")
-        private Double averageResultScore;
+        private Double totalAvgScore;
 
         @Schema(description = "이전보다 향상된 점수 비율 (%)", example = "12.5")
         private Double enhancedPercent;
@@ -117,17 +116,20 @@ public class UserResponse {
         @AllArgsConstructor
         @Schema(description = "면접 데이터")
         public static class InterviewData {
+            @Schema(description = "분석 ID", example = "true")
+            private Long analysisId;
+
             @Schema(description = "면접 합격 여부", example = "true")
-            private boolean status;
+            private boolean isPass;
 
             @Schema(description = "기업 이름", example = "네이버")
-            private EnterpriseName enterpriseName;
+            private String enterpriseName;
 
             @Schema(description = "면접 일치 점수", example = "88.2")
-            private Double resultScore;
+            private Double score;
 
             @Schema(description = "분석된 직군 정보", example = "Backend Developer")
-            private String analysisGroup;
+            private String analysisPosition;
         }
 
         @Getter
@@ -138,9 +140,11 @@ public class UserResponse {
         public static class Resume {
             @Schema(description = "이력서 존재 여부", example = "true")
             private boolean status;
+
+            @Schema(description = "이력서 이름", example = "테크트랙 이력서.pdf")
+            private String resumeName;
         }
     }
-
 
     // 이력서
     @Getter
@@ -150,7 +154,7 @@ public class UserResponse {
     @Schema(description = "사용자의 이력서 정보 응답")
     public static class Resume {
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String group;
+        private String position;
 
         @Schema(description = "연차 정보", example = "지망생")
         private String seniority;

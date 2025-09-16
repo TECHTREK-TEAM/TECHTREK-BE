@@ -2,33 +2,63 @@ package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import techtrek.domain.stack.entity.Stack;
 import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.GetUserDAO;
-import techtrek.domain.user.service.small.CreateUserDTO;
-import techtrek.domain.user.service.small.UpdateUserDAO;
+import techtrek.domain.user.repository.UserRepository;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class UpdateUser {
-    private final GetUserDAO getUserDAO;
-    private final UpdateUserDAO updateUserDAO;
-    private final CreateUserDTO createUserDTO;
+    private final UserRepository userRepository;
 
     // 사용자 정보 수정
-    public UserResponse.Info exec (String newName, String newUserGroup, String newSeniority, List<UserRequest.Info.Stack> newStacks, CustomUserDetails userDetails) {
-        // 사용자 조회
-        User user = getUserDAO.exec(userDetails.getId());
+    public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.Info.Stack> newStacks, CustomUserDetails userDetails) {
+        // TODO:사용자 조회
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 사용자 정보 수정 저장
-        updateUserDAO.exec(user, newName, newUserGroup, newSeniority, newStacks);
+        if (newName != null && !newName.isBlank()) user.setName(newName);
+        if (newPosition != null) user.setPosition(newPosition);
+        if (newSeniority != null) user.setSeniority(newSeniority);
 
-        // 사용자 정보 수정 dto
-        return createUserDTO.exec(user);
+        // 스택 리스트 교체
+        if (newStacks != null && !newStacks.isEmpty()) {
+            user.getStackList().clear();
+            for (UserRequest.Info.Stack stackDto : newStacks) {
+                Stack stack = new Stack();
+                stack.setStackName(stackDto.getStackName());
+                stack.setUser(user);
+                user.getStackList().add(stack);
+            }
+        }
 
+        // 사용자 정보 수정 dto 생성
+        List<UserResponse.Info.Stack> stackDTOs = new ArrayList<>();
+        for (Stack stack : user.getStackList()) {
+            UserResponse.Info.Stack dto = UserResponse.Info.Stack.builder()
+                    .stackName(stack.getStackName())
+                    .build();
+            stackDTOs.add(dto);
+        }
+
+        userRepository.save(user);
+
+        // dto 반환
+        return UserResponse.Info.builder()
+                .name(user.getName())
+                .position(user.getPosition())
+                .seniority(user.getSeniority())
+                .stacks(stackDTOs)
+                .build();
     }
+
 }

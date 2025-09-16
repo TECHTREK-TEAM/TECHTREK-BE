@@ -1,44 +1,57 @@
 package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.analysis.service.small.GetInterviewHighScoreDAO;
-import techtrek.domain.analysis.service.small.GetInterviewRecentScoreDAO;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
+import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.CreateInterviewDTO;
-import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.repository.UserRepository;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class GetInterview {
-
-    private final GetUserDAO getUserDAO;
-    private final GetSessionInfoListDAO getSessionInfoListDAO;
-    private final GetInterviewHighScoreDAO getInterviewHighScoreDAO;
-    private final GetInterviewRecentScoreDAO getInterviewRecentScoreDAO;
-    private final CreateInterviewDTO createInterviewDTO;
+    private final UserRepository userRepository;
+    private final AnalysisRepository analysisRepository;
 
     // 면접 정보(높은점수, 최근) 조회
     public UserResponse.Interview exec(CustomUserDetails userDetails) {
-        // 사용자 조회
-        User user = getUserDAO.exec(userDetails.getId());
+        // TODO:사용자 조회
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        // 유저의 모든 세션 ID 조회
-        List<String> sessionIds = getSessionInfoListDAO.exec(user.getId());
+        // 최고 점수 Analysis
+        Pageable one = PageRequest.of(0, 1);
+        Analysis highest = analysisRepository.findTopByUserOrderByScoreDesc(user.getId(), one)
+                .stream().findFirst().orElse(null);
+        Analysis recent = analysisRepository.findTopByUserOrderByCreatedAtDesc(user.getId(), one)
+                .stream().findFirst().orElse(null);
 
-        // 해당 sessionId 중 analysis 가장 높은 점수 하나
-        Analysis highestScoreAnalysis = getInterviewHighScoreDAO.exec(sessionIds);
-
-        // 가장 최근 분석 하나
-        Analysis recentAnalysis = getInterviewRecentScoreDAO.exec(sessionIds);
-
-        // DTO 저장
-        return createInterviewDTO.exec(user, highestScoreAnalysis, recentAnalysis);
+        return UserResponse.Interview.builder()
+                .highestScore(highest != null ? UserResponse.Interview.InterviewData.builder()
+                        .analysisId(highest.getId())
+                        .isPass(highest.isPass())
+                        .enterpriseName(highest.getEnterprise().getName())
+                        .score(highest.getScore())
+                        .analysisPosition(highest.getAnalysisPosition())
+                        .build()
+                        : null) // 없으면 null
+                .recentInterview(recent != null ? UserResponse.Interview.InterviewData.builder()
+                        .analysisId(recent.getId())
+                        .isPass(recent.isPass())
+                        .enterpriseName(recent.getEnterprise().getName())
+                        .score(recent.getScore())
+                        .analysisPosition(recent.getAnalysisPosition())
+                        .build()
+                        : null)
+                .resume(UserResponse.Interview.Resume.builder()
+                        .status(user.getResume() != null)
+                        .resumeName(user.getResumeName())
+                        .build())
+                .build();
     }
 }

@@ -2,88 +2,138 @@ package techtrek.domain.analysis.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import techtrek.domain.Interview.dto.InterviewParserResponse;
+import techtrek.domain.Interview.service.common.CompanyCSProvider;
+import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.analysis.service.small.CreateAnalysisDTO;
-import techtrek.domain.sessionInfo.dto.SessionParserResponse;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
-import techtrek.domain.analysis.service.small.SaveAnalysisDAO;
+import techtrek.domain.analysis.repository.AnalysisRepository;
+import techtrek.domain.analysis.service.common.LowestSimilarity;
+import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.openAI.chat.service.common.Gpt;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
-import techtrek.domain.redis.service.small.GetRedisByKeyDAO;
-import techtrek.domain.redis.service.common.GetRedisHashUtil;
-import techtrek.global.util.ChangeJsonReadUtil;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class CreateAnalysis {
+    private static final String PROMPT_PATH_FEEDBACK = "prompts/feedback_prompt.txt";
 
-    private final GetRedisHashUtil getRedisHashUtil;
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
-    private final ChangeJsonReadUtil changeJsonReadUtil;
-
-    private final GetUserDAO getUserDAO;
-    private final GetRedisByKeyDAO getRedisByKeyDAO;
-    private final GetSessionInfoDAO getSessionInfoDAO;
-    private final SaveAnalysisDAO saveAnalysisDAO;
-    private final CreateAnalysisDTO createAnalysisDTO;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final UserRepository userRepository;
+    private final EnterpriseRepository enterpriseRepository;
+    private final AnalysisRepository analysisRepository;
+    private final LowestSimilarity lowestSimilarity;
+    private final NumberCountProvider numberCountProvider;
+    private final CompanyCSProvider companyCSProvider;
+    private final Gpt createGpt;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
+    @Value("${custom.redis.prefix.basic}")
+    private String basicPrefix;
+
+    @Value("${custom.redis.prefix.resume}")
+    private String resumePrefix;
+
+    @Value("${custom.redis.prefix.tail}")
+    private String tailPrefix;
+
     // 분석하기
+    @Transactional
     public AnalysisResponse.Analysis exec(String sessionId, int duration, CustomUserDetails userDetails){
-        // 사용자, 세션정보 조회
-        User user = getUserDAO.exec(userDetails.getId());
-        SessionInfo sessionInfo = getSessionInfoDAO.exec(sessionId);
+        // key 생성
+        String sessionKey = interviewPrefix + sessionId;
+        String basicKey = sessionKey + basicPrefix;
+        String resumeKey = sessionKey + resumePrefix;
+        String tailKey = sessionKey + tailPrefix;
 
-        // 권한 체크
-        if (!sessionInfo.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
+        // TODO: 사용자 조회, 유효성 확인
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
 
-        // 키 생성
-        String newKey = interviewPrefix + sessionId + ":new:";
-        String tailKey = interviewPrefix + sessionId + ":tail:";
+        // 기업불러오기
+        String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
-        // 모든 hash 데이터 조회
-        Set<String> allKeys = new HashSet<>();
-        allKeys.addAll(getRedisHashUtil.exec(newKey + "*"));
-        allKeys.addAll(getRedisHashUtil.exec(tailKey + "*"));
+        // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
+        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        long highCount = Stream.of(basicKey+"*", resumeKey+"*", tailKey+"*")
+                .mapToLong(this::countHighSimilarity)
+                .sum();
 
-        // 모든 hash의 질문, 답변 모두 추출 (오름차순)
-        List<SessionParserResponse.ListData> listData = getRedisByKeyDAO.exec(allKeys);
+        double score = numberCount.getTotalCount() > 0 ? Math.round((highCount * 100.0 / numberCount.getTotalCount()) * 10) / 10.0 : 0.0;
+        boolean isPass = score >= 70.0;
 
-        // 질문/답변 문자열 누적
-        StringBuilder qaBuilder = new StringBuilder();
-        for (SessionParserResponse.ListData data : listData) {
-            qaBuilder.append("질문: ").append(data.getQuestion()).append("\n");
-            qaBuilder.append("답변: ").append(data.getAnswer() != null ? data.getAnswer() : "응답 없음").append("\n");
-            qaBuilder.append("번호: ").append(data.getQuestionNumber()).append("\n\n");
-        }
+        // 유사도 낮은 필드 조회
+        AnalysisParserResponse.LowestSimilarity low = lowestSimilarity.exec(sessionKey);
 
-        // 프롬프트 생성 후, 분석결과 받기
-        String promptTemplate = createPromptTemplateUtil.exec("prompts/analysis_prompt.txt");
-        String prompt = String.format(promptTemplate, sessionInfo.getEnterpriseName(), sessionInfo.getEnterpriseName().getDescription(), user.getUserGroup(), user.getSeniority(), qaBuilder.toString());
-        String gptResponse = createPromptUtil.exec(prompt);
+        // 기업별 중점 CS
+        String focusCS = companyCSProvider.exec(enterprise.getName());
 
-        // JSON 파싱 (JSON -> 객체)
-        AnalysisParserResponse object = changeJsonReadUtil.exec(gptResponse, AnalysisParserResponse.class);
+        // gpt 피드백 생성
+        AnalysisParserResponse.feedbackResult result = createGpt.exec(
+                PROMPT_PATH_FEEDBACK,
+                new Object[]{enterprise.getName(), focusCS,low.getQuestion(), low.getAnswer(),low.getSimilarity() },
+                AnalysisParserResponse.feedbackResult.class
+        );
 
-        // 분석 테이블에 저장
-        Analysis analysis= saveAnalysisDAO.exec(sessionInfo,object,user,duration);
+        // 분석 테이블 생성
+        Analysis analysis = Analysis.builder()
+                .sessionId(sessionId)
+                .isPass(isPass)
+                .score(score)
+                .keyword(result.getKeyword())
+                .keywordNumber(low.getQuestionNumber())
+                .feedback(result.getFeedback())
+                .analysisPosition(user.getPosition())
+                .duration(duration)
+                .createdAt(LocalDateTime.now().withNano(0))
+                .user(user)
+                .enterprise(enterprise)
+                .build();
+
+        analysisRepository.save(analysis);
 
         // 반환
-        return createAnalysisDTO.exec(analysis);
+        return AnalysisResponse.Analysis.builder()
+                .analysisId(analysis.getId())
+                .isPass(isPass)
+                .score(score)
+                .feedback(result.getFeedback())
+                .duration(duration)
+                .keyword(result.getKeyword())
+                .build();
+    }
+
+
+    // similarity >= 0.6인 필드 개수 계산
+    public long countHighSimilarity(String pattern) {
+        Set<String> keys = redisTemplate.keys(pattern);
+        if (keys == null || keys.isEmpty()) return 0;
+
+        return keys.stream()
+                .map(key -> redisTemplate.opsForHash().get(key, "similarity"))
+                .filter(Objects::nonNull)
+                .mapToDouble(v -> {
+                    try { return Double.parseDouble(v.toString()); }
+                    catch (NumberFormatException e) { return 0.0; }
+                })
+                .filter(sim -> sim >= 0.6)
+                .count();
     }
 
 }

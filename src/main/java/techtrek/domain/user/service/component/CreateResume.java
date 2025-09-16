@@ -5,44 +5,41 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import techtrek.domain.stack.entity.Stack;
+import techtrek.domain.stack.repository.StackRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.GetUserDAO;
-import techtrek.domain.user.service.small.SaveResumeDAO;
-import techtrek.domain.user.service.small.SaveStackDAO;
+import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.openAI.chat.service.common.Gpt;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.util.ChangeJsonReadUtil;
-import techtrek.global.util.CreatePromptUtil;
-import techtrek.global.util.CreatePromptTemplateUtil;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class CreateResume {
     //상수 정의
-    private static final String PROMPT_PATH_RESUME = "prompts/resume_summary_prompt.txt";
+    private static final String PROMPT_PATH_CREATE_RESUME = "prompts/resume_summary_prompt.txt";
 
-    private final CreatePromptTemplateUtil createPromptTemplateUtil;
-    private final CreatePromptUtil createPromptUtil;
-    private final ChangeJsonReadUtil changeJsonReadUtil;
-
-    private final SaveResumeDAO saveResumeDAO;
-    private final SaveStackDAO saveStackDAO;
-    private final GetUserDAO getUserDAO;
+    private final UserRepository userRepository;
+    private final StackRepository stackRepository;
+    private final Gpt gpt;
 
     // 이력서 추출
     public UserResponse.Resume exec(MultipartFile file, CustomUserDetails userDetails) {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
-        // 사용자 조회
-        User user = getUserDAO.exec(userDetails.getId());
+        // TODO:사용자 조회
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 이력서 추출
         String extractedText;
+        String fileName = file.getOriginalFilename();
         try (PDDocument document = PDDocument.load(file.getInputStream())) {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             extractedText = pdfStripper.getText(document);
@@ -50,18 +47,30 @@ public class CreateResume {
             throw new CustomException(ErrorCode.RESUME_PDF_PARSING_FAILED);
         }
 
-        // 프롬프트 생성 후 gpt 호출
-        String promptTemplate = createPromptTemplateUtil.exec(PROMPT_PATH_RESUME);
-        String prompt = String.format(promptTemplate, extractedText);
-        String gptResponse = createPromptUtil.exec(prompt);
-
-        // JSON 파싱 (JSON -> 객체)
-        UserResponse.Resume object = changeJsonReadUtil.exec(gptResponse, UserResponse.Resume.class);
+        // gpt 이략서 요약
+        UserResponse.Resume result = gpt.exec(PROMPT_PATH_CREATE_RESUME, new Object[]{extractedText}, UserResponse.Resume.class);
 
         // 이력서, 스택 등 값 저장
-        saveResumeDAO.exec(user, object.getGroup(), object.getSeniority(), object.getResume());
-        saveStackDAO.exec(user, object.getStacks());
+        if (user.getPosition() != null) user.setPosition(result.getPosition());
+        if (user.getSeniority() != null) user.setSeniority(result.getSeniority());
+        if (user.getResume() != null) user.setResume(result.getResume());
+        if (user.getResumeName() != null) user.setResumeName(fileName);
+        userRepository.save(user);
 
-        return object;
+        // 기존 스택 삭제
+        user.getStackList().clear();
+
+        // 새로운 스택 리스트 생성
+        List<Stack> newStacks = result.getStacks().stream()
+                .map(dto -> {
+                    Stack stack = new Stack();
+                    stack.setStackName(dto.getStackName());
+                    stack.setUser(user);
+                    return stack;
+                })
+                .toList();
+        stackRepository.saveAll(newStacks);
+
+        return result;
     }
 }

@@ -2,45 +2,39 @@ package techtrek.domain.analysis.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.analysis.service.small.DeleteAnalysisDAO;
-import techtrek.domain.redis.service.small.DeleteRedisDAO;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.service.small.DeleteSessionInfoDAO;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoDAO;
+import techtrek.domain.analysis.entity.Analysis;
+import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 
+import java.util.Set;
+
 @Component
 @RequiredArgsConstructor
 public class DeleteAnalysis {
-    private final GetSessionInfoDAO getSessionInfoDAO;
-    private final DeleteAnalysisDAO deleteAnalysisDAO;
-    private final DeleteRedisDAO deleteRedisDAO;
-    private final DeleteSessionInfoDAO deleteSessionInfoDAO;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final AnalysisRepository analysisRepository;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    // 세션 삭제
-    public Boolean exec(String sessionInfoId, CustomUserDetails userDetails){
-        // 선택한 세션의 정보 조회
-        SessionInfo sessionInfo = getSessionInfoDAO.execById(sessionInfoId);
+    public Boolean exec(Long analysisId, CustomUserDetails userDetails){
+        // Analysis 조회
+        Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
 
         // 권한체크
-        if (!sessionInfo.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
+        if (!analysis.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
-        // 연관된 analysis 삭제
-        deleteAnalysisDAO.exec(sessionInfo.getAnalysis().getId());
+        // redis 삭제
+        Set<String> keys = redisTemplate.keys(interviewPrefix + analysis.getSessionId() + "*");
+        if (keys != null && !keys.isEmpty()) redisTemplate.delete(keys);
 
-        // Redis 데이터 삭제
-        String sessionId = sessionInfo.getSessionId();
-        String redisKey = interviewPrefix + sessionId + "*";
-        deleteRedisDAO.exec(redisKey);
+        // 분석 테이블 삭제
+        analysisRepository.deleteById(analysisId);
 
-        // sessionInfo 삭제
-        deleteSessionInfoDAO.exec(sessionInfo);
 
         return true;
     }

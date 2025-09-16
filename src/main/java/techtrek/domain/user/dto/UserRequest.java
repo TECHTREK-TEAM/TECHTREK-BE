@@ -17,7 +17,7 @@ public class UserRequest {
         private String name;
 
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String userGroup;
+        private String position;
 
         @Schema(description = "연차 정보", example = "3년차")
         private String seniority;

@@ -26,7 +26,7 @@ public class UserService {
 
     // 사용자 정보 수정
     public UserResponse.Info updateUser(UserRequest.Info request,CustomUserDetails userDetails){
-        return updateUser.exec(request.getName(), request.getUserGroup(), request.getSeniority(), request.getStacks(),userDetails);
+        return updateUser.exec(request.getName(), request.getPosition(), request.getSeniority(), request.getStacks(), userDetails);
     }
 
     // 관심 기업 조회
@@ -50,5 +50,7 @@ public class UserService {
     }
 
     // 이력서 생성
-    public UserResponse.Resume createResume(MultipartFile file, CustomUserDetails userDetails){ return createResume.exec(file,userDetails); }
+    public UserResponse.Resume createResume(MultipartFile file, CustomUserDetails userDetails){
+        return createResume.exec(file,userDetails);
+    }
 }

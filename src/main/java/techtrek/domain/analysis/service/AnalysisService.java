@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.component.*;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.global.securty.service.CustomUserDetails;
 
 @Service
@@ -23,22 +22,22 @@ public class AnalysisService {
     }
 
     // 현재 세션 불러오기
-    public AnalysisResponse.Detail getAnalysisRecent(EnterpriseName enterpriseName, CustomUserDetails userDetails){
+    public AnalysisResponse.Detail getAnalysisRecent(String enterpriseName, CustomUserDetails userDetails){
         return getAnalysisRecent.exec(enterpriseName, userDetails);
     }
 
     // 세션 리스트 불러오기
-    public AnalysisResponse.SessionList getAnalysisList(EnterpriseName enterpriseName, CustomUserDetails userDetails){
+    public AnalysisResponse.AnalysisList getAnalysisList(String enterpriseName, CustomUserDetails userDetails){
         return getAnalysisList.exec(enterpriseName, userDetails);
     }
 
     // 선택한 세션 불러오기
-    public AnalysisResponse.Detail getAnalysis(String sessionInfoId, CustomUserDetails userDetails){
-        return getAnalysis.exec(sessionInfoId, userDetails);
+    public AnalysisResponse.Detail getAnalysis(Long analysisId, CustomUserDetails userDetails){
+        return getAnalysis.exec(analysisId,userDetails);
     }
 
-    // 선택한 세션 불러오기
-    public Boolean deleteAnalysis(String sessionInfoId, CustomUserDetails userDetails){
-        return deleteAnalysis.exec(sessionInfoId, userDetails);
+    // 선택한 세션 삭제하기
+    public Boolean deleteAnalysis(Long analysisId, CustomUserDetails userDetails){
+        return deleteAnalysis.exec(analysisId,userDetails);
     }
 }

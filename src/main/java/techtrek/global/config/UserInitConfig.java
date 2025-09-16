@@ -24,30 +24,30 @@ public class UserInitConfig {
 
     @PostConstruct
     public void init() {
-        if (userRepository.existsById("1")) return;
+        if (userRepository.count() > 0) return;
 
         User user = User.builder()
                 .id("1")
                 .name("홍길동")
+                .position("Frontend Developer")
                 .email("user01@naver.com")
                 .provider("kakao")
-                .userGroup("Frontend Developer")
                 .seniority("지망생")
                 .resume("Java와 Spring Boot...")
+                .resumeName("예시 이력서.pdf")
                 .role(Role.USER)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
 
         Stack stack = Stack.builder()
-                .id("1")
                 .stackName("react")
                 .user(user)      // user 넣어줌
                 .build();
 
-        // user에 stackList 넣은 새 user 생성 (toBuilder)
-        user = user.toBuilder()
-                .stackList(new ArrayList<>(List.of(stack)))  // mutable 리스트로 꼭 감싸기
-                .build();
+        List<Stack> stackList = new ArrayList<>();
+        stackList.add(stack);
+
+        user.setStackList(stackList); // User 엔티티에 setter로 바로 넣기
 
         userRepository.save(user);
     }

@@ -3,31 +3,48 @@ package techtrek.domain.analysis.service.component;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisResponse;
-import techtrek.domain.analysis.service.small.CreateSessionListDTO;
-import techtrek.domain.sessionInfo.entity.SessionInfo;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
-import techtrek.domain.sessionInfo.service.small.GetSessionInfoListDAO;
+import techtrek.domain.analysis.entity.Analysis;
+import techtrek.domain.analysis.repository.AnalysisRepository;
+import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.service.small.GetUserDAO;
+import techtrek.domain.user.repository.UserRepository;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class GetAnalysisList {
-    private final GetUserDAO getUserDAO;
-    private final GetSessionInfoListDAO getSessionInfoListDAO;
-    private final CreateSessionListDTO createSessionListDTO;
+    private final UserRepository userRepository;
+    private final EnterpriseRepository enterpriseRepository;
+    private final AnalysisRepository analysisRepository;
 
     // 세션 리스트 불러오기
-    public AnalysisResponse.SessionList exec(EnterpriseName enterpriseName, CustomUserDetails userDetails){
-        // 사용자 조회
-        User user = getUserDAO.exec(userDetails.getId());
+    public AnalysisResponse.AnalysisList exec(String enterpriseName, CustomUserDetails userDetails){
+        // TODO: 사용자 조회
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 기업 조회
+        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 해당 기업의 세션정보 list 조회 (내림차순)
-        List<SessionInfo> sessionInfos = getSessionInfoListDAO.exec(user.getId(), enterpriseName);
+        List<Analysis> analyses = analysisRepository.findByUserAndEnterpriseOrderByCreatedAtDesc(user, enterprise);
 
-        return createSessionListDTO.exec(sessionInfos);
+        // DTO 변환
+        List<AnalysisResponse.AnalysisList.Data> sessionInfos = analyses.stream()
+                .map(analysis -> AnalysisResponse.AnalysisList.Data.builder()
+                        .analysisId(analysis.getId())
+                        .enterpriseName(analysis.getEnterprise().getName())
+                        .createdAt(analysis.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+
+        return AnalysisResponse.AnalysisList.builder()
+                .sessions(sessionInfos)
+                .build();
     }
 }

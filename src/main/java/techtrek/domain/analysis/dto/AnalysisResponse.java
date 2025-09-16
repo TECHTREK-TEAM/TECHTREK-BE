@@ -2,7 +2,6 @@ package techtrek.domain.analysis.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,19 +16,16 @@ public class AnalysisResponse {
     @Schema(description = "분석 데이터 응답")
     public static class Analysis {
         @Schema(description = "분석 ID", example = "5678")
-        private String analysisId;
+        private Long analysisId;
 
         @Schema(description = "합격 여부", example = "true")
-        private Boolean status;
+        private Boolean isPass;
 
         @Schema(description = "일치율 점수", example = "85.5")
-        private Double resultScore;
+        private Double score;
 
-        @Schema(description = "팔로우 점수", example = "90.0")
-        private Double followScore;
-
-        @Schema(description = "결과 설명", example = "우수")
-        private String result;
+        @Schema(description = "피드백", example = "우수")
+        private String feedback;
 
         @Schema(description = "분석 소요 시간(분)", example = "5")
         private int duration;
@@ -46,8 +42,8 @@ public class AnalysisResponse {
     @AllArgsConstructor
     @Schema(description = "분석 세션 상세 정보 응답")
     public static class Detail{
-        @Schema(description = "세션 정보 ID", example = "1234")
-        private String sessionInfoId;
+        @Schema(description = "분석 정보 ID", example = "1234")
+        private Long analysisId;
 
         @Schema(description = "분석 결과")
         private Analysis analysis;
@@ -64,16 +60,10 @@ public class AnalysisResponse {
         @AllArgsConstructor
         public static class Analysis {
             @Schema(description = "합격 여부", example = "true")
-            private boolean status;
+            private boolean isPass;
 
-            @Schema(description = "팔로우 점수", example = "75.0")
-            private double followScore;
-
-            @Schema(description = "평균대비 증가 비율", example = "80.5")
-            private double averageFollowPercent;
-
-            @Schema(description = "일치율 점수", example = "85.0")
-            private double resultScore;
+            @Schema(description = "일치율", example = "75.0")
+            private double score;
 
             @Schema(description = "분석 소요 시간(분)", example = "5")
             private int duration;
@@ -111,34 +101,34 @@ public class AnalysisResponse {
             @Schema(description = "키워드 번호", example = "1")
             private String keywordNumber;
 
-            @Schema(description = "설명", example = "우수")
-            private String result;
+            @Schema(description = "피드백", example = "우수")
+            private String feedback;
         }
     }
 
-    // 세션 리스트 불러오기
+    // 분석 리스트 불러오기
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "분석 세션 리스트")
-    public static class SessionList {
+    public static class AnalysisList {
         @Schema(description = "세션 리스트")
-        private List<SessionData> session;
-    }
+        private List<Data> sessions;
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class SessionData {
-        @Schema(description = "세션 정보 ID", example = "1234")
-        private String sessionInfoId;
+        @Getter
+        @Builder
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class Data {
+            @Schema(description = "분석 ID", example = "1234")
+            private Long analysisId;
 
-        @Schema(description = "기업명", example = "네이버")
-        private EnterpriseName enterpriseName;
+            @Schema(description = "기업명", example = "네이버")
+            private String enterpriseName;
 
-        @Schema(description = "생성일자", example = "2025-06-30 10:15:30")
-        private LocalDateTime createdAt;
+            @Schema(description = "생성일자", example = "2025-06-30 10:15:30")
+            private LocalDateTime createdAt;
+        }
     }
 }
