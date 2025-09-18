@@ -12,7 +12,8 @@ public enum ErrorCode implements ResponseCode {
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "USER409", "중복된 사용자 이름입니다."),
 
     // 사용자
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."), // ✅
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."), //ok
+    UNAUTHORIZED(HttpStatus.FORBIDDEN, "AUTH403", "해당 세션에 대한 권한이 없습니다."),
 
     // 세션, 필드
     SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다."), // ✅
@@ -37,9 +38,13 @@ public enum ErrorCode implements ResponseCode {
     // 분석
     ANALYSIS_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "분석 정보를 찾을 수 없습니다."), // ✅
     INVALID_SIMILARITY_VALUE(HttpStatus.BAD_REQUEST, "ANALYSIS401", "유효하지 않은 similarity 값입니다."),  // ✅
-    REDIS_HASH_ACCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "Redis 해시 조회 중 오류가 발생했습니다.");  // ✅
+    REDIS_HASH_ACCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "Redis 해시 조회 중 오류가 발생했습니다."),  // ✅
 
-
+    // 소셜 로그인
+    OAUTH_PROVIDER_NOT_FOUND(HttpStatus.BAD_REQUEST, "OAUTH400", "지원하지 않는 OAuth 제공자입니다."), // 400
+    OAUTH_TOKEN_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH500", "토큰 요청에 실패했습니다."), // 500
+    OAUTH_USERINFO_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH501", "사용자 정보를 가져오는데 실패했습니다."), // 500
+    LOGIN_ALREADY_EXISTS(HttpStatus.CONFLICT, "OAUTH409", "이미 다른 로그인 방식으로 가입된 회원입니다."); // 409
 
     private final HttpStatus httpStatus;
     private final String code;

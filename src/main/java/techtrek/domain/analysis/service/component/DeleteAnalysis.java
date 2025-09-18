@@ -8,6 +8,8 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.Set;
 
@@ -20,9 +22,12 @@ public class DeleteAnalysis {
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    public Boolean exec(Long analysisId){
+    public Boolean exec(Long analysisId, CustomUserDetails userDetails){
         // Analysis 조회
         Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
+
+        // 권한체크
+        if (!analysis.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
         // redis 삭제
         Set<String> keys = redisTemplate.keys(interviewPrefix + analysis.getSessionId() + "*");

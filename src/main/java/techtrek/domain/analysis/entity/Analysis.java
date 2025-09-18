@@ -37,7 +37,7 @@ public class Analysis {
     @Column(name = "feedback", length = 255, nullable = false)
     private String feedback;
 
-    @Column(name = "analysis_position", length = 36, nullable = false)
+    @Column(name = "analysis_position", length = 36)
     private String analysisPosition;
 
     @Column(name = "duration", nullable = false)

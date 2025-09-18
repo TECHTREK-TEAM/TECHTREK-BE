@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name="user")
 public class User {
     @Id
-    @Column(name="id", length = 36, nullable = false)
+    @Column(name="id", length = 256, nullable = false)
     private String id;
 
     @Column(name="name", length = 36, nullable = false)
@@ -25,6 +25,12 @@ public class User {
 
     @Column(name="position", length = 36)
     private String position;
+
+    @Column(name = "email", length = 100, nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "provider", length = 20, nullable = false)
+    private String provider;
 
     @Column(name="seniority", length = 36)
     private String seniority;
@@ -34,6 +40,10 @@ public class User {
 
     @Column(name="resume_name", length = 255)
     private String resumeName;
+
+    @Column(name = "role", length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

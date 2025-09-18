@@ -12,24 +12,25 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.domain.user.entity.User;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class GetAnalysis {
-    private final UserRepository userRepository;
     private final AnalysisRepository analysisRepository;
     private final DBAnalysisCalc dbAnalysisCalc;
     private final RedisAnalysisCalc redisAnalysisCalc;
 
     // 선택한 세션 불러오기
-    public AnalysisResponse.Detail exec(Long analysisId){
-        // TODO: 사용자 조회
-        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
+    public AnalysisResponse.Detail exec(Long analysisId, CustomUserDetails userDetails){
         // Analysis 조회
         Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
+
+        // 권한체크
+        if (!analysis.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
         // DB에서 분석 정보 계산
         AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(analysis.getEnterprise(), analysis );

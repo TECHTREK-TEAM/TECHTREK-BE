@@ -14,22 +14,24 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.domain.user.entity.User;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class GetAnalysisRecent {
-    private final UserRepository userRepository;
+    private final UserValidator userValidator;
     private final EnterpriseRepository enterpriseRepository;
     private final AnalysisRepository analysisRepository;
     private final DBAnalysisCalc dbAnalysisCalc;
     private final RedisAnalysisCalc redisAnalysisCalc;
 
     // 최근 세션 불러오기
-    public AnalysisResponse.Detail exec(String enterpriseName){
-        // TODO: 사용자 조회
-        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+    public AnalysisResponse.Detail exec(String enterpriseName, CustomUserDetails userDetails){
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 기업 조회
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));

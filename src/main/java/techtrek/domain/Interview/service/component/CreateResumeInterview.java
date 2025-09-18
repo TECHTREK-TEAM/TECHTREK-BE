@@ -15,6 +15,8 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ import java.util.UUID;
 public class CreateResumeInterview {
     private static final String PROMPT_PATH_RESUME = "prompts/resume_question_prompt.txt";
 
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
@@ -37,14 +40,14 @@ public class CreateResumeInterview {
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
 
-    public InterviewResponse.Question exec(String sessionId){
+    public InterviewResponse.Question exec(String sessionId, CustomUserDetails userDetails){
         // key 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
         String resumeKey = sessionKey + resumePrefix+ fieldId;
 
-        // TODO: 사용자 조회
-        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 세션 유효성 확인
         if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);

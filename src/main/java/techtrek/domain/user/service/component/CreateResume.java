@@ -13,6 +13,8 @@ import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,17 +26,18 @@ public class CreateResume {
     //상수 정의
     private static final String PROMPT_PATH_CREATE_RESUME = "prompts/resume_summary_prompt.txt";
 
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
     private final StackRepository stackRepository;
     private final Gpt gpt;
 
     // 이력서 추출
-    public UserResponse.Resume exec(MultipartFile file) {
+    public UserResponse.Resume exec(MultipartFile file, CustomUserDetails userDetails) {
         // 파일 존재 확인
         if (file == null || file.isEmpty()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
-        // TODO:사용자 조회
-        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 이력서 추출
         String extractedText;

@@ -10,6 +10,8 @@ import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ public class CreateParentTailInterview {
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final UserValidator userValidator;
     private final NumberCountProvider numberCountProvider;
     private final Gpt gpt;
 
@@ -35,7 +38,10 @@ public class CreateParentTailInterview {
     @Value("${custom.redis.prefix.tail}")
     private String tailPrefix;
 
-    public InterviewResponse.TailQuestion exec(String sessionId, String parentId) {
+    public InterviewResponse.TailQuestion exec(String sessionId, String parentId, CustomUserDetails userDetails) {
+        // 사용자 조회
+        userValidator.validateAndGetUser(userDetails.getId());
+
         // 키, 변수 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;

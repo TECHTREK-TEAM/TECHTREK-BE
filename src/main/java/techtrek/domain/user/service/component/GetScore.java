@@ -8,19 +8,22 @@ import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
+import techtrek.global.securty.service.CustomUserDetails;
+import techtrek.global.securty.service.UserValidator;
 
 import java.time.YearMonth;
 
 @Component
 @RequiredArgsConstructor
 public class GetScore {
+    private final UserValidator userValidator;
     private final UserRepository userRepository;
     private final AnalysisRepository analysisRepository;
 
     // 일치율 조회
-    public UserResponse.Score exec(){
-        // TODO:사용자 조회
-        User user = userRepository.findById("1").orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+    public UserResponse.Score exec(CustomUserDetails userDetails){
+        // 사용자 조회
+        User user = userValidator.validateAndGetUser(userDetails.getId());
 
         // 전체 평균 score
         Double avgScore = analysisRepository.findAvgScoreByUser(user.getId());
