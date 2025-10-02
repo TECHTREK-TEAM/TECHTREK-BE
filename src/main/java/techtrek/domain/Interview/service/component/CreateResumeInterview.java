@@ -11,7 +11,6 @@ import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
@@ -27,7 +26,6 @@ public class CreateResumeInterview {
     private static final String PROMPT_PATH_RESUME = "prompts/resume_question_prompt.txt";
 
     private final UserValidator userValidator;
-    private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final CompanyCSProvider companyCSProvider;

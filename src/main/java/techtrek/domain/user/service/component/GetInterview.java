@@ -8,9 +8,6 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.repository.UserRepository;
-import techtrek.global.common.code.ErrorCode;
-import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.securty.service.UserValidator;
 
@@ -18,7 +15,6 @@ import techtrek.global.securty.service.UserValidator;
 @RequiredArgsConstructor
 public class GetInterview {
     private final UserValidator userValidator;
-    private final UserRepository userRepository;
     private final AnalysisRepository analysisRepository;
 
     // 면접 정보(높은점수, 최근) 조회

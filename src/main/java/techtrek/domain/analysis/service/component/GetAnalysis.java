@@ -8,12 +8,9 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.analysis.service.common.DBAnalysisCalc;
 import techtrek.domain.analysis.service.common.RedisAnalysisCalc;
-import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
-import techtrek.domain.user.entity.User;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.util.List;
 

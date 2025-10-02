@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.stack.entity.Stack;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.repository.UserRepository;
-import techtrek.global.common.code.ErrorCode;
-import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.securty.service.UserValidator;
 
@@ -18,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetUser {
     private final UserValidator userValidator;
-    private final UserRepository userRepository;
 
     // 사용자 정보 조회
     public UserResponse.Info exec(CustomUserDetails userDetails) {

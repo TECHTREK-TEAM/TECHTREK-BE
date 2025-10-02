@@ -7,14 +7,11 @@ import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
-import techtrek.global.common.code.ErrorCode;
-import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.securty.service.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor

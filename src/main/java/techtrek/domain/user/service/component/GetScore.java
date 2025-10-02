@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
-import techtrek.domain.user.repository.UserRepository;
-import techtrek.global.common.code.ErrorCode;
-import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.securty.service.UserValidator;
 
@@ -17,7 +14,6 @@ import java.time.YearMonth;
 @RequiredArgsConstructor
 public class GetScore {
     private final UserValidator userValidator;
-    private final UserRepository userRepository;
     private final AnalysisRepository analysisRepository;
 
     // 일치율 조회
