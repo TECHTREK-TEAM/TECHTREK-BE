@@ -16,18 +16,21 @@ public class DBAnalysisCalc {
 
     // DB 분석 계산
     public AnalysisParserResponse.DBAnalysisResult exec(Enterprise enterprise,Analysis selectAnalysis){
-        // 특정 기업에 속한 모든 분석 결과 조회
+        // 특정 기업에 속한 모든 분석 결과 조회, 데이터 총 개수
         List<Analysis> allEnterpriseAnalyses = analysisRepository.findAllByEnterprise(enterprise);
+        long totalCount = analysisRepository.countByEnterprise(enterprise);
 
         // 상위 퍼센트 계산 (전체 가준)
         allEnterpriseAnalyses.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));
         int rank = 1;
         for (Analysis a : allEnterpriseAnalyses) {
-            if (a.getId() == selectAnalysis.getId()) break;
+            if (a.getId().equals(selectAnalysis.getId())) { // Long 안전 비교
+                break;
+            }
             rank++;
         }
-        double topScore = ((double) rank / allEnterpriseAnalyses.size()) * 100;
-        topScore = Math.round(topScore * 10) / 10.0;
+        double topPercent = ((double) rank / totalCount) * 100;
+        topPercent = Math.round(topPercent * 10) / 10.0;;
 
         // 소요시간 평균 계산 (user 기준)
         double avgDuration = allEnterpriseAnalyses.stream()
@@ -45,7 +48,7 @@ public class DBAnalysisCalc {
                 .score(selectAnalysis.getScore())
                 .duration(selectAnalysis.getDuration())
                 .averageDurationPercent(averageDurationPercent)
-                .topScore(topScore)
+                .topScore(topPercent)
                 .keyword(selectAnalysis.getKeyword())
                 .keywordNumber(selectAnalysis.getKeywordNumber())
                 .feedback(selectAnalysis.getFeedback())
