@@ -26,7 +26,6 @@ public class CreateStartInterview {
     private static final String CURRENT_COUNT = "1";
 
     private final UserValidator userValidator;
-    private final UserRepository userRepository;
     private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final BasicQuestion basicQuestion;

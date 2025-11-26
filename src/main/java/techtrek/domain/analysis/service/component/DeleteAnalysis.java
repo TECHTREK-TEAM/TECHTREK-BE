@@ -9,7 +9,6 @@ import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.util.Set;
 

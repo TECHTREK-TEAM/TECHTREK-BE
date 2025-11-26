@@ -10,7 +10,6 @@ import techtrek.domain.analysis.service.common.DBAnalysisCalc;
 import techtrek.domain.analysis.service.common.RedisAnalysisCalc;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.user.repository.UserRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.domain.user.entity.User;

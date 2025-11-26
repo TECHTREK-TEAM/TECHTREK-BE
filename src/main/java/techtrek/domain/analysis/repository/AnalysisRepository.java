@@ -22,6 +22,9 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
     // 특정 Enterprise에 속한 모든 분석 결과 조회
     List<Analysis> findAllByEnterprise(Enterprise enterprise);
 
+    // 특정 기업 전체 분석 수
+    long countByEnterprise(Enterprise enterprise);
+
     // 관심 기업 3
     @Query("""
         SELECT a.enterprise.name AS name,
