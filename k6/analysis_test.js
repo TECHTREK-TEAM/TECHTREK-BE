@@ -3,9 +3,9 @@ import { check, sleep } from 'k6';
 
 export let options = {
     stages: [
-        { duration: '30s', target: 200 },
-        { duration: '30s', target: 400 },
-        { duration: '30s', target: 0 },
+        { duration: '30s', target: 20 },   // 초반 점진적 부하
+        { duration: '30s', target: 50 },   // 최대 부하
+        { duration: '30s', target: 0 },    // 종료
     ],
 };
 
@@ -24,5 +24,5 @@ export default function () {
         'status is 200': (r) => r.status === 200,
     });
 
-    sleep(1);
+    sleep(Math.random() * 0.5 + 0.1);
 }
