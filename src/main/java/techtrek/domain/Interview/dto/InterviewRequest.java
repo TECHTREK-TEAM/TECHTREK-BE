@@ -13,7 +13,7 @@ public class InterviewRequest {
     @AllArgsConstructor
     @Schema(description = "면접 시작 요청")
     public static class StartRequest {
-        @Schema(description = "기업 이름", example = "naver")
+        @Schema(description = "기업 이름", example = "NAVER")
         private String enterpriseName;
     }
 
