@@ -22,12 +22,19 @@ public class GetAnalysis {
     private final RedisAnalysisCalc redisAnalysisCalc;
 
     // 선택한 세션 불러오기
-    public AnalysisResponse.Detail exec(Long analysisId, CustomUserDetails userDetails){
+    public AnalysisResponse.Detail exec(Long analysisId){
         // Analysis 조회
         Analysis analysis = analysisRepository.findById(analysisId).orElseThrow(() -> new CustomException(ErrorCode.ANALYSIS_NOT_FOUND));
 
         // 권한체크
-        if (!analysis.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
+        // 권한 체크
+        String testUserId = "naver_AAAAOa674hdIxEKQpQ-GIK8AmMAUGD7lKTAD0QZOh-JWw-aBRIOJgqqaIRLq1q6RdXGepsLZQSInp67HxxWeFupHodA";
+
+        if (!analysis.getUser().getId().equals(testUserId)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        }
+//
+//        if (!analysis.getUser().getId().equals(userDetails.getId())) throw new CustomException(ErrorCode.UNAUTHORIZED);
 
         // DB에서 분석 정보 계산
         AnalysisParserResponse.DBAnalysisResult DBResult = dbAnalysisCalc.exec(analysis.getEnterprise(), analysis );

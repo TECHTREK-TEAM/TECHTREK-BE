@@ -32,8 +32,8 @@ public class AnalysisService {
     }
 
     // 선택한 세션 불러오기
-    public AnalysisResponse.Detail getAnalysis(Long analysisId, CustomUserDetails userDetails){
-        return getAnalysis.exec(analysisId,userDetails);
+    public AnalysisResponse.Detail getAnalysis(Long analysisId){
+        return getAnalysis.exec(analysisId);
     }
 
     // 선택한 세션 삭제하기

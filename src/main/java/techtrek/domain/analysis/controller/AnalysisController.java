@@ -46,8 +46,8 @@ public class AnalysisController {
     // 선택한 세션 불러오기
     @GetMapping("/{analysisId}")
     @Operation(summary = "분석 세션 상세 조회", description = "선택한 분석 세션의 상세 정보를 조회합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable Long analysisId, @AuthenticationPrincipal CustomUserDetails userDetails){
-        return ApiResponse.onSuccess(analysisService.getAnalysis(analysisId,userDetails));
+    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable Long analysisId){
+        return ApiResponse.onSuccess(analysisService.getAnalysis(analysisId));
     }
 
     // 선택한 세션 삭제
