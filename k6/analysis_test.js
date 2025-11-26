@@ -2,15 +2,18 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 export let options = {
-    vus: 50,
-    duration: '10s',
+    stages: [
+        { duration: '30s', target: 200 },
+        { duration: '30s', target: 400 },
+        { duration: '30s', target: 0 },
+    ],
 };
 
 export default function () {
-    const API_URL = 'http://localhost:8080/api/analyses/3';
+    const API_URL = 'http://localhost:8080/api/analyses/12';
     const params = {
         headers: {
-            'Authorization': 'Bearer <JWT>',
+            'Authorization': 'Bearer ',
             'Content-Type': 'application/json',
         },
     };

@@ -2,7 +2,10 @@ package techtrek.domain.analysis.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
 
@@ -25,52 +28,50 @@ public class RedisAnalysisCalc {
     @Value("${custom.redis.prefix.tail}")
     private String tailPrefix;
 
-    // Redis에서 면접 내용 조회
     public List<AnalysisParserResponse.RedisAnalysisResult> exec(String sessionId) {
         String sessionKeyPrefix = interviewPrefix + sessionId;
         List<String> interviewTypes = List.of(basicPrefix, resumePrefix, tailPrefix);
 
-        List<AnalysisParserResponse.RedisAnalysisResult> interviews = new ArrayList<>();
-
+        // 1. 키 목록 생성
+        List<String> keys = new ArrayList<>();
         for (String type : interviewTypes) {
-            String redisKeyPattern = sessionKeyPrefix + type + "*";
-
-            Map<String, Map<String, String>> hashData = getAllHash(redisKeyPattern);
-
-            for (Map<String, String> field : hashData.values()) {
-                int currentCount = Integer.parseInt(field.getOrDefault("currentCount", "0"));
-
-                interviews.add(
-                        AnalysisParserResponse.RedisAnalysisResult.builder()
-                                .question(field.getOrDefault("question", ""))
-                                .answer(field.getOrDefault("answer", ""))
-                                .questionNumber(field.getOrDefault("questionNumber", ""))
-                                .currentCount(currentCount)
-                                .build()
-                );
-            }
+            // 와일드카드 대신 구체적 키 패턴 수집
+            Set<String> matchedKeys = redisTemplate.keys(sessionKeyPrefix + type + "*");
+            if (matchedKeys != null) keys.addAll(matchedKeys);
         }
 
-        // totalCount 오름차순 정렬
+        // 2. 파이프라인 사용해서 한 번에 모든 Hash 가져오기
+        List<Object> hashResults = redisTemplate.executePipelined(new SessionCallback<Object>() {
+            @Override
+            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+                RedisOperations<String, String> stringOps = (RedisOperations<String, String>) operations;
+                for (String key : keys) {
+                    stringOps.opsForHash().entries(key);
+                }
+                return null;
+            }
+        });
+
+
+        // 3. 결과 변환
+        List<AnalysisParserResponse.RedisAnalysisResult> interviews = new ArrayList<>();
+        for (Object obj : hashResults) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> field = (Map<String, String>) obj;
+            int currentCount = Integer.parseInt(field.getOrDefault("currentCount", "0"));
+            interviews.add(
+                    AnalysisParserResponse.RedisAnalysisResult.builder()
+                            .question(field.getOrDefault("question", ""))
+                            .answer(field.getOrDefault("answer", ""))
+                            .questionNumber(field.getOrDefault("questionNumber", ""))
+                            .currentCount(currentCount)
+                            .build()
+            );
+        }
+
+        // totalCount 기준 오름차순 정렬
         interviews.sort(Comparator.comparingInt(AnalysisParserResponse.RedisAnalysisResult::getCurrentCount));
 
         return interviews;
     }
-
-    // Redis Hash 여러 field(key) 전체 가져오기
-    public Map<String, Map<String, String>> getAllHash(String keyPattern) {
-        Map<String, Map<String, String>> result = new HashMap<>();
-
-        // redis에 있는 key 전체 스캔
-        Set<String> keys = redisTemplate.keys(keyPattern + "*");
-        if (keys == null) return result;
-
-        for (String key : keys) {
-            Map<String, String> hash = redisTemplate.<String, String>opsForHash().entries(key);
-            result.put(key, hash);
-        }
-
-        return result;
-    }
-
 }
