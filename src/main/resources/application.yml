@@ -107,7 +107,3 @@ server:
 jwt:
   secret: ${JWT_SECRET}
   expiration: 86400000 #(24시간)
-
-logging:
-  level:
-    org.springframework.web: DEBUG
