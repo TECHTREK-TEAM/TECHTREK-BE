@@ -33,7 +33,7 @@ public class UserController {
     // 사용자 정보 수정
     @PatchMapping("/info")
     @Operation(summary = "사용자 정보 수정", description = "사용자의 프로필 정보를 수정합니다.")
-    public ResponseEntity<CommonResponse<UserResponse.Info>> updateUser(@RequestBody UserRequest.Info request, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResponseEntity<CommonResponse<UserResponse.Info>> updateUser(@RequestBody UserRequest.InfoRequest request, @AuthenticationPrincipal CustomUserDetails userDetails){
         return ApiResponse.onSuccess(userService.updateUser(request,userDetails));
     }
 

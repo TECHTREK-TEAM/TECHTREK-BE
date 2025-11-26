@@ -25,7 +25,7 @@ public class UserService {
     }
 
     // 사용자 정보 수정
-    public UserResponse.Info updateUser(UserRequest.Info request,CustomUserDetails userDetails){
+    public UserResponse.Info updateUser(UserRequest.InfoRequest request,CustomUserDetails userDetails){
         return updateUser.exec(request.getName(), request.getPosition(), request.getSeniority(), request.getStacks(), userDetails);
     }
 

@@ -21,22 +21,22 @@ public class InterviewService {
     private final CreatePreviousTailInterview createPreviousTailInterview;
 
     //면접 시작하기
-    public InterviewResponse.Start createInterview(InterviewRequest.Start request, CustomUserDetails userDetails) {
+    public InterviewResponse.Start createInterview(InterviewRequest.StartRequest request, CustomUserDetails userDetails) {
         return createStartInterview.exec(request.getEnterpriseName(), userDetails);
     }
 
     // 기본 질문 생성하기
-    public InterviewResponse.Question createNewInterview(InterviewRequest.Question request, CustomUserDetails userDetails) {
+    public InterviewResponse.Question createNewInterview(InterviewRequest.QuestionRequest request, CustomUserDetails userDetails) {
         return createBasicInterview.exec(request.getSessionId(), userDetails);
     }
 
     // 이력서 질문 생성하기
-    public InterviewResponse.Question createResumeInterview(InterviewRequest.Question request, CustomUserDetails userDetails) {
+    public InterviewResponse.Question createResumeInterview(InterviewRequest.QuestionRequest request, CustomUserDetails userDetails) {
         return createResumeInterview.exec(request.getSessionId(), userDetails);
     }
 
     // 연계 질문 생성하기
-    public InterviewResponse.TailQuestion createTailInterview(InterviewRequest.TailQuestion request, CustomUserDetails userDetails) {
+    public InterviewResponse.TailQuestion createTailInterview(InterviewRequest.TailQuestionRequest request, CustomUserDetails userDetails) {
         // 첫번째 연계질문
         if (request.getPreviousId() == null || request.getPreviousId().isBlank()) return createParentTailInterview.exec(request.getSessionId(), request.getParentId(), userDetails);
         // 그 이후 연계질문
@@ -44,7 +44,7 @@ public class InterviewService {
     }
 
     //답변하기
-    public Boolean createAnswer(InterviewRequest.Answer request, CustomUserDetails userDetails) {
+    public Boolean createAnswer(InterviewRequest.AnswerRequest request, CustomUserDetails userDetails) {
         return createAnswerBean.exec(request. getSessionId(),request.getFieldId(),request.getType(),request.getAnswer(),userDetails);
     }
 

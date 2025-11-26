@@ -17,7 +17,7 @@ public class AnalysisService {
     private final DeleteAnalysis deleteAnalysis;
 
     // 분석하기
-    public AnalysisResponse.Analysis createAnalysis(AnalysisRequest.Analysis request, CustomUserDetails userDetails) {
+    public AnalysisResponse.Analysis createAnalysis(AnalysisRequest.AnalysisStartRequest request, CustomUserDetails userDetails) {
         return createAnalysis.exec(request.getSessionId(), request.getDuration(), userDetails);
     }
 

@@ -12,7 +12,7 @@ public class UserRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "사용자 정보 요청")
-    public static class Info {
+    public static class InfoRequest {
         @Schema(description = "사용자 닉네임", example = "김철수")
         private String name;
 

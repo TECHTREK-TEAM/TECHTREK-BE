@@ -20,7 +20,7 @@ public class UpdateUser {
     private final UserRepository userRepository;
 
     // 사용자 정보 수정
-    public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.Info.Stack> newStacks, CustomUserDetails userDetails) {
+    public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.InfoRequest.Stack> newStacks, CustomUserDetails userDetails) {
         // 사용자 조회
         User user = userValidator.validateAndGetUser(userDetails.getId());
 
@@ -32,7 +32,7 @@ public class UpdateUser {
         // 스택 리스트 교체
         if (newStacks != null && !newStacks.isEmpty()) {
             user.getStackList().clear();
-            for (UserRequest.Info.Stack stackDto : newStacks) {
+            for (UserRequest.InfoRequest.Stack stackDto : newStacks) {
                 Stack stack = new Stack();
                 stack.setStackName(stackDto.getStackName());
                 stack.setUser(user);

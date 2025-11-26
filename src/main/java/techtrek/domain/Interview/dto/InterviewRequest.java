@@ -12,8 +12,8 @@ public class InterviewRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "면접 시작 요청")
-    public static class Start {
-        @Schema(description = "기업 이름", example = "네이버")
+    public static class StartRequest {
+        @Schema(description = "기업 이름", example = "naver")
         private String enterpriseName;
     }
 
@@ -22,7 +22,7 @@ public class InterviewRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "기본 질문 생성 요청")
-    public static class Question {
+    public static class QuestionRequest {
         @Schema(description = "세션 ID", example = "1234", required = true)
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
@@ -33,7 +33,7 @@ public class InterviewRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "꼬리 질문 생성 요청")
-    public static class TailQuestion {
+    public static class TailQuestionRequest {
         @Schema(description = "세션 ID", example = "1234", required = true)
         @NotBlank(message = "세션Id는 필수입니다.")
         private String sessionId;
@@ -50,7 +50,7 @@ public class InterviewRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "답변 생성 요청")
-    public static class Answer {
+    public static class AnswerRequest {
         @Schema(description = "세션 ID", example = "1234", required = true)
         @NotBlank(message = "세션Id 필수입니다.")
         private String sessionId;
