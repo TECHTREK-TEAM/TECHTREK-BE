@@ -2,6 +2,7 @@ package techtrek.domain.analysis.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import techtrek.domain.analysisQA.InterviewSession;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.user.entity.User;
 
@@ -53,6 +54,11 @@ public class Analysis {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id", nullable = false)
     private Enterprise enterprise;
+
+    // 지우기
+    @OneToOne
+    @JoinColumn(name = "interview_session_id")
+    private InterviewSession interviewSession;
 
 
 }
