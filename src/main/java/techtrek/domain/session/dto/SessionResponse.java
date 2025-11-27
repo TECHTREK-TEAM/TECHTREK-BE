@@ -53,9 +53,6 @@ public class SessionResponse {
     @NoArgsConstructor
     @Schema(description = "꼬리 질문 생성 응답")
     public static class TailQuestion {
-        @Schema(description = "필드 ID", example = "2345")
-        private String fieldId;
-
         @Schema(description = "질문 내용", example = "그 프로젝트에서 가장 어려웠던 점은 무엇인가요?")
         private String question;
 

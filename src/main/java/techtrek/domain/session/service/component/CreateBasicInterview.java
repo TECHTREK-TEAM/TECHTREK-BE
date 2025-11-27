@@ -5,13 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
-import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.session.dto.SessionParserResponse;
 import techtrek.domain.session.service.common.BasicQuestion;
 import techtrek.domain.session.dto.SessionResponse;
 import techtrek.domain.session.service.helper.SessionRedisHelper;
-import techtrek.global.common.code.ErrorCode;
-import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.securty.service.UserValidator;
 
@@ -45,6 +42,7 @@ public class CreateBasicInterview {
 
         // 다음 질문 번호
         int nextMainNumber = mainNumber + 1;
+        int nextCurrentCount = currentCount + 1;
 
         // QA 키 생성
         String qaKey = sessionRedisHelper.buildQaKey(sessionId, nextMainNumber,0);
@@ -56,7 +54,7 @@ public class CreateBasicInterview {
         SessionParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
         // Redis 저장
-        saveUpdataData(sessionKey, nextMainNumber, currentCount + 1);
+        saveUpdataData(sessionKey, nextMainNumber, nextCurrentCount);
         saveQaData(qaKey, questionResult);
 
         return SessionResponse.Question.builder()

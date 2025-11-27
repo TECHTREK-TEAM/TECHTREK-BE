@@ -17,8 +17,7 @@ public class SessionService {
     private final CreateResumeInterview createResumeInterview;
     private final CreateAnswer createAnswerBean;
     private final DeleteInterview deleteInterview;
-    private final CreateParentTailInterview createParentTailInterview;
-    private final CreatePreviousTailInterview createPreviousTailInterview;
+    private final CreateTailInterview createTailInterview;
 
     //면접 시작하기
     public SessionResponse.Start createInterview(SessionRequest.StartRequest request, CustomUserDetails userDetails) {
@@ -37,10 +36,7 @@ public class SessionService {
 
     // 연계 질문 생성하기
     public SessionResponse.TailQuestion createTailInterview(SessionRequest.TailQuestionRequest request, CustomUserDetails userDetails) {
-        // 첫번째 연계질문
-        if (request.getPreviousId() == null || request.getPreviousId().isBlank()) return createParentTailInterview.exec(request.getSessionId(), request.getParentId(), userDetails);
-        // 그 이후 연계질문
-        else return createPreviousTailInterview.exec(request.getSessionId(), request.getPreviousId(), userDetails);
+        return createTailInterview.exec(request.getSessionId(), userDetails);
     }
 
     //답변하기

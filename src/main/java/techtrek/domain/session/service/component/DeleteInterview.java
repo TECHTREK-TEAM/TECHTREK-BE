@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import techtrek.domain.session.service.helper.SessionRedisHelper;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class DeleteInterview {
     private final RedisTemplate<String, String> redisTemplate;
     private final UserValidator userValidator;
+    private final SessionRedisHelper sessionRedisHelper;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -25,8 +27,10 @@ public class DeleteInterview {
         // 사용자 조회
         userValidator.validateAndGetUser(userDetails.getId());
 
-        // 세션 유효성 확인
-        if (Boolean.FALSE.equals(redisTemplate.hasKey(interviewPrefix + sessionId))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        String sessionKey = interviewPrefix + sessionId;
+        
+        // 키가 없으면 예외
+        sessionRedisHelper.validateSession(sessionKey);
 
         // Redis 데이터 삭제
         Set<String> keys = redisTemplate.keys(interviewPrefix + sessionId + "*");

@@ -52,10 +52,10 @@ public class CreateResume {
         UserResponse.Resume result = gpt.exec(PROMPT_PATH_CREATE_RESUME, new Object[]{extractedText}, UserResponse.Resume.class);
 
         // 이력서, 스택 등 값 저장
-        if (user.getPosition() != null) user.setPosition(result.getPosition());
-        if (user.getSeniority() != null) user.setSeniority(result.getSeniority());
-        if (user.getResume() != null) user.setResume(result.getResume());
-        if (user.getResumeName() != null) user.setResumeName(fileName);
+        user.setPosition(result.getPosition());
+        user.setSeniority(result.getSeniority());
+        user.setResume(result.getResume());
+        user.setResumeName(fileName);
         userRepository.save(user);
 
         // 기존 스택 삭제
