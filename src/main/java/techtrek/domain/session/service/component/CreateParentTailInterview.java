@@ -1,12 +1,12 @@
-package techtrek.domain.Interview.service.component;
+package techtrek.domain.session.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.InterviewResponse;
-import techtrek.domain.Interview.dto.InterviewParserResponse;
-import techtrek.domain.Interview.service.common.NumberCountProvider;
+import techtrek.domain.session.dto.SessionResponse;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.service.common.NumberCountProvider;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
@@ -38,7 +38,7 @@ public class CreateParentTailInterview {
     @Value("${custom.redis.prefix.tail}")
     private String tailPrefix;
 
-    public InterviewResponse.TailQuestion exec(String sessionId, String parentId, CustomUserDetails userDetails) {
+    public SessionResponse.TailQuestion exec(String sessionId, String parentId, CustomUserDetails userDetails) {
         // 사용자 조회
         userValidator.validateAndGetUser(userDetails.getId());
 
@@ -64,7 +64,7 @@ public class CreateParentTailInterview {
         }
 
         // gpt 연계질문 생성
-        InterviewParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_TAIL, new Object[]{parentQuestion, parentAnswer}, InterviewParserResponse.ChatResult.class);
+        SessionParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_TAIL, new Object[]{parentQuestion, parentAnswer}, SessionParserResponse.ChatResult.class);
 
         // 꼬리 질문, 질문 번호
         String tailCountKey = sessionKey + ":count:" + parentQuestionNumber;
@@ -73,7 +73,7 @@ public class CreateParentTailInterview {
         String questionNumber = parentQuestionNumber + "-" + tailQuestionNumber;
 
         // count 계산
-        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        SessionParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis에 저장
         redisTemplate.opsForHash().put(tailKey, "question", result.getQuestion());
@@ -83,7 +83,7 @@ public class CreateParentTailInterview {
         redisTemplate.opsForHash().put(tailKey, "parentQuestionNumber", parentQuestionNumber);
         redisTemplate.opsForHash().put(tailKey, "tailQuestionNumber", tailQuestionNumber);
 
-        return InterviewResponse.TailQuestion.builder()
+        return SessionResponse.TailQuestion.builder()
                 .fieldId(fieldId)
                 .question(result.getQuestion())
                 .parentQuestionNumber(parentQuestionNumber)

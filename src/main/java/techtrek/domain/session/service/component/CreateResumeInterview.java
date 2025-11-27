@@ -1,13 +1,13 @@
-package techtrek.domain.Interview.service.component;
+package techtrek.domain.session.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.InterviewParserResponse;
-import techtrek.domain.Interview.dto.InterviewResponse;
-import techtrek.domain.Interview.service.common.CompanyCSProvider;
-import techtrek.domain.Interview.service.common.NumberCountProvider;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.dto.SessionResponse;
+import techtrek.domain.session.service.common.CompanyCSProvider;
+import techtrek.domain.session.service.common.NumberCountProvider;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.user.entity.User;
@@ -38,7 +38,7 @@ public class CreateResumeInterview {
     @Value("${custom.redis.prefix.resume}")
     private String resumePrefix;
 
-    public InterviewResponse.Question exec(String sessionId, CustomUserDetails userDetails){
+    public SessionResponse.Question exec(String sessionId, CustomUserDetails userDetails){
         // key 생성
         String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
@@ -62,10 +62,10 @@ public class CreateResumeInterview {
         String focusCS = companyCSProvider.exec(enterprise.getName());
 
         // gpt 질문 생성
-        InterviewParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_RESUME, new Object[]{resume,enterprise.getName(), focusCS}, InterviewParserResponse.ChatResult.class);
+        SessionParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_RESUME, new Object[]{resume,enterprise.getName(), focusCS}, SessionParserResponse.ChatResult.class);
 
         // questionNumber, count 계산
-        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        SessionParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(resumeKey, "question",  result.getQuestion());
@@ -73,7 +73,7 @@ public class CreateResumeInterview {
         redisTemplate.opsForHash().put(resumeKey, "questionNumber", numberCount.getQuestionNumber());
         redisTemplate.opsForHash().put(resumeKey, "currentCount", numberCount.getCurrentCount());
 
-        return InterviewResponse.Question.builder()
+        return SessionResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(result.getQuestion())
                 .questionNumber(numberCount.getQuestionNumber())

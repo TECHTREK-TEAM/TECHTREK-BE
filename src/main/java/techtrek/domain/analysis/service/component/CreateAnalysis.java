@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import techtrek.domain.Interview.dto.InterviewParserResponse;
-import techtrek.domain.Interview.service.common.CompanyCSProvider;
-import techtrek.domain.Interview.service.common.NumberCountProvider;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.service.common.CompanyCSProvider;
+import techtrek.domain.session.service.common.NumberCountProvider;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
@@ -70,7 +70,7 @@ public class CreateAnalysis {
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
-        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        SessionParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
         long highCount = Stream.of(basicKey+"*", resumeKey+"*", tailKey+"*")
                 .mapToLong(this::countHighSimilarity)
                 .sum();

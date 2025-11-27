@@ -3,9 +3,12 @@ package techtrek.domain.analysis.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import techtrek.domain.enterprise.entity.Enterprise;
+import techtrek.domain.questionAnswer.entity.QuestionAnswer;
 import techtrek.domain.user.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +22,7 @@ public class Analysis {
     @Column(name = "id", length = 36, nullable = false)
     private Long id;
 
+    // 삭제
     @Column(name = "session_id", length = 255, nullable = false)
     private String sessionId;
 
@@ -45,6 +49,10 @@ public class Analysis {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    // 1:N 매핑
+    @OneToMany(mappedBy = "analysis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuestionAnswer> questionAnswers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

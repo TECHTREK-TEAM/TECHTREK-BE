@@ -1,4 +1,4 @@
-package techtrek.domain.Interview.dto;
+package techtrek.domain.session.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class InterviewParserResponse {
+public class SessionParserResponse {
 
     // GPT 반환
     @Getter

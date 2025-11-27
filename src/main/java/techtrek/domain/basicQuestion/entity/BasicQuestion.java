@@ -1,15 +1,15 @@
-package techtrek.domain.interviewQuestion.entity;
+package techtrek.domain.basicQuestion.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techtrek.domain.interviewQuestion.entity.status.Category;
+import techtrek.domain.basicQuestion.entity.status.Category;
 import techtrek.domain.enterprise.entity.Enterprise;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="interview_question")
-public class InterviewQuestion {
+@Table(name="basic_question")
+public class BasicQuestion {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class InterviewQuestion {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    public InterviewQuestion(String question, String correctAnswer, Enterprise enterprise, String category) {
+    public BasicQuestion(String question, String correctAnswer, Enterprise enterprise, String category) {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.enterprise = enterprise;

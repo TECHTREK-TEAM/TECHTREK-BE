@@ -1,4 +1,4 @@
-package techtrek.domain.Interview.service.common;
+package techtrek.domain.session.service.common;
 
 import org.springframework.stereotype.Component;
 

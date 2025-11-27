@@ -1,10 +1,10 @@
-package techtrek.domain.Interview.service.common;
+package techtrek.domain.session.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.dto.InterviewParserResponse;
+import techtrek.domain.session.dto.SessionParserResponse;
 
 import java.util.Set;
 
@@ -23,7 +23,7 @@ public class NumberCountProvider {
     private String tailPrefix;
 
     // questionNumber, count 계산
-    public InterviewParserResponse.NumberCount exec(String sessionKey){
+    public SessionParserResponse.NumberCount exec(String sessionKey){
         long basicCount = HashCount(sessionKey + basicPrefix + "*");
         long resumeCount = HashCount(sessionKey + resumePrefix + "*");
         long tailCount = HashCount(sessionKey + tailPrefix + "*");
@@ -31,7 +31,7 @@ public class NumberCountProvider {
         String currentCount = String.valueOf(basicCount + resumeCount + tailCount +1);
         long totalCount = basicCount + resumeCount + tailCount;
 
-        return new InterviewParserResponse.NumberCount(questionNumber, currentCount, totalCount);
+        return new SessionParserResponse.NumberCount(questionNumber, currentCount, totalCount);
 
     }
 

@@ -1,15 +1,15 @@
-package techtrek.domain.Interview.service.component;
+package techtrek.domain.session.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.Interview.service.common.NumberCountProvider;
+import techtrek.domain.session.service.common.NumberCountProvider;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
-import techtrek.domain.Interview.dto.InterviewParserResponse;
-import techtrek.domain.Interview.service.common.BasicQuestion;
-import techtrek.domain.Interview.dto.InterviewResponse;
+import techtrek.domain.session.dto.SessionParserResponse;
+import techtrek.domain.session.service.common.BasicQuestion;
+import techtrek.domain.session.dto.SessionResponse;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
@@ -33,7 +33,7 @@ public class CreateBasicInterview {
     @Value("${custom.redis.prefix.basic}")
     private String basicPrefix;
 
-    public InterviewResponse.Question exec(String sessionId, CustomUserDetails userDetails){
+    public SessionResponse.Question exec(String sessionId, CustomUserDetails userDetails){
         // 사용자 조회
         userValidator.validateAndGetUser(userDetails.getId());
 
@@ -51,10 +51,10 @@ public class CreateBasicInterview {
                 .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 기본 질문 생성
-        InterviewParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
+        SessionParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
         // questionNumber, count 계산
-        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
+        SessionParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
 
         // redis 저장
         redisTemplate.opsForHash().put(basicKey, "question",  questionResult.getQuestion());
@@ -62,7 +62,7 @@ public class CreateBasicInterview {
         redisTemplate.opsForHash().put(basicKey, "questionNumber", numberCount.getQuestionNumber());
         redisTemplate.opsForHash().put(basicKey, "currentCount", numberCount.getCurrentCount());
 
-        return InterviewResponse.Question.builder()
+        return SessionResponse.Question.builder()
                 .fieldId(fieldId)
                 .question(questionResult.getQuestion())
                 .questionNumber(numberCount.getQuestionNumber())

@@ -1,11 +1,11 @@
-package techtrek.domain.Interview.dto;
+package techtrek.domain.session.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 
-public class InterviewRequest {
+public class SessionRequest {
 
     // 면접 시작
     @Getter
