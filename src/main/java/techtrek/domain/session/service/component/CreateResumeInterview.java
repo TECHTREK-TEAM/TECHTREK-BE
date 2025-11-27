@@ -74,7 +74,7 @@ public class CreateResumeInterview {
         redisTemplate.opsForHash().put(resumeKey, "currentCount", numberCount.getCurrentCount());
 
         return SessionResponse.Question.builder()
-                .fieldId(fieldId)
+                //.fieldId(fieldId)
                 .question(result.getQuestion())
                 .questionNumber(numberCount.getQuestionNumber())
                 .build();

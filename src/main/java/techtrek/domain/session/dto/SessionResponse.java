@@ -36,8 +36,8 @@ public class SessionResponse {
     @NoArgsConstructor
     @Schema(description = "새 질문 생성 응답")
     public static class Question {
-        @Schema(description = "필드 ID", example = "2345")
-        private String fieldId;
+//        @Schema(description = "필드 ID", example = "2345")
+//        private String fieldId;
 
         @Schema(description = "질문 내용", example = "최근 프로젝트 경험에 대해 말씀해 주세요.")
         private String question;

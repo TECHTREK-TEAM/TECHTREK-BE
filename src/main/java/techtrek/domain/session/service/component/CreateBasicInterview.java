@@ -4,18 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import techtrek.domain.session.service.common.NumberCountProvider;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.session.dto.SessionParserResponse;
 import techtrek.domain.session.service.common.BasicQuestion;
 import techtrek.domain.session.dto.SessionResponse;
+import techtrek.domain.session.service.helper.SessionRedisHelper;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 import techtrek.global.securty.service.UserValidator;
-
-import java.util.*;
 
 // 기본 질문 생성하기
 @Component
@@ -23,49 +21,60 @@ import java.util.*;
 public class CreateBasicInterview {
     private final RedisTemplate<String, String> redisTemplate;
     private final UserValidator userValidator;
-    private final EnterpriseRepository enterpriseRepository;
+    private final SessionRedisHelper sessionRedisHelper;
     private final BasicQuestion basicQuestion;
-    private final NumberCountProvider numberCountProvider;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    @Value("${custom.redis.prefix.basic}")
-    private String basicPrefix;
+    @Value("${custom.redis.prefix.qa}")
+    private String qaPrefix;
 
     public SessionResponse.Question exec(String sessionId, CustomUserDetails userDetails){
-        // 사용자 조회
+        // 사용자 검증
         userValidator.validateAndGetUser(userDetails.getId());
 
-        // key 생성
-        String fieldId = UUID.randomUUID().toString();
         String sessionKey = interviewPrefix + sessionId;
-        String basicKey = sessionKey + basicPrefix+ fieldId;
 
-        // 세션 유효성 확인
-        if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        // 키가 없으면 예외
+        sessionRedisHelper.validateSession(sessionKey);
+
+        // Redis 값 조회
+        int mainNumber = sessionRedisHelper.getIntField(sessionKey, "mainNumber");
+        int currentCount = sessionRedisHelper.getIntField(sessionKey, "currentCount");
+
+        // 다음 질문 번호
+        int nextMainNumber = mainNumber + 1;
+
+        // QA 키 생성
+        String qaKey = sessionRedisHelper.buildQaKey(sessionId, nextMainNumber,0);
 
         // enterpriseName 조회 및 유효성 검증
-        String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName)
-                .orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        Enterprise enterprise = sessionRedisHelper.getEnterprise(sessionKey);
 
         // 기본 질문 생성
         SessionParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
 
-        // questionNumber, count 계산
-        SessionParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
-
-        // redis 저장
-        redisTemplate.opsForHash().put(basicKey, "question",  questionResult.getQuestion());
-        redisTemplate.opsForHash().put(basicKey, "correctAnswer", questionResult.getCorrectAnswer());
-        redisTemplate.opsForHash().put(basicKey, "questionNumber", numberCount.getQuestionNumber());
-        redisTemplate.opsForHash().put(basicKey, "currentCount", numberCount.getCurrentCount());
+        // Redis 저장
+        saveUpdataData(sessionKey, nextMainNumber, currentCount + 1);
+        saveQaData(qaKey, questionResult);
 
         return SessionResponse.Question.builder()
-                .fieldId(fieldId)
                 .question(questionResult.getQuestion())
-                .questionNumber(numberCount.getQuestionNumber())
+                .questionNumber(String.valueOf(nextMainNumber))
                 .build();
+    }
+
+    // redis 저장
+    private void saveUpdataData(String sessionKey, int mainNumber, int currentCount) {
+        redisTemplate.opsForHash().put(sessionKey, "mainNumber", String.valueOf(mainNumber));
+        redisTemplate.opsForHash().put(sessionKey, "subNumber", "0");
+        redisTemplate.opsForHash().put(sessionKey, "currentCount", String.valueOf(currentCount));
+    }
+
+    private void saveQaData(String qaKey, SessionParserResponse.ChatResult result) {
+        redisTemplate.opsForHash().put(qaKey, "question", result.getQuestion());
+        redisTemplate.opsForHash().put(qaKey, "correctAnswer", result.getCorrectAnswer());
+        redisTemplate.opsForHash().put(qaKey, "type", "basic");
     }
 }
