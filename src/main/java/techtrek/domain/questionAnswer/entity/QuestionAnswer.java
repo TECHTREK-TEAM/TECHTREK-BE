@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import techtrek.domain.analysis.entity.Analysis;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +28,7 @@ public class QuestionAnswer {
 
     @Column
     private int subNunber = 0;
-    
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String question;
 
@@ -38,5 +40,8 @@ public class QuestionAnswer {
 
     @Column(nullable = false)
     private int similarity = 0;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
 }

@@ -55,13 +55,13 @@ public class SessionRequest {
         @NotBlank(message = "세션Id 필수입니다.")
         private String sessionId;
 
-        @Schema(description = "필드 ID", example = "2345", required = true)
-        @NotBlank(message = "필드Id는 필수입니다.")
-        private String fieldId;
+//        @Schema(description = "필드 ID", example = "2345", required = true)
+//        @NotBlank(message = "필드Id는 필수입니다.")
+//        private String fieldId;
 
-        @Schema(description = "타입 (new/tail)", example = "new", required = true)
-        @NotBlank(message = "타입(new/tail)은 필수입니다.")
-        private String type;
+//        @Schema(description = "타입 (new/tail)", example = "new", required = true)
+//        @NotBlank(message = "타입(new/tail)은 필수입니다.")
+//        private String type;
 
         @Schema(description = "답변 내용", example = "잘 모르겠습니다.", required = true)
         @NotBlank(message = "답변은 필수입니다.")

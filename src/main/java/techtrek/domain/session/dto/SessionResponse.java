@@ -15,8 +15,8 @@ public class SessionResponse {
         @Schema(description = "세션 ID", example = "1234")
         private String sessionId;
 
-        @Schema(description = "필드 ID", example = "2345")
-        private String fieldId;
+//        @Schema(description = "필드 ID", example = "2345")
+//        private String fieldId;
 
         @Schema(description = "질문 내용", example = "자기소개를 해주세요.")
         private String question;

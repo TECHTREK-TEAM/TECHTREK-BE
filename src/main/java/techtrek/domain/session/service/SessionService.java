@@ -45,7 +45,7 @@ public class SessionService {
 
     //답변하기
     public Boolean createAnswer(SessionRequest.AnswerRequest request, CustomUserDetails userDetails) {
-        return createAnswerBean.exec(request. getSessionId(),request.getFieldId(),request.getType(),request.getAnswer(),userDetails);
+        return createAnswerBean.exec(request. getSessionId(),request.getAnswer(),userDetails);
     }
 
     // 종료하기

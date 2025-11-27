@@ -93,7 +93,6 @@ public class CreateAnalysis {
 
         // 분석 테이블 생성
         Analysis analysis = Analysis.builder()
-                .sessionId(sessionId)
                 .isPass(isPass)
                 .score(score)
                 .keyword(result.getKeyword())

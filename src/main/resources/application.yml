@@ -93,6 +93,8 @@ custom:
   redis:
     prefix:
       interview: "interview:"
+      state: ":state"
+      qa: ":qa:"
       basic: ":basic:"
       resume: ":resume:"
       tail: ":tail:"

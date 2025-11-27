@@ -13,7 +13,7 @@ public interface BasicQuestionRepository extends JpaRepository<BasicQuestion, Lo
     boolean existsByQuestion(String question);
 
     // 특정 기업의 질문 중 랜덤 1개 가져오기
-    @Query(value = "SELECT * FROM interview_question WHERE enterprise_id = :enterpriseId ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM basic_question WHERE enterprise_id = :enterpriseId ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Optional<BasicQuestion> findRandomQuestionByEnterpriseId(@Param("enterpriseId") Long enterpriseId);
 
 }
