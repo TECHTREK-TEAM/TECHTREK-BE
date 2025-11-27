@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.session.dto.SessionResponse;
 import techtrek.domain.session.dto.SessionParserResponse;
 import techtrek.domain.session.service.helper.SessionRedisHelper;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.openAI.chat.service.common.Gpt;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 // 두번째 이후 연계 질문
 @Component
@@ -18,8 +18,8 @@ public class CreateTailInterview {
     private static final String PROMPT_PATH_TAIL = "prompts/tail_question_prompt.txt";
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final UserValidator userValidator;
     private final SessionRedisHelper sessionRedisHelper;
+    private final UserHelper userHelper;
     private final Gpt gpt;
 
     @Value("${custom.redis.prefix.interview}")
@@ -27,7 +27,7 @@ public class CreateTailInterview {
 
     public SessionResponse.TailQuestion exec(String sessionId, CustomUserDetails userDetails) {
         // 사용자 검증
-        userValidator.validateAndGetUser(userDetails.getId());
+        userHelper.validateUser(userDetails.getId());
 
         String sessionKey = interviewPrefix + sessionId;
 

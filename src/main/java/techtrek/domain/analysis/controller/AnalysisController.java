@@ -22,12 +22,12 @@ import techtrek.global.securty.service.CustomUserDetails;
 public class AnalysisController {
     private final AnalysisService analysisService;
 
-    // 분석하기
-    @PostMapping
-    @Operation(summary = "분석 생성", description = "새로운 분석 데이터를 생성합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.Analysis>> createAnalysis(@Valid @RequestBody AnalysisRequest.AnalysisStartRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ApiResponse.onSuccess(analysisService.createAnalysis(request, userDetails));
-    }
+//    // 분석하기
+//    @PostMapping
+//    @Operation(summary = "분석 생성", description = "새로운 분석 데이터를 생성합니다.")
+//    public ResponseEntity<CommonResponse<AnalysisResponse.Analysis>> createAnalysis(@Valid @RequestBody AnalysisRequest.AnalysisStartRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+//        return ApiResponse.onSuccess(analysisService.createAnalysis(request, userDetails));
+//    }
 
     // 현재 세션 불러오기
     @GetMapping("/recent/{enterpriseName}")

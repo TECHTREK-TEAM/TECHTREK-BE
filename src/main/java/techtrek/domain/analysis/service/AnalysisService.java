@@ -10,16 +10,16 @@ import techtrek.global.securty.service.CustomUserDetails;
 @Service
 @RequiredArgsConstructor
 public class AnalysisService {
-    private final CreateAnalysis createAnalysis;
+    //private final CreateAnalysis createAnalysis;
     private final GetAnalysisRecent getAnalysisRecent;
     private final GetAnalysisList getAnalysisList;
     private final GetAnalysis getAnalysis;
     private final DeleteAnalysis deleteAnalysis;
 
     // 분석하기
-    public AnalysisResponse.Analysis createAnalysis(AnalysisRequest.AnalysisStartRequest request, CustomUserDetails userDetails) {
-        return createAnalysis.exec(request.getSessionId(), request.getDuration(), userDetails);
-    }
+//    public AnalysisResponse.Analysis createAnalysis(AnalysisRequest.AnalysisStartRequest request, CustomUserDetails userDetails) {
+//        return createAnalysis.exec(request.getSessionId(), request.getDuration(), userDetails);
+//    }
 
     // 현재 세션 불러오기
     public AnalysisResponse.Detail getAnalysisRecent(String enterpriseName, CustomUserDetails userDetails){

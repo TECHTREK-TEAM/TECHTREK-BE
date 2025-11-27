@@ -5,21 +5,21 @@ import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.time.YearMonth;
 
 @Component
 @RequiredArgsConstructor
 public class GetScore {
-    private final UserValidator userValidator;
+    private final UserHelper userHelper;
     private final AnalysisRepository analysisRepository;
 
     // 일치율 조회
     public UserResponse.Score exec(CustomUserDetails userDetails){
         // 사용자 조회
-        User user = userValidator.validateAndGetUser(userDetails.getId());
+        User user = userHelper.validateUser(userDetails.getId());
 
         // 전체 평균 score
         Double avgScore = analysisRepository.findAvgScoreByUser(user.getId());

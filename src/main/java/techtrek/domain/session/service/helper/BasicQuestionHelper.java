@@ -1,4 +1,4 @@
-package techtrek.domain.session.service.common;
+package techtrek.domain.session.service.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,11 +14,11 @@ import java.util.Random;
 // 기본 질문 생성
 @Component
 @RequiredArgsConstructor
-public class BasicQuestion {
+public class BasicQuestionHelper {
     private static final String PROMPT_PATH_BASIC = "prompts/basic_question_prompt.txt";
 
     private final BasicQuestionRepository interviewQuestionRepository;
-    private final CompanyCSProvider companyCSProvider;
+    private final CompanyCSHelper companyCSProvider;
     private final Gpt gpt;
 
     public SessionParserResponse.ChatResult exec(Enterprise enterprise){

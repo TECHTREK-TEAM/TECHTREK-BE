@@ -6,15 +6,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.session.dto.SessionParserResponse;
 import techtrek.domain.session.dto.SessionResponse;
-import techtrek.domain.session.service.common.CompanyCSProvider;
+import techtrek.domain.session.service.helper.CompanyCSHelper;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.session.service.helper.SessionRedisHelper;
 import techtrek.domain.user.entity.User;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 // 이력서 질문 생성하기
 @Component
@@ -22,10 +22,10 @@ import techtrek.global.securty.service.UserValidator;
 public class CreateResumeInterview {
     private static final String PROMPT_PATH_RESUME = "prompts/resume_question_prompt.txt";
 
-    private final UserValidator userValidator;
     private final RedisTemplate<String, String> redisTemplate;
-    private final CompanyCSProvider companyCSProvider;
     private final SessionRedisHelper sessionRedisHelper;
+    private final CompanyCSHelper companyCSHelper;
+    private final UserHelper userHelper;
     private final Gpt gpt;
 
     @Value("${custom.redis.prefix.interview}")
@@ -33,7 +33,7 @@ public class CreateResumeInterview {
 
     public SessionResponse.Question exec(String sessionId, CustomUserDetails userDetails){
         // 사용자 조회
-        User user = userValidator.validateAndGetUser(userDetails.getId());
+        User user = userHelper.validateUser(userDetails.getId());
 
         String sessionKey = interviewPrefix + sessionId;
 
@@ -59,7 +59,7 @@ public class CreateResumeInterview {
         if (resume == null || resume.isBlank()) throw new CustomException(ErrorCode.RESUME_NOT_FOUND);
 
         // 기업뱔 중요 CS
-        String focusCS = companyCSProvider.exec(enterprise.getName());
+        String focusCS = companyCSHelper.exec(enterprise.getName());
 
         // gpt 질문 생성
         SessionParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_RESUME, new Object[]{resume,enterprise.getName(), focusCS}, SessionParserResponse.ChatResult.class);

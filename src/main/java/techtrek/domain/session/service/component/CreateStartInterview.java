@@ -8,12 +8,12 @@ import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
 import techtrek.domain.session.dto.SessionParserResponse;
 import techtrek.domain.session.dto.SessionResponse;
-import techtrek.domain.session.service.common.BasicQuestion;
+import techtrek.domain.session.service.helper.BasicQuestionHelper;
 import techtrek.domain.user.entity.User;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.util.*;
 
@@ -23,10 +23,11 @@ import java.util.*;
 public class CreateStartInterview {
     private static final String START_QUESTION_NUMBER = "1";
 
-    private final UserValidator userValidator;
-    private final EnterpriseRepository enterpriseRepository;
     private final RedisTemplate<String, String> redisTemplate;
-    private final BasicQuestion basicQuestion;
+    private final BasicQuestionHelper basicQuestionHelper;
+    private final UserHelper userHelper;
+
+    private final EnterpriseRepository enterpriseRepository;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -37,7 +38,7 @@ public class CreateStartInterview {
     // 면접 시작하기
     public SessionResponse.Start exec(String enterpriseName, CustomUserDetails userDetails){
         // 사용자 조회
-        User user = userValidator.validateAndGetUser(userDetails.getId());
+        User user = userHelper.validateUser(userDetails.getId());
 
         // 세션 키
         String sessionId = UUID.randomUUID().toString();
@@ -48,12 +49,13 @@ public class CreateStartInterview {
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
 
         // 기본 질문 생성
-        SessionParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
+        SessionParserResponse.ChatResult questionResult = basicQuestionHelper.exec(enterprise);
 
         // redis 저장
         redisTemplate.opsForHash().put(sessionKey, "userId", user.getId());
         redisTemplate.opsForHash().put(sessionKey, "enterpriseName", enterpriseName);
         redisTemplate.opsForHash().put(sessionKey, "mainNumber", START_QUESTION_NUMBER);
+        redisTemplate.opsForHash().put(sessionKey, "subNumber", "0");
         redisTemplate.opsForHash().put(sessionKey, "currentCount", START_QUESTION_NUMBER);
         redisTemplate.opsForHash().put(qaKey, "type", "basic");
         redisTemplate.opsForHash().put(qaKey, "question",  questionResult.getQuestion());

@@ -1,4 +1,4 @@
-package techtrek.domain.session.service.common;
+package techtrek.domain.session.service.helper;
 
 import org.springframework.stereotype.Component;
 
@@ -6,7 +6,7 @@ import java.util.Map;
 
 // 회사별 CS 영역을 제공
 @Component
-public class CompanyCSProvider {
+public class CompanyCSHelper {
     private static final Map<String, String> COMPANY_CS = Map.of(
             "SAMSUNG", "운영체제, 네트워크, 자료구조, 알고리즘",
             "NAVER", "자료구조, 알고리즘, OS, 네트워크, 데이터베이스",

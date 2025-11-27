@@ -6,20 +6,20 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.session.dto.SessionParserResponse;
-import techtrek.domain.session.service.common.BasicQuestion;
+import techtrek.domain.session.service.helper.BasicQuestionHelper;
 import techtrek.domain.session.dto.SessionResponse;
 import techtrek.domain.session.service.helper.SessionRedisHelper;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 // 기본 질문 생성하기
 @Component
 @RequiredArgsConstructor
 public class CreateBasicInterview {
     private final RedisTemplate<String, String> redisTemplate;
-    private final UserValidator userValidator;
     private final SessionRedisHelper sessionRedisHelper;
-    private final BasicQuestion basicQuestion;
+    private final BasicQuestionHelper basicQuestionHelper;
+    private final UserHelper userHelper;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
@@ -29,7 +29,7 @@ public class CreateBasicInterview {
 
     public SessionResponse.Question exec(String sessionId, CustomUserDetails userDetails){
         // 사용자 검증
-        userValidator.validateAndGetUser(userDetails.getId());
+        userHelper.validateUser(userDetails.getId());
 
         String sessionKey = interviewPrefix + sessionId;
 
@@ -51,7 +51,7 @@ public class CreateBasicInterview {
         Enterprise enterprise = sessionRedisHelper.getEnterprise(sessionKey);
 
         // 기본 질문 생성
-        SessionParserResponse.ChatResult questionResult = basicQuestion.exec(enterprise);
+        SessionParserResponse.ChatResult questionResult = basicQuestionHelper.exec(enterprise);
 
         // Redis 저장
         saveUpdataData(sessionKey, nextMainNumber, nextCurrentCount);

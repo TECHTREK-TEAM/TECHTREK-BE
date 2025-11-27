@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.session.service.helper.SessionRedisHelper;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.openAI.Embedding.service.common.Embedding;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CreateAnswer {
     private final RedisTemplate<String, String> redisTemplate;
-    private final UserValidator userValidator;
     private final SessionRedisHelper sessionRedisHelper;
+    private final UserHelper userHelper;
     private final Embedding embedding;
 
     @Value("${custom.redis.prefix.interview}")
@@ -27,7 +27,7 @@ public class CreateAnswer {
     // 답변하기
     public Boolean exec(String sessionId, String answer, CustomUserDetails userDetails){
         // 사용자 조회
-        userValidator.validateAndGetUser(userDetails.getId());
+        userHelper.validateUser(userDetails.getId());
 
         String sessionKey = interviewPrefix + sessionId;
 

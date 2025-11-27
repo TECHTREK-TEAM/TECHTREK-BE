@@ -10,18 +10,18 @@ import techtrek.domain.analysis.service.common.DBAnalysisCalc;
 import techtrek.domain.analysis.service.common.RedisAnalysisCalc;
 import techtrek.domain.enterprise.entity.Enterprise;
 import techtrek.domain.enterprise.repository.EnterpriseRepository;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.domain.user.entity.User;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class GetAnalysisRecent {
-    private final UserValidator userValidator;
+    private final UserHelper userHelper;
     private final EnterpriseRepository enterpriseRepository;
     private final AnalysisRepository analysisRepository;
     private final DBAnalysisCalc dbAnalysisCalc;
@@ -30,7 +30,7 @@ public class GetAnalysisRecent {
     // 최근 세션 불러오기
     public AnalysisResponse.Detail exec(String enterpriseName, CustomUserDetails userDetails){
         // 사용자 조회
-        User user = userValidator.validateAndGetUser(userDetails.getId());
+        User user = userHelper.validateUser(userDetails.getId());
 
         // 기업 조회
         Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
