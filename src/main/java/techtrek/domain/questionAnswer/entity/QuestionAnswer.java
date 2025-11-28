@@ -24,10 +24,7 @@ public class QuestionAnswer {
     private Analysis analysis;
 
     @Column(nullable = false)
-    private int mainNumber = 0;
-
-    @Column
-    private int subNunber = 0;
+    private String type;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String question;
@@ -39,7 +36,13 @@ public class QuestionAnswer {
     private String answer;
 
     @Column(nullable = false)
-    private int similarity = 0;
+    private int mainNumber;
+
+    @Column
+    private int subNumber;
+
+    @Column
+    private double similarity;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +24,7 @@ public class Analysis {
     private Long id;
 
     // 삭제
-    @Column(name = "session_id", length = 255, nullable = false)
+    @Column(name = "session_id", length = 255)
     private String sessionId;
 
     @Column(name = "is_pass", nullable = false)
@@ -52,6 +53,7 @@ public class Analysis {
 
     // 1:N 매핑
     @OneToMany(mappedBy = "analysis", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<QuestionAnswer> questionAnswers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
