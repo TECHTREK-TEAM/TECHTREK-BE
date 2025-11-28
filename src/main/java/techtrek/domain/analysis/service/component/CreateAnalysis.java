@@ -172,20 +172,6 @@ public class CreateAnalysis {
                 .build();
     }
 
-    // 객체를 double로 변환하고, nan을 0으로 처리
-//    private double parseSimilarity(Object simObj) {
-//        try {
-//            double sim = Double.parseDouble(Objects.toString(simObj, "0.0").trim());
-//            if (Double.isNaN(sim) || Double.isInfinite(sim)) {
-//                return 0.0;
-//            }
-//            return sim;
-//        } catch (NumberFormatException e) {
-//            return 0.0;
-//        }
-//    }
-
-
     // 일치율, 합격률 계산
     public AnalysisParserResponse.AnalysisResult calculatePassAndRate(Analysis analysis) {
         // DB에서 직접 조회
