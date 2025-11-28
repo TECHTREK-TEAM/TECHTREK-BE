@@ -43,7 +43,7 @@ public class CreateAnswer {
 
         // 정답 꺼내오기
         String correctAnswer = (String) redisTemplate.opsForHash().get(qaKey, "correctAnswer");
-        if (correctAnswer == null) throw new CustomException(ErrorCode.FIELD_NOT_FOUND);
+        if (correctAnswer == null) throw new CustomException(ErrorCode.QA_NOT_FOUND);
 
         // 유사도 계산
         double similarity = computeSimilarity(answer, correctAnswer);

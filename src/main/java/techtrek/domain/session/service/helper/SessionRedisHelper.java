@@ -33,7 +33,7 @@ public class SessionRedisHelper {
     // redis 값 조회
     public int getIntField(String key, String field) {
         Object value = redisTemplate.opsForHash().get(key, field);
-        if (value == null) throw new CustomException(ErrorCode.FIELD_NOT_FOUND);
+        if (value == null) throw new CustomException(ErrorCode.QA_NOT_FOUND);
         return Integer.parseInt(value.toString());
     }
 

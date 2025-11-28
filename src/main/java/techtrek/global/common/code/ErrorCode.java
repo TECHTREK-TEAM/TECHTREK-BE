@@ -18,9 +18,9 @@ public enum ErrorCode implements ResponseCode {
     // 세션, 필드
     SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "세션을 찾을 수 없습니다."), // ✅
     QA_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "필드를 찾을 수 없습니다."), // ✅
-    FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "필드를 찾을 수 없습니다."), // ✅
-    PARENT_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "부모 필드를 찾을 수 없습니다."), // ✅
-    PREVIOUS_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "이전 필드를 찾을 수 없습니다."), // ✅
+//    FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "필드를 찾을 수 없습니다."), // ✅
+//    PARENT_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "부모 필드를 찾을 수 없습니다."), // ✅
+//    PREVIOUS_FIELD_NOT_FOUND(HttpStatus.NOT_FOUND, "SESSION404", "이전 필드를 찾을 수 없습니다."), // ✅
 
     // 질문
     ENTERPRISE_NOT_FOUND(HttpStatus.NOT_FOUND, "ENUM500", "해당 이름의 기업을 찾을 수 없습니다."), // ✅
@@ -39,7 +39,7 @@ public enum ErrorCode implements ResponseCode {
     // 분석
     ANALYSIS_NOT_FOUND(HttpStatus.BAD_REQUEST, "RESUME400", "분석 정보를 찾을 수 없습니다."), // ✅
     INVALID_SIMILARITY_VALUE(HttpStatus.BAD_REQUEST, "ANALYSIS401", "유효하지 않은 similarity 값입니다."),  // ✅
-    REDIS_HASH_ACCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "Redis 해시 조회 중 오류가 발생했습니다."),  // ✅
+//    REDIS_HASH_ACCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REDIS500", "Redis 해시 조회 중 오류가 발생했습니다."),  // ✅
 
     // 소셜 로그인
     OAUTH_PROVIDER_NOT_FOUND(HttpStatus.BAD_REQUEST, "OAUTH400", "지원하지 않는 OAuth 제공자입니다."), // 400
