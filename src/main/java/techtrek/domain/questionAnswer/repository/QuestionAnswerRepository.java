@@ -1,6 +1,7 @@
 package techtrek.domain.questionAnswer.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import techtrek.domain.analysis.entity.Analysis;
@@ -24,5 +25,9 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
     // analysis 기준으로 모든 QuestionAnswer 조회
     List<QuestionAnswer> findByAnalysis(Analysis analysis);
 
+    // 삭제
+    @Modifying
+    @Query("DELETE FROM QuestionAnswer q WHERE q.analysis = :analysis")
+    void deleteByAnalysis(Analysis analysis);
 
 }
