@@ -15,6 +15,7 @@ import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.service.CustomUserDetails;
 
+import java.time.Duration;
 import java.util.*;
 
 // 면접 시작하기
@@ -60,6 +61,10 @@ public class CreateStartInterview {
         redisTemplate.opsForHash().put(qaKey, "type", "basic");
         redisTemplate.opsForHash().put(qaKey, "question",  questionResult.getQuestion());
         redisTemplate.opsForHash().put(qaKey, "correctAnswer", questionResult.getCorrectAnswer());
+
+        // TTL 설정 (30분)
+        redisTemplate.expire(sessionKey, Duration.ofMinutes(30));
+        redisTemplate.expire(qaKey, Duration.ofMinutes(30));
 
         return SessionResponse.Start.builder()
                 .sessionId(sessionId)
