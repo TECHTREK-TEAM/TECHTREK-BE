@@ -1,8 +1,6 @@
-package techtrek.domain.analysis.service.common;
+package techtrek.domain.analysis.service.helper;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
 import techtrek.domain.analysis.entity.Analysis;
@@ -11,15 +9,9 @@ import techtrek.domain.questionAnswer.repository.QuestionAnswerRepository;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
-public class LowestSimilarity {
+public class LowestSimilarityHelper {
     private final QuestionAnswerRepository questionAnswerRepository;
 
     public AnalysisParserResponse.LowestSimilarity getLowestSimilarity(Analysis analysis) {

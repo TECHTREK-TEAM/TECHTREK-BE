@@ -64,5 +64,13 @@ public class Analysis {
     @JoinColumn(name = "enterprise_id", nullable = false)
     private Enterprise enterprise;
 
+    public void updateResult(boolean isPass, double score, String keyword, String keywordNumber, String feedback, String analysisPosition) {
+        this.isPass = isPass;
+        this.score = score;
+        this.keyword = keyword;
+        this.keywordNumber = keywordNumber;
+        this.feedback = feedback;
+        this.analysisPosition = analysisPosition;
+    }
 
 }

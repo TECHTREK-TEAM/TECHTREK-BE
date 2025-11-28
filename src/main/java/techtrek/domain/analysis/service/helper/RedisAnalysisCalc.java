@@ -1,4 +1,4 @@
-package techtrek.domain.analysis.service.common;
+package techtrek.domain.analysis.service.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
