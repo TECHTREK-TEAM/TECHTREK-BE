@@ -16,6 +16,13 @@ public class AnalysisParserResponse {
         private String questionNumber;
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class AnalysisResult {
+        private boolean isPass;     // 합격 여부
+        private double percentage;  // 일치율 %
+    }
+
     // 피드백 GPT 반환
     @Getter
     @NoArgsConstructor

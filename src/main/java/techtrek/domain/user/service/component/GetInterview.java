@@ -8,19 +8,19 @@ import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 @Component
 @RequiredArgsConstructor
 public class GetInterview {
-    private final UserValidator userValidator;
+    private final UserHelper userHelper;
     private final AnalysisRepository analysisRepository;
 
     // 면접 정보(높은점수, 최근) 조회
     public UserResponse.Interview exec(CustomUserDetails userDetails) {
         // 사용자 조회
-        User user = userValidator.validateAndGetUser(userDetails.getId());
+        User user = userHelper.validateUser(userDetails.getId());
 
         // 최고 점수 Analysis
         Pageable one = PageRequest.of(0, 1);

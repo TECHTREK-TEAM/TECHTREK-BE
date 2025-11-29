@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.*;
 import techtrek.domain.analysis.entity.Analysis;
-import techtrek.domain.interviewQuestion.entity.InterviewQuestion;
+import techtrek.domain.basicQuestion.entity.BasicQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class Enterprise {
 
     @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<InterviewQuestion> interviewQuestions = new ArrayList<>();
+    private List<BasicQuestion> interviewQuestions = new ArrayList<>();
 
     @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

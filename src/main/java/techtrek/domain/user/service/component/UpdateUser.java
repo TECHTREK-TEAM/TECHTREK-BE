@@ -7,8 +7,8 @@ import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class UpdateUser {
-    private final UserValidator userValidator;
+    private final UserHelper userHelper;
     private final UserRepository userRepository;
 
     // 사용자 정보 수정
     public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.InfoRequest.Stack> newStacks, CustomUserDetails userDetails) {
         // 사용자 조회
-        User user = userValidator.validateAndGetUser(userDetails.getId());
+        User user = userHelper.validateUser(userDetails.getId());
 
         // 사용자 정보 수정 저장
         if (newName != null && !newName.isBlank()) user.setName(newName);

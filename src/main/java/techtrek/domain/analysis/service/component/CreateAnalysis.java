@@ -5,26 +5,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import techtrek.domain.Interview.dto.InterviewParserResponse;
-import techtrek.domain.Interview.service.common.CompanyCSProvider;
-import techtrek.domain.Interview.service.common.NumberCountProvider;
 import techtrek.domain.analysis.dto.AnalysisParserResponse;
+import techtrek.domain.questionAnswer.entity.QuestionAnswer;
+import techtrek.domain.questionAnswer.repository.QuestionAnswerRepository;
+import techtrek.domain.session.service.helper.CompanyCSHelper;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.analysis.repository.AnalysisRepository;
-import techtrek.domain.analysis.service.common.LowestSimilarity;
+import techtrek.domain.analysis.service.helper.LowestSimilarityHelper;
 import techtrek.domain.enterprise.entity.Enterprise;
-import techtrek.domain.enterprise.repository.EnterpriseRepository;
+import techtrek.domain.session.service.helper.SessionRedisHelper;
 import techtrek.domain.user.entity.User;
+import techtrek.domain.user.service.helper.UserHelper;
 import techtrek.global.common.code.ErrorCode;
 import techtrek.global.common.exception.CustomException;
 import techtrek.global.openAI.chat.service.common.Gpt;
 import techtrek.global.securty.service.CustomUserDetails;
-import techtrek.global.securty.service.UserValidator;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -32,81 +31,63 @@ public class CreateAnalysis {
     private static final String PROMPT_PATH_FEEDBACK = "prompts/feedback_prompt.txt";
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final UserValidator userValidator;
-    private final EnterpriseRepository enterpriseRepository;
+    private final LowestSimilarityHelper lowestSimilarityHelper;
+    private final SessionRedisHelper sessionRedisHelper;
+    private final CompanyCSHelper companyCSHelper;
+    private final UserHelper userHelper;
+
     private final AnalysisRepository analysisRepository;
-    private final LowestSimilarity lowestSimilarity;
-    private final NumberCountProvider numberCountProvider;
-    private final CompanyCSProvider companyCSProvider;
-    private final Gpt createGpt;
+    private final QuestionAnswerRepository questionAnswerRepository;
+    private final Gpt gpt;
 
     @Value("${custom.redis.prefix.interview}")
     private String interviewPrefix;
 
-    @Value("${custom.redis.prefix.basic}")
-    private String basicPrefix;
+    @Value("${custom.redis.prefix.qa}")
+    private String qaPrefix;
 
-    @Value("${custom.redis.prefix.resume}")
-    private String resumePrefix;
-
-    @Value("${custom.redis.prefix.tail}")
-    private String tailPrefix;
 
     // 분석하기
     @Transactional
-    public AnalysisResponse.Analysis exec(String sessionId, int duration, CustomUserDetails userDetails){
-        // key 생성
+    public AnalysisResponse.Analysis exec(String sessionId, int duration, CustomUserDetails userDetails) {
+        // 사용자 조회
+        User user = userHelper.validateUser(userDetails.getId());
+
+        // 키 없으면 예외
         String sessionKey = interviewPrefix + sessionId;
-        String basicKey = sessionKey + basicPrefix;
-        String resumeKey = sessionKey + resumePrefix;
-        String tailKey = sessionKey + tailPrefix;
+        sessionRedisHelper.validateSession(sessionKey);
 
-        // 사용자 조회, 유효성 확인
-        User user = userValidator.validateAndGetUser(userDetails.getId());
-        if (Boolean.FALSE.equals(redisTemplate.hasKey(sessionKey))) throw new CustomException(ErrorCode.SESSION_NOT_FOUND);
+        // enterpriseName 조회
+        Enterprise enterprise = sessionRedisHelper.getEnterprise(sessionKey);
 
-        // 기업불러오기
-        String enterpriseName = (String) redisTemplate.opsForHash().get(sessionKey, "enterpriseName");
-        Enterprise enterprise = enterpriseRepository.findByName(enterpriseName).orElseThrow(() -> new CustomException(ErrorCode.ENTERPRISE_NOT_FOUND));
+        // 분석 엔티티 생성
+        Analysis analysis = createAnalysisEntity(user, enterprise, sessionId, duration);
 
-        // 합격여부, 일치율 계산 (유사도 0.6이상 개수 * 100 / 전체개수)
-        InterviewParserResponse.NumberCount numberCount = numberCountProvider.exec(sessionKey);
-        long highCount = Stream.of(basicKey+"*", resumeKey+"*", tailKey+"*")
-                .mapToLong(this::countHighSimilarity)
-                .sum();
+        // Redis QA 읽어서 DB 저장
+        saveQaFromRedis(sessionKey, analysis);
 
-        double score = numberCount.getTotalCount() > 0 ? Math.round((highCount * 100.0 / numberCount.getTotalCount()) * 10) / 10.0 : 0.0;
-        boolean isPass = score >= 70.0;
+        // Redis 삭제
+        Set<String> sessionKeys = redisTemplate.keys(sessionKey + "*");
+        if (sessionKeys != null && !sessionKeys.isEmpty()) redisTemplate.delete(sessionKeys);
 
-        // 유사도 낮은 필드 조회
-        AnalysisParserResponse.LowestSimilarity low = lowestSimilarity.exec(sessionKey);
+        // 최소 유사도 QA 조회
+        AnalysisParserResponse.LowestSimilarity low = lowestSimilarityHelper.getLowestSimilarity(analysis);
 
-        // 기업별 중점 CS
-        String focusCS = companyCSProvider.exec(enterprise.getName());
+        // 전체 유사도 점수 계산
+        AnalysisParserResponse.AnalysisResult res = calculatePassAndRate(analysis);
+        boolean isPass = res.isPass();
+        double score = res.getPercentage();
 
-        // gpt 피드백 생성
-        AnalysisParserResponse.feedbackResult result = createGpt.exec(
+        // 기업별 CS와 GPT 피드백 생성
+        String focusCS = companyCSHelper.exec(enterprise.getName());
+        AnalysisParserResponse.feedbackResult result = gpt.exec(
                 PROMPT_PATH_FEEDBACK,
                 new Object[]{enterprise.getName(), focusCS,low.getQuestion(), low.getAnswer(),low.getSimilarity() },
                 AnalysisParserResponse.feedbackResult.class
         );
 
-        // 분석 테이블 생성
-        Analysis analysis = Analysis.builder()
-                .sessionId(sessionId)
-                .isPass(isPass)
-                .score(score)
-                .keyword(result.getKeyword())
-                .keywordNumber(low.getQuestionNumber())
-                .feedback(result.getFeedback())
-                .analysisPosition(user.getPosition())
-                .duration(duration)
-                .createdAt(LocalDateTime.now().withNano(0))
-                .user(user)
-                .enterprise(enterprise)
-                .build();
-
-        analysisRepository.save(analysis);
+        // 분석 테이블 업데이트
+        analysis.updateResult(isPass, score, result.getKeyword(), low.getQuestionNumber(), result.getFeedback(), user.getPosition());
 
         // 반환
         return AnalysisResponse.Analysis.builder()
@@ -120,20 +101,100 @@ public class CreateAnalysis {
     }
 
 
-    // similarity >= 0.6인 필드 개수 계산
-    public long countHighSimilarity(String pattern) {
-        Set<String> keys = redisTemplate.keys(pattern);
-        if (keys == null || keys.isEmpty()) return 0;
-
-        return keys.stream()
-                .map(key -> redisTemplate.opsForHash().get(key, "similarity"))
-                .filter(Objects::nonNull)
-                .mapToDouble(v -> {
-                    try { return Double.parseDouble(v.toString()); }
-                    catch (NumberFormatException e) { return 0.0; }
-                })
-                .filter(sim -> sim >= 0.6)
-                .count();
+    // 분석 엔티티 생성
+    private Analysis createAnalysisEntity(User user, Enterprise enterprise, String sessionId, int duration) {
+        Analysis analysis = Analysis.builder()
+                .enterprise(enterprise)
+                .user(user)
+                .sessionId(sessionId)
+                .createdAt(LocalDateTime.now())
+                .duration(duration)
+                .score(0.0)
+                .isPass(false)
+                .keyword("")
+                .keywordNumber("0")
+                .feedback("")
+                .analysisPosition(user.getPosition())
+                .build();
+        return analysisRepository.save(analysis);
     }
+
+
+    // DB에서 QA 읽어서 DB 저장, redis 삭제
+    private void saveQaFromRedis(String sessionKey, Analysis analysis) {
+        String pattern = sessionKey + qaPrefix + "*";
+        Set<String> keys = redisTemplate.keys(pattern);
+
+        if (keys == null || keys.isEmpty()) {
+            throw new CustomException(ErrorCode.QA_NOT_FOUND);
+        }
+
+        for (String key : keys) {
+            Map<Object, Object> map = redisTemplate.opsForHash().entries(key);
+            QuestionAnswer qa = mapToQuestionAnswer(map, analysis, key);
+            questionAnswerRepository.save(qa);
+        }
+    }
+
+    // redis hash 데이터를 question answer 엔티티로 변환
+    private QuestionAnswer mapToQuestionAnswer(Map<Object, Object> map, Analysis analysis, String key) {
+        String[] tokens = key.split(":");
+        int mainNumber = 0;
+        int subNumber = 0;
+
+        try {
+            if (tokens.length >= 5) {
+                mainNumber = Integer.parseInt(tokens[tokens.length - 2]);
+                subNumber = Integer.parseInt(tokens[tokens.length - 1]);
+            } else {
+                mainNumber = Integer.parseInt(tokens[tokens.length - 1]);
+            }
+        } catch (NumberFormatException ignored) {}
+
+        String question = (String) map.get("question");
+        String correctAnswer = (String) map.get("correctAnswer");
+        String answer = (String) map.getOrDefault("answer", "");
+        String type = (String) map.get("type");
+        String similarityStr = (String) map.get("similarity");
+
+        double similarity =  Double.parseDouble(similarityStr);
+
+        return QuestionAnswer.builder()
+                .analysis(analysis)
+                .type(type)
+                .question(question)
+                .correctAnswer(correctAnswer)
+                .answer(answer)
+                .similarity(similarity)
+                .mainNumber(mainNumber)
+                .subNumber(subNumber)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    // 일치율, 합격률 계산
+    public AnalysisParserResponse.AnalysisResult calculatePassAndRate(Analysis analysis) {
+        // DB에서 직접 조회
+        List<QuestionAnswer> qaList = questionAnswerRepository.findByAnalysis(analysis);
+
+        if (qaList.isEmpty()) return new AnalysisParserResponse.AnalysisResult(false, 0.0);
+
+        double total = qaList.stream()
+                .mapToDouble(QuestionAnswer::getSimilarity)
+                .sum();
+
+        double avg = total / qaList.size();  // 평균 similarity
+
+        boolean isPass = avg >= 0.6;  // 60% 기준
+
+        double percentage = avg * 100; // 퍼센트 변환
+
+        // 소수점 둘째 자리에서 반올림
+        percentage = Math.round(percentage * 100.0) / 100.0;
+
+        return new AnalysisParserResponse.AnalysisResult(isPass, percentage);
+    }
+
+
 
 }
