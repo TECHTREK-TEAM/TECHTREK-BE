@@ -35,6 +35,7 @@ public class AuthController {
 
     // refresh token을 이용해 token 재발급
     @PostMapping("/auth/refresh")
+    @Operation(summary = "refresh token을 이용해 token 재발급")
     public ResponseEntity<CommonResponse<Map<String, String>>> refreshAccessToken(HttpServletRequest request) {
         String newAccessToken = authService.createTokenWithRefresh(request);
         return ApiResponse.onSuccess(Map.of("accessToken", newAccessToken));
@@ -42,6 +43,7 @@ public class AuthController {
 
     // 로그아웃
     @PostMapping("/api/logout")
+    @Operation(summary = "로그아웃")
     public ResponseEntity<CommonResponse<Boolean>> logout(HttpServletRequest request, HttpServletResponse response) {
         return ApiResponse.onSuccess( authService.logout(request, response));
     }
