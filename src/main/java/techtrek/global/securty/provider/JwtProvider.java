@@ -15,22 +15,33 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    @Value("${jwt.access-expiration}")
+    private long accessTokenExpiration;
 
-    // JWT 생성
-    public String createToken(String userId) {
+    @Value("${jwt.refresh-expiration}")
+    private long refreshTokenExpiration;
+
+    // Access Token 생성
+    public String createAccessToken(String userId) {
+        return createToken(userId, accessTokenExpiration);
+    }
+
+    // Refresh Token 생성
+    public String createRefreshToken(String userId) {
+        return createToken(userId, refreshTokenExpiration);
+    }
+
+    // 공통 Token 생성 로직
+    private String createToken(String userId, long validityMillis) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration); // 만료 시간
+        Date expiryDate = new Date(now.getTime() + validityMillis);
 
-        // JWT 토큰 생성
         return Jwts.builder()
-                .setSubject(userId)                  // 사용자 식별자 (userId)를 subject로 저장
-                .setIssuedAt(now)                    // 발급 시간
-                .setExpiration(expiryDate)           // 만료 시간
-                .signWith(SignatureAlgorithm.HS256,  // 서명 알고리즘 + 시크릿 키로 서명
-                        secretKey.getBytes(StandardCharsets.UTF_8))
-                .compact();                          // 최종 JWT 문자열 반환
+                .setSubject(userId)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes(StandardCharsets.UTF_8))
+                .compact();
     }
 
     // JWT에서 사용자 식별자(subject) 추출
@@ -58,6 +69,11 @@ public class JwtProvider {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    // Refresh Token TTL 리턴 (Redis 저장용)
+    public long getRefreshTokenTTL() {
+        return refreshTokenExpiration;
     }
 }
 
