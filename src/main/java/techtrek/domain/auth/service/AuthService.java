@@ -5,17 +5,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import techtrek.domain.auth.service.component.CreateTokenWithRefresh;
-import techtrek.domain.auth.service.component.CreateOAuth;
+import techtrek.domain.auth.service.component.Login;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final CreateOAuth createOAuth;
+    private final Login login;
     private final CreateTokenWithRefresh createTokenWithRefresh;
 
     // 소셜 로그인
-    public String createOAuth(String provider, String code, HttpServletResponse response) {
-        return createOAuth.exec(provider, code, response);
+    public String login(String provider, String code, HttpServletResponse response) {
+        return login.exec(provider, code, response);
     }
 
     // refresh token을 이용해 token 재발급

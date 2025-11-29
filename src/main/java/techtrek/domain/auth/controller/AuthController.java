@@ -29,7 +29,7 @@ public class AuthController {
     @Operation(summary = "콜백 조회(프론트 x)")
     public void oauthCallback(@RequestParam String code, @PathVariable String provider,
                               HttpServletResponse response) throws IOException {
-        String redirectUrl = authService.createOAuth(provider, code,response);
+        String redirectUrl = authService.login(provider, code,response);
         response.sendRedirect(redirectUrl);
     }
 

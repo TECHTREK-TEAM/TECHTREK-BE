@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class CreateOAuth {
+public class Login {
     private final UserRepository userRepository;
     private final OAuthTokenHelper oAuthTokenHelper;
     private final OAuthUserInfoHelper oAuthUserInfoHelper;
