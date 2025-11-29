@@ -1,4 +1,4 @@
-package techtrek.domain.auth.service.common;
+package techtrek.domain.auth.service.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class GetOAuthUserInfo {
+public class OAuthUserInfoHelper {
 
     private final RestTemplate restTemplate;
 

@@ -25,6 +25,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtProvider jwtProvider;
+    private final RestAuthEntryPoint restAuthEntryPoint;
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
@@ -46,9 +47,10 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/**","/auth/**").permitAll()  // 인증 없이 접근 허용
                         .anyRequest().authenticated()                            // 나머지 요청 인증 필요
                 )
-                .oauth2Login(oauth -> oauth
-                        .loginPage("/login") // 타임리프로 만든 로그인 페이지 경로
+                .exceptionHandling(exception -> exception // rest api용 인증 실패 처리
+                        .authenticationEntryPoint(restAuthEntryPoint)
                 )
+                .oauth2Login(oauth -> oauth.loginPage("/login"))    // oauth2 인증 실패 처리
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtProvider, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class

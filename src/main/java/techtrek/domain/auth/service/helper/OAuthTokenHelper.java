@@ -1,4 +1,4 @@
-package techtrek.domain.auth.service.common;
+package techtrek.domain.auth.service.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class GetAccessToken {
+public class OAuthTokenHelper {
 
     // 카카오
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")

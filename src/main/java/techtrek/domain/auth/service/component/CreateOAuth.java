@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import techtrek.domain.auth.dto.CustomOAuthDetails;
-import techtrek.domain.auth.service.common.GetAccessToken;
-import techtrek.domain.auth.service.common.GetOAuthUserInfo;
+import techtrek.domain.auth.service.helper.OAuthTokenHelper;
+import techtrek.domain.auth.service.helper.OAuthUserInfoHelper;
+import techtrek.domain.auth.service.helper.RefreshTokenHelper;
 import techtrek.domain.user.entity.Role;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
@@ -16,19 +17,19 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class LoginOAuth {
+public class CreateOAuth {
     private final UserRepository userRepository;
-    private final GetAccessToken getAccessToken;
-    private final GetOAuthUserInfo getOAuthUserInfo;
+    private final OAuthTokenHelper oAuthTokenHelper;
+    private final OAuthUserInfoHelper oAuthUserInfoHelper;
     private final JwtProvider jwtProvider;
-    private final RefreshTokenManager refreshTokenManager;
+    private final RefreshTokenHelper refreshTokenHelper;
 
     public String exec(String provider, String code, HttpServletResponse response){
         // 인가 코드로 액세스 토큰 요청
-        String oauthAccessToken = getAccessToken.exec(provider, code);
+        String oauthAccessToken = oAuthTokenHelper.exec(provider, code);
 
         // 액세스 토큰으로 사용자 정보 요청
-        CustomOAuthDetails userInfo = getOAuthUserInfo.exec(provider, oauthAccessToken);
+        CustomOAuthDetails userInfo = oAuthUserInfoHelper.exec(provider, oauthAccessToken);
 
         // 이메일로 기존 사용자 조회
         String email = userInfo.getEmail();
@@ -59,7 +60,7 @@ public class LoginOAuth {
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
         // Refresh 저장
-        refreshTokenManager.save(user.getId(), refreshToken, jwtProvider.getRefreshTokenTTL());
+        refreshTokenHelper.save(user.getId(), refreshToken, jwtProvider.getRefreshTokenTTL());
 
         // Refresh Token을 쿠키로 내려주기
         ResponseCookie rtCookie = ResponseCookie.from("refreshToken", refreshToken)
