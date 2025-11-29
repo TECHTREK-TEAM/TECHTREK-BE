@@ -39,4 +39,10 @@ public class AuthController {
         String newAccessToken = authService.createTokenWithRefresh(request);
         return ApiResponse.onSuccess(Map.of("accessToken", newAccessToken));
     }
+
+    // 로그아웃
+    @PostMapping("/api/logout")
+    public ResponseEntity<CommonResponse<Boolean>> logout(HttpServletRequest request, HttpServletResponse response) {
+        return ApiResponse.onSuccess( authService.logout(request, response));
+    }
 }

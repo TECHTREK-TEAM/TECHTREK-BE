@@ -29,18 +29,13 @@ public class RefreshTokenHelper {
         return redisTemplate.opsForValue().get(PREFIX + userId);
     }
 
-    /**
-     * Refresh Token 검증
-     * - 저장된 RT와 클라이언트가 보낸 RT가 같은지 확인
-     */
+    // 저장된 RT와 클라이언트가 보낸 RT가 같은지 확인
     public boolean validateByUserId(String userId, String refreshToken) {
         String stored = find(userId);
         return stored != null && stored.equals(refreshToken);
     }
 
-    /**
-     * Refresh Token 삭제 (로그아웃 시)
-     */
+    // Refresh Token 삭제 (로그아웃 시)
     public void delete(String userId) {
         redisTemplate.delete(PREFIX + userId);
     }
