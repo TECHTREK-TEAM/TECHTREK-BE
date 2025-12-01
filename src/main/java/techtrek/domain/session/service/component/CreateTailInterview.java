@@ -53,18 +53,18 @@ public class CreateTailInterview {
         String qaKey = sessionRedisHelper.buildQaKey(sessionId, mainNumber,nextSubNumber);
 
         // gpt 연계질문 생성
-        SessionParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_TAIL, new Object[]{previousQuestion, previousAnswer}, SessionParserResponse.ChatResult.class);
+        //SessionParserResponse.ChatResult result = gpt.exec(PROMPT_PATH_TAIL, new Object[]{previousQuestion, previousAnswer}, SessionParserResponse.ChatResult.class);
 
         // redis에 저장
         redisTemplate.opsForHash().put(sessionKey, "subNumber", String.valueOf(nextSubNumber));
         redisTemplate.opsForHash().put(sessionKey, "currentCount", String.valueOf(nextCurrentCount));
 
-        redisTemplate.opsForHash().put(qaKey, "question",  result.getQuestion());
-        redisTemplate.opsForHash().put(qaKey, "correctAnswer", result.getCorrectAnswer());
+        redisTemplate.opsForHash().put(qaKey, "question",  "하하");
+        redisTemplate.opsForHash().put(qaKey, "correctAnswer","히히");
         redisTemplate.opsForHash().put(qaKey, "type", "tail");
 
         return SessionResponse.TailQuestion.builder()
-                .question(result.getQuestion())
+                .question("하하")
                 .parentQuestionNumber(String.valueOf(mainNumber))
                 .tailQuestionNumber(String.valueOf(nextSubNumber))
                 .build();
