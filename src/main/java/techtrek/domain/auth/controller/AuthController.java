@@ -69,7 +69,7 @@ public class AuthController {
         response.addCookie(cookie);
 
         // Redis에 TTL 적용해서 저장
-        refreshTokenHelper.save(userId, refreshToken);
+        refreshTokenHelper.save(userId, refreshToken, jwtProvider.getRefreshTokenTTL());
 
         return ApiResponse.onSuccess(true);
     }

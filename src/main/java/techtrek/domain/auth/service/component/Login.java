@@ -60,7 +60,7 @@ public class Login {
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
         // Refresh 저장
-        refreshTokenHelper.save(user.getId(), refreshToken);
+        refreshTokenHelper.save(user.getId(), refreshToken, jwtProvider.getRefreshTokenTTL());
 
         // Refresh Token을 쿠키로 내려주기
         ResponseCookie rtCookie = ResponseCookie.from("refreshToken", refreshToken)
