@@ -43,18 +43,18 @@ public class CreateTailInterview {
 
         System.out.println("dsdada"+ previousQa.getQuestion());
         // GPT 연계 질문 생성
-        SessionParserResponse.ChatResult result = gpt.exec(
-                "prompts/tail_question_prompt.txt",
-                new Object[]{previousQa.getQuestion(), previousQa.getAnswer()},
-                SessionParserResponse.ChatResult.class
-        );
+//        SessionParserResponse.ChatResult result = gpt.exec(
+//                "prompts/tail_question_prompt.txt",
+//                new Object[]{previousQa.getQuestion(), previousQa.getAnswer()},
+//                SessionParserResponse.ChatResult.class
+//        );
 
         // questionAnswer 테이블에 새 QA 저장
         QuestionAnswer newQa = QuestionAnswer.builder()
                 .mainNumber(mainNumber)
                 .subNumber(nextSubNumber)
-                .question(result.getQuestion())
-                .correctAnswer(result.getCorrectAnswer())
+                .question("하하")
+                .correctAnswer("하하")
                 .createdAt(LocalDateTime.now())
                 .type("tail")
                 .analysis(previousQa.getAnalysis()) // 기존 분석과 연결
@@ -63,7 +63,7 @@ public class CreateTailInterview {
         questionAnswerRepository.save(newQa);
 
         return SessionResponse.TailQuestion.builder()
-                .question(result.getQuestion())
+                .question("하하")
                 .parentQuestionNumber(String.valueOf(previousQa.getMainNumber()))
                 .tailQuestionNumber(String.valueOf(nextSubNumber))
                 .build();
