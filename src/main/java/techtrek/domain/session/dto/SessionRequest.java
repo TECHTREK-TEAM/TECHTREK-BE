@@ -34,15 +34,17 @@ public class SessionRequest {
     @AllArgsConstructor
     @Schema(description = "꼬리 질문 생성 요청")
     public static class TailQuestionRequest {
-        @Schema(description = "세션 ID", example = "1234", required = true)
-        @NotBlank(message = "세션Id는 필수입니다.")
-        private String sessionId;
+        private Long analysisId;
 
-        @Schema(description = "부모 질문 ID", example = "2345")
-        private String parentId;
+        private int mainNumber;
 
-        @Schema(description = "이전 필드 ID", example = "5678")
-        private String previousId;
+        private int subNumber;
+
+//        @Schema(description = "부모 질문 ID", example = "2345")
+//        private String parentId;
+//
+//        @Schema(description = "이전 필드 ID", example = "5678")
+//        private String previousId;
     }
 
     // 답변

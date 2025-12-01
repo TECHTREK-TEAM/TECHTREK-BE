@@ -3,6 +3,7 @@ package techtrek.domain.questionAnswer.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import techtrek.domain.analysis.entity.Analysis;
 import techtrek.domain.questionAnswer.entity.QuestionAnswer;
@@ -29,5 +30,22 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
     @Modifying
     @Query("DELETE FROM QuestionAnswer q WHERE q.analysis = :analysis")
     void deleteByAnalysis(Analysis analysis);
+
+    @Query("""
+    SELECT qa
+    FROM QuestionAnswer qa
+    JOIN qa.analysis a
+    JOIN a.user u
+    WHERE u.id = :userId
+      AND a.id = :analysisId
+      AND qa.mainNumber = :mainNumber
+      AND qa.subNumber = :subNumber
+""")
+    Optional<QuestionAnswer> findPreviousQa(
+            @Param("userId") String userId,
+            @Param("analysisId") Long analysisId,
+            @Param("mainNumber") int mainNumber,
+            @Param("subNumber") int subNumber
+    );
 
 }

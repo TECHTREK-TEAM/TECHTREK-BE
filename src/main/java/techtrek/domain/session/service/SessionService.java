@@ -36,7 +36,7 @@ public class SessionService {
 
     // 연계 질문 생성하기
     public SessionResponse.TailQuestion createTailInterview(SessionRequest.TailQuestionRequest request, CustomUserDetails userDetails) {
-        return createTailInterview.exec(request.getSessionId(), userDetails);
+        return createTailInterview.exec(request.getAnalysisId(), request.getMainNumber(), request.getSubNumber(), userDetails);
     }
 
     //답변하기
