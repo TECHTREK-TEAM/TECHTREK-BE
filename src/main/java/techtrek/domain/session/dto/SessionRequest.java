@@ -36,9 +36,9 @@ public class SessionRequest {
     public static class TailQuestionRequest {
         private Long analysisId;
 
-        private int mainNumber;
-
-        private int subNumber;
+//        private int mainNumber;
+//
+//        private int subNumber;
 
 //        @Schema(description = "부모 질문 ID", example = "2345")
 //        private String parentId;

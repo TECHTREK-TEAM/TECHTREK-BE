@@ -8,9 +8,7 @@ export let options = {
 
 export default function () {
     let payload = JSON.stringify({
-        analysisId: 10,
-        mainNumber: 1,
-        subNumber: 1
+        analysisId: 10
     });
 
     let res = http.post('http://localhost:8080/api/interview/questions/tail', payload, {

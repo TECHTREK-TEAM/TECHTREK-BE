@@ -48,4 +48,6 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
             @Param("subNumber") int subNumber
     );
 
+    Optional<QuestionAnswer> findTopByAnalysisIdAndAnalysisUserIdOrderByMainNumberDescSubNumberDesc(Long analysisId, String userId);
+
 }
