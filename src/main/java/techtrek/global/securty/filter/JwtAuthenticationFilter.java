@@ -27,6 +27,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        // refresh token 요청은 JWT 검증 생략
+        if (request.getRequestURI().startsWith("/auth/refresh")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 요청 헤더에서 JWT 토큰 추출
         String token = resolveToken(request);
 
