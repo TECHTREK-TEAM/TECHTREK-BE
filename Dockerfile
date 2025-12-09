@@ -9,7 +9,7 @@ WORKDIR /home/app
 RUN gradle clean build -x test
 
 # 실행용 이미지
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jdk-jammy
 
 # UTF-8 locale 설치
 RUN apt-get update && \
