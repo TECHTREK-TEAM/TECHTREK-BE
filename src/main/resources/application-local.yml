@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: local
+
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+  datasource:
+    url: ${LOCAL_DATABASE_URL}
+    username: ${LOCAL_DATABASE_USERNAME}
+    password: ${LOCAL_DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    redis:
+      host: ${LOCAL_REDIS_HOST}
+      port: ${LOCAL_REDIS_PORT:6379}
+      password: ${LOCAL_REDIS_PASSWORD}
