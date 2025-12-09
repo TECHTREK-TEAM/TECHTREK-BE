@@ -9,7 +9,7 @@ WORKDIR /home/app
 RUN gradle clean build -x test
 
 # 실행용 이미지
-FROM openjdk:17-jdk-slim
+FROM openjdk:17-slim
 
 # UTF-8 locale 설치
 RUN apt-get update && \
