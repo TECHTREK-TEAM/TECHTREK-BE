@@ -6,13 +6,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import techtrek.domain.analysis.dto.AnalysisRequest;
 import techtrek.domain.analysis.dto.AnalysisResponse;
 import techtrek.domain.analysis.service.AnalysisService;
-import techtrek.domain.sessionInfo.entity.status.EnterpriseName;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
+import techtrek.global.securty.service.CustomUserDetails;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,36 +25,36 @@ public class AnalysisController {
     // 분석하기
     @PostMapping
     @Operation(summary = "분석 생성", description = "새로운 분석 데이터를 생성합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.Analysis>> createAnalysis(@Valid @RequestBody AnalysisRequest.Analysis request) {
-        return ApiResponse.onSuccess(analysisService.createAnalysis(request));
+    public ResponseEntity<CommonResponse<AnalysisResponse.Analysis>> createAnalysis(@Valid @RequestBody AnalysisRequest.AnalysisStartRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ApiResponse.onSuccess(analysisService.createAnalysis(request, userDetails));
     }
 
     // 현재 세션 불러오기
     @GetMapping("/recent/{enterpriseName}")
     @Operation(summary = "최근 분석 조회", description = "해당 기업의 최근 분석 세션을 조회합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@Parameter(description = "기업 이름", required = true) @PathVariable EnterpriseName enterpriseName){
-        return ApiResponse.onSuccess(analysisService.getAnalysisRecent(enterpriseName));
+    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysisRecent(@Parameter(description = "기업 이름", required = true) @PathVariable String enterpriseName, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return ApiResponse.onSuccess(analysisService.getAnalysisRecent(enterpriseName, userDetails));
     }
 
     // 세션 리스트 불러오기
     @GetMapping("/sessions/{enterpriseName}")
     @Operation(summary = "분석 세션 리스트 조회", description = "해당 기업의 모든 분석 세션 리스트를 조회합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.SessionList>> getAnalysisList(@Parameter(description = "기업 이름", required = true) @PathVariable EnterpriseName enterpriseName){
-        return ApiResponse.onSuccess(analysisService.getAnalysisList(enterpriseName));
+    public ResponseEntity<CommonResponse<AnalysisResponse.AnalysisList>> getAnalysisList(@Parameter(description = "기업 이름", required = true) @PathVariable String enterpriseName, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return ApiResponse.onSuccess(analysisService.getAnalysisList(enterpriseName, userDetails));
     }
 
     // 선택한 세션 불러오기
-    @GetMapping("/{sessionInfoId}")
+    @GetMapping("/{analysisId}")
     @Operation(summary = "분석 세션 상세 조회", description = "선택한 분석 세션의 상세 정보를 조회합니다.")
-    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId){
-        return ApiResponse.onSuccess(analysisService.getAnalysis(sessionInfoId));
+    public ResponseEntity<CommonResponse<AnalysisResponse.Detail>> getAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable Long analysisId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return ApiResponse.onSuccess(analysisService.getAnalysis(analysisId,userDetails));
     }
 
     // 선택한 세션 삭제
-    @DeleteMapping("/{sessionInfoId}")
+    @DeleteMapping("/{analysisId}")
     @Operation(summary = "분석 세션 삭제", description = "선택한 분석 세션을 삭제합니다.")
-    public ResponseEntity<CommonResponse<Boolean>> deleteAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable String sessionInfoId){
-        return ApiResponse.onSuccess(analysisService.deleteAnalysis(sessionInfoId));
+    public ResponseEntity<CommonResponse<Boolean>> deleteAnalysis(@Parameter(description = "면접 ID", required = true) @PathVariable Long analysisId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return ApiResponse.onSuccess(analysisService.deleteAnalysis(analysisId,userDetails));
     }
 
 }

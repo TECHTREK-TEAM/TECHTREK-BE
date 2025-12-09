@@ -1,17 +1,19 @@
 package techtrek.domain.basicQuestion.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import techtrek.domain.basicQuestion.entity.BasicQuestion;
-import techtrek.domain.basicQuestion.entity.status.CsCategory;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface BasicQuestionRepository extends JpaRepository<BasicQuestion, Integer> {
+public interface BasicQuestionRepository extends JpaRepository<BasicQuestion, Long> {
+    boolean existsByQuestion(String question);
 
-    // 랜점으로 하나의 질문 선택
-    List<BasicQuestion> findByCsCategory(CsCategory csCategory);
-
+    // 특정 기업의 질문 중 랜덤 1개 가져오기
+    @Query(value = "SELECT * FROM basic_question WHERE enterprise_id = :enterpriseId ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Optional<BasicQuestion> findRandomQuestionByEnterpriseId(@Param("enterpriseId") Long enterpriseId);
 
 }

@@ -12,12 +12,12 @@ public class UserRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(description = "사용자 정보 요청")
-    public static class Info {
+    public static class InfoRequest {
         @Schema(description = "사용자 닉네임", example = "김철수")
         private String name;
 
         @Schema(description = "사용자 직군", example = "Frontend Developer")
-        private String userGroup;
+        private String position;
 
         @Schema(description = "연차 정보", example = "3년차")
         private String seniority;
