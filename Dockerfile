@@ -1,34 +1,38 @@
-# 임시 이미지 생성
+# 1단계: Build Stage
 FROM gradle:8.7.0-jdk17 AS build
 
-# 캐시 최적화를 위해 설정
-COPY --chown=gradle:gradle . /home/app
 WORKDIR /home/app
 
-# 프로젝트 빌드 수행
+# Gradle 캐시 최적화 (중요!)
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+
+# 캐시 생성용 dummy build
+RUN gradle clean build -x test || true
+
+# 실제 소스 복사
+COPY . .
+
+# 실제 빌드
 RUN gradle clean build -x test
 
-# 실행용 이미지
+
+# 2단계: Run Stage
 FROM eclipse-temurin:17-jdk-jammy
 
-# UTF-8 locale 설치
+# 한글 로케일 설정
 RUN apt-get update && \
     apt-get install -y locales && \
     sed -i '/ko_KR.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen
 
-# 환경 변수로 한글 로케일 설정
 ENV LANG=ko_KR.UTF-8 \
     LANGUAGE=ko_KR:ko \
     LC_ALL=ko_KR.UTF-8
 
-VOLUME /tmp
-
-# JAR 파일 복사
-COPY --from=build /home/app/build/libs/*.jar app.jar
-
-# JVM 인코딩 설정 환경 변수 추가
-ENV JAVA_OPTS="-Dfile.encoding=UTF-8"
+# jar 파일 명시적으로 지정 (가장 안전)
+COPY --from=build /home/app/build/libs/*SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+
+ENTRYPOINT ["java", "-Dfile.encoding=UTF-8", "-jar", "app.jar"]
