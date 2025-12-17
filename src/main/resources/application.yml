@@ -34,7 +34,7 @@ spring:
             client-id: ${KAKAO_CLIENT_ID}
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/auth/kakao/callback"
+            redirect-uri: ${KAKAO_REDIRECT_URI}
             client-authentication-method: post
             provider: kakao
             scope:
@@ -46,7 +46,7 @@ spring:
             client-secret: ${NAVER_CLIENT_SECRET}
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/auth/naver/callback"
+            redirect-uri: ${NAVER_REDIRECT_URI}
             client-authentication-method: post
             provider: naver
             scope:
@@ -58,7 +58,7 @@ spring:
             client-secret: ${GOOGLE_CLIENT_SECRET}
             client-name: Google
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/auth/google/callback"
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
             scope:
               - profile
               - email
