@@ -2,8 +2,7 @@ name: CD
 
 on:
   push:
-    branches:
-      - main 
+    branches: [ "main", "develop2" ]
 
 jobs:
   deploy:
