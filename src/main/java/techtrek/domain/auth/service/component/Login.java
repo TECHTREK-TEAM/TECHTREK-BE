@@ -25,6 +25,8 @@ public class Login {
     private final RefreshTokenHelper refreshTokenHelper;
 
     public String exec(String provider, String code, HttpServletResponse response){
+        String baseUrl = System.getenv("BASE_URL");
+
         // 인가 코드로 액세스 토큰 요청
         String oauthAccessToken = oAuthTokenHelper.exec(provider, code);
 
@@ -51,7 +53,8 @@ public class Login {
         // 기존 사용자인데 provider가 다르면 예외
         else if (!user.getProvider().equals(provider)) {
             return String.format(
-                    "http://localhost:5173/social-login/callback?message=%s",
+                    "%s/social-login/callback?message=%s",
+                    baseUrl,
                     java.net.URLEncoder.encode("이미 다른 로그인 방식으로 가입된 회원입니다.", java.nio.charset.StandardCharsets.UTF_8)
             );
         }
@@ -74,7 +77,8 @@ public class Login {
         response.addHeader("Set-Cookie", rtCookie.toString());
 
         return String.format(
-                "http://localhost:5173/social-login/callback?token=%s&name=%s",
+                "%s/social-login/callback?token=%s&name=%s",
+                baseUrl,
                 accessToken,
                 java.net.URLEncoder.encode(user.getName(), java.nio.charset.StandardCharsets.UTF_8)
         );
