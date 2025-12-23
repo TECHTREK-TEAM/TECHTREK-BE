@@ -15,12 +15,10 @@ public class RefreshTokenHelper {
     private static final String PREFIX = "RT:";
 
     // refresh token 저장
-    public void save(String userId, String refreshToken, long ttlMillis) {
+    public void save(String userId, String refreshToken) {
         redisTemplate.opsForValue().set(
                 PREFIX + userId,
-                refreshToken,
-                ttlMillis,
-                TimeUnit.MILLISECONDS
+                refreshToken
         );
     }
 

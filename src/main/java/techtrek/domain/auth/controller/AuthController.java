@@ -53,6 +53,7 @@ public class AuthController {
         return ApiResponse.onSuccess( authService.logout(request, response));
     }
 
+
     @PostMapping("/api/test/login")
     public ResponseEntity<CommonResponse<Boolean>> testLogin(
             @RequestParam String userId,
@@ -69,9 +70,10 @@ public class AuthController {
         response.addCookie(cookie);
 
         // Redis에 TTL 적용해서 저장
-        refreshTokenHelper.save(userId, refreshToken, jwtProvider.getRefreshTokenTTL());
+        refreshTokenHelper.save(userId, refreshToken);
 
         return ApiResponse.onSuccess(true);
     }
+
 
 }
