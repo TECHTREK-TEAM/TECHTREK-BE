@@ -27,8 +27,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // refresh token 요청은 JWT 검증 생략
-        if (request.getRequestURI().startsWith("/auth/refresh")) {
+        String path = request.getRequestURI();
+
+        // OAuth2 로그인 경로는 JWT 인증 무시
+        if (path.startsWith("/oauth2/") || path.startsWith("/auth/refresh") || path.startsWith("/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
