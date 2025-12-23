@@ -23,3 +23,27 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BACKEND_IMAGE }}:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BACKEND_IMAGE }}:latest
+
+      - name: Save EC2 private key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+      - name: Upload .env to EC2
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no .env \
+            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ubuntu/techtrek/.env
+
+      - name: Deploy to EC2 via ssh
+        run: |
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no \
+            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          
+            cd /home/ubuntu/techtrek
+          
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
+
+          EOF
