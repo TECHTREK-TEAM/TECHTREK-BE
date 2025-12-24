@@ -42,6 +42,7 @@ public class UpdateUser {
                 stack.setStackName(stackDto.getStackName());
                 StackType type = StackType.from(stackDto.getStackName());
                 stack.setStackUrl(s3BaseUrl + type.name().toLowerCase().replace("_", "-") + ".png");
+                stack.setUser(user);
                 user.getStackList().add(stack);
             }
         }
