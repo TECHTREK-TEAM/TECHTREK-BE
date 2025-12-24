@@ -26,6 +26,7 @@ public class GetUser {
         for (Stack stack : user.getStackList()) {
             UserResponse.Info.Stack dto = UserResponse.Info.Stack.builder()
                     .stackName(stack.getStackName())
+                    .stackUrl(stack.getStackUrl())
                     .build();
             stackDTOs.add(dto);
         }
