@@ -22,6 +22,9 @@ public class Stack {
     @Column(name="stack_name", length = 12, nullable = true)
     private String stackName;
 
+    @Column(name="stack_url", length = 500, nullable = true)
+    private String stackUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

@@ -34,6 +34,9 @@ public class UserResponse {
         public static class Stack {
             @Schema(description = "기술 스택 이름", example = "Spring Boot")
             private String stackName;
+
+            @Schema(description = "기술 스택 url", example = "https://..")
+            private String stackUrl;
         }
     }
 
@@ -173,6 +176,9 @@ public class UserResponse {
         public static class Stack {
             @Schema(description = "스택 이름", example = "Spring Boot")
             private String stackName;
+
+            @Schema(description = "스택 url", example = "http://~")
+            private String stackUrl;
         }
     }
 
