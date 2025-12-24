@@ -1,8 +1,10 @@
 package techtrek.domain.user.service.component;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import techtrek.domain.stack.entity.Stack;
+import techtrek.domain.stack.entity.status.StackType;
 import techtrek.domain.user.dto.UserRequest;
 import techtrek.domain.user.dto.UserResponse;
 import techtrek.domain.user.entity.User;
@@ -18,6 +20,9 @@ import java.util.List;
 public class UpdateUser {
     private final UserHelper userHelper;
     private final UserRepository userRepository;
+
+    @Value("${s3.base-url}")
+    private String s3BaseUrl;
 
     // 사용자 정보 수정
     public UserResponse.Info exec (String newName, String newPosition, String newSeniority, List<UserRequest.InfoRequest.Stack> newStacks, CustomUserDetails userDetails) {
@@ -35,7 +40,8 @@ public class UpdateUser {
             for (UserRequest.InfoRequest.Stack stackDto : newStacks) {
                 Stack stack = new Stack();
                 stack.setStackName(stackDto.getStackName());
-                stack.setUser(user);
+                StackType type = StackType.from(stackDto.getStackName());
+                stack.setStackUrl(s3BaseUrl + type.name().toLowerCase().replace("_", "-") + ".png");
                 user.getStackList().add(stack);
             }
         }
@@ -45,6 +51,7 @@ public class UpdateUser {
         for (Stack stack : user.getStackList()) {
             UserResponse.Info.Stack dto = UserResponse.Info.Stack.builder()
                     .stackName(stack.getStackName())
+                    .stackUrl(stack.getStackUrl())
                     .build();
             stackDTOs.add(dto);
         }
