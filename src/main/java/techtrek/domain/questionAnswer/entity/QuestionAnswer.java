@@ -12,7 +12,15 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="question_answer")
+@Table(
+        name = "question_answer",
+        indexes = {
+                @Index(
+                        name = "idx_analysis_user_main_sub",
+                        columnList = "analysis_user_id, analysis_id, mainNumber DESC, subNumber DESC"
+                )
+        }
+)
 public class QuestionAnswer {
 
     @Id
@@ -22,6 +30,9 @@ public class QuestionAnswer {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "analysis_id", nullable = false)
     private Analysis analysis;
+
+    @Column
+    private String analysisUserId;
 
     @Column(nullable = false)
     private String type;
