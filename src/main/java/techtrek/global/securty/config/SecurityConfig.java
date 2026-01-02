@@ -45,7 +45,7 @@ public class SecurityConfig {
                                 "/api-docs/**"
                         ).permitAll()
                         .requestMatchers("/api/test/login").permitAll()
-                        //.requestMatchers("/oauth2/**","/auth/**").permitAll()  // 인증 없이 접근 허용
+                        .requestMatchers("/oauth2/**","/auth/**").permitAll()  // 인증 없이 접근 허용
                         .anyRequest().authenticated()                            // 나머지 요청 인증 필요
                 )
                 .exceptionHandling(exception -> exception // rest api용 인증 실패 처리
