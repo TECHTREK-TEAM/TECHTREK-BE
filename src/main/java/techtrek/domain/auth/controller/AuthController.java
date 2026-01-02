@@ -10,8 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import techtrek.domain.auth.service.AuthService;
+import techtrek.domain.auth.service.helper.RefreshTokenHelper;
 import techtrek.global.common.response.ApiResponse;
 import techtrek.global.common.response.CommonResponse;
+import techtrek.global.securty.provider.JwtProvider;
+
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,6 +26,8 @@ import java.util.Map;
 @Tag(name = "인증 API", description = "인증 관련 API")
 public class AuthController {
     private final AuthService authService;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenHelper refreshTokenHelper;
 
     // 콜백 URI 처리
     @GetMapping("/auth/{provider}/callback")
@@ -47,4 +52,28 @@ public class AuthController {
     public ResponseEntity<CommonResponse<Boolean>> logout(HttpServletRequest request, HttpServletResponse response) {
         return ApiResponse.onSuccess( authService.logout(request, response));
     }
+
+
+    @PostMapping("/api/test/login")
+    public ResponseEntity<CommonResponse<Boolean>> testLogin(
+            @RequestParam String userId,
+            HttpServletResponse response) {
+
+        // access/refresh 토큰 생성
+        String accessToken = jwtProvider.createAccessToken(userId);
+        String refreshToken = jwtProvider.createRefreshToken(userId);
+
+        // 쿠키 설정
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        // Redis에 TTL 적용해서 저장
+        refreshTokenHelper.save(userId, refreshToken);
+
+        return ApiResponse.onSuccess(true);
+    }
+
+
 }
