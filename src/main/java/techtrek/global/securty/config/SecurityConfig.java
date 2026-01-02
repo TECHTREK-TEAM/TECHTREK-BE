@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/test/login").permitAll()
+                        .requestMatchers("/api/interview/questions/tail").permitAll()
                         .requestMatchers("/oauth2/**","/auth/**").permitAll()  // 인증 없이 접근 허용
                         .anyRequest().authenticated()                            // 나머지 요청 인증 필요
                 )
