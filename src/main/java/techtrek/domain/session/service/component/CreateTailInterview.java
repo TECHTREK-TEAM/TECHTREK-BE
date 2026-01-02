@@ -27,7 +27,7 @@ public class CreateTailInterview {
         User user = userHelper.validateUser(userDetails.getId());
 
         // 현재 세션에서 가장 큰 mainNumber, subNumber 조회
-        Optional<QuestionAnswer> lastQaOpt = questionAnswerRepository.findTopByAnalysisIdAndAnalysisUserIdOrderByMainNumberDescSubNumberDesc(
+        Optional<QuestionAnswer> lastQaOpt = questionAnswerRepository.findTopByAnalysis_IdAndAnalysis_User_IdOrderByMainNumberDescSubNumberDesc(
                 analysisId,
                 user.getId()
         );
