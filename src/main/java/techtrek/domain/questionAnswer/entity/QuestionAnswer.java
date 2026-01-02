@@ -23,14 +23,14 @@ public class QuestionAnswer {
     @JoinColumn(name = "analysis_id", nullable = false)
     private Analysis analysis;
 
-    @Column(nullable = false)
-    private String type;
+//    @Column(nullable = false)
+//    private String type;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String question;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String correctAnswer;
+//    @Column(columnDefinition = "TEXT", nullable = false)
+//    private String correctAnswer;
 
     @Column(columnDefinition = "TEXT")
     private String answer;

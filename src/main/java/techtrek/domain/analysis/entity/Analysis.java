@@ -23,10 +23,6 @@ public class Analysis {
     @Column(name = "id", length = 36, nullable = false)
     private Long id;
 
-    // 삭제
-    @Column(name = "session_id", length = 255)
-    private String sessionId;
-
     @Column(name = "is_pass", nullable = false)
     private boolean isPass;
 

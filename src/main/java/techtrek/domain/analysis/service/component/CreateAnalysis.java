@@ -61,7 +61,7 @@ public class CreateAnalysis {
         Enterprise enterprise = sessionRedisHelper.getEnterprise(sessionKey);
 
         // 분석 엔티티 생성
-        Analysis analysis = createAnalysisEntity(user, enterprise, sessionId, duration);
+        Analysis analysis = createAnalysisEntity(user, enterprise, duration);
 
         // Redis QA 읽어서 DB 저장
         saveQaFromRedis(sessionKey, analysis);
@@ -102,11 +102,10 @@ public class CreateAnalysis {
 
 
     // 분석 엔티티 생성
-    private Analysis createAnalysisEntity(User user, Enterprise enterprise, String sessionId, int duration) {
+    private Analysis createAnalysisEntity(User user, Enterprise enterprise, int duration) {
         Analysis analysis = Analysis.builder()
                 .enterprise(enterprise)
                 .user(user)
-                .sessionId(sessionId)
                 .createdAt(LocalDateTime.now())
                 .duration(duration)
                 .score(0.0)
@@ -152,18 +151,14 @@ public class CreateAnalysis {
         } catch (NumberFormatException ignored) {}
 
         String question = (String) map.get("question");
-        String correctAnswer = (String) map.get("correctAnswer");
         String answer = (String) map.getOrDefault("answer", "");
-        String type = (String) map.get("type");
         String similarityStr = (String) map.get("similarity");
 
         double similarity =  Double.parseDouble(similarityStr);
 
         return QuestionAnswer.builder()
                 .analysis(analysis)
-                .type(type)
                 .question(question)
-                .correctAnswer(correctAnswer)
                 .answer(answer)
                 .similarity(similarity)
                 .mainNumber(mainNumber)
