@@ -1,5 +1,6 @@
 package techtrek.domain.auth.service.component;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -11,6 +12,8 @@ import techtrek.domain.auth.service.helper.RefreshTokenHelper;
 import techtrek.domain.user.entity.Role;
 import techtrek.domain.user.entity.User;
 import techtrek.domain.user.repository.UserRepository;
+import techtrek.global.common.code.ErrorCode;
+import techtrek.global.common.exception.CustomException;
 import techtrek.global.securty.provider.JwtProvider;
 
 import java.time.LocalDateTime;
@@ -24,8 +27,12 @@ public class Login {
     private final JwtProvider jwtProvider;
     private final RefreshTokenHelper refreshTokenHelper;
 
-    public String exec(String provider, String code, HttpServletResponse response){
+    public String exec(String code, String state, String provider, HttpServletRequest request, HttpServletResponse response){
         String baseUrl = System.getenv("BASE_URL");
+
+        // 세션에서 state 확인
+        String savedState = (String) request.getSession().getAttribute("OAUTH_STATE");
+        if (savedState == null || !savedState.equals(state)) throw new CustomException(ErrorCode.OAUTH_STATE_NOT_FOUND);
 
         // 인가 코드로 액세스 토큰 요청
         String oauthAccessToken = oAuthTokenHelper.exec(provider, code);

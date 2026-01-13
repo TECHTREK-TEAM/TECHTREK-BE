@@ -39,6 +39,7 @@ public enum ErrorCode implements ResponseCode {
 
     // 소셜 로그인
     OAUTH_PROVIDER_NOT_FOUND(HttpStatus.BAD_REQUEST, "OAUTH400", "지원하지 않는 OAuth 제공자입니다."),
+    OAUTH_STATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "OAUTH500", "state값이 일치하지 않습니다."),
     OAUTH_TOKEN_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH500", "토큰 요청에 실패했습니다."),
     OAUTH_USERINFO_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH501", "사용자 정보를 가져오는데 실패했습니다."),
     LOGIN_ALREADY_EXISTS(HttpStatus.CONFLICT, "OAUTH409", "이미 다른 로그인 방식으로 가입된 회원입니다.");
