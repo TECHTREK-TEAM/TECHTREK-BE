@@ -25,11 +25,21 @@ public class AuthController {
     private final AuthService authService;
 
     // 콜백 URI 처리
+    @GetMapping("/auth/{provider}")
+    public void redirectToProvider(
+            @PathVariable String provider,
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        String redirectUrl = authService.createState(provider,request);
+        response.sendRedirect(redirectUrl);
+    }
+
+    // 콜백 URI 처리
     @GetMapping("/auth/{provider}/callback")
     @Operation(summary = "콜백 조회(프론트 x)")
-    public void oauthCallback(@RequestParam String code, @PathVariable String provider,
+    public void oauthCallback(@RequestParam String code, @RequestParam String state,@PathVariable String provider, HttpServletRequest request,
                               HttpServletResponse response) throws IOException {
-        String redirectUrl = authService.login(provider, code,response);
+        String redirectUrl = authService.login(code, state, provider,request, response);
         response.sendRedirect(redirectUrl);
     }
 
